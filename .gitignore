@@ -42,3 +42,8 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# AI files
+.agents/
+skills-lock.json
+.impeccable.md

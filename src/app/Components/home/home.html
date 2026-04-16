@@ -1,0 +1,106 @@
+<div class="space-y-(--space-2xl) animate-in fade-in duration-1000">
+  <!-- Hero: Airy & Serene -->
+  <section class="max-w-4xl mx-auto text-center pt-(--space-lg) pb-(--space-xl)" aria-labelledby="hero-title">
+    <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-(--accent)/5 border border-(--accent)/10 text-(--accent) text-(--text-xs) font-medium tracking-widest uppercase mb-(--space-lg)">
+      <span class="animate-pulse" aria-hidden="true">●</span> {{ content().badge }}
+    </div>
+    <h1 id="hero-title" class="text-display-2xl text-(--fg-base) mb-(--space-md)" [innerHTML]="content().title">
+    </h1>
+    <p class="max-w-xl mx-auto text-(--text-h4) font-light text-(--fg-muted) leading-relaxed mb-(--space-lg)">
+      {{ content().desc }}
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-4 md:gap-6">
+      <button 
+        class="px-8 md:px-12 py-3.5 md:py-4 rounded-full bg-(--fg-base) text-(--bg-base) font-medium text-(--text-xs) md:text-(--text-sm) hover:scale-105 transition-all shadow-xl shadow-(--fg-base)/5"
+        [attr.aria-label]="content().cta1"
+      >
+        {{ content().cta1 }}
+      </button>
+      <button 
+        class="px-8 md:px-12 py-3.5 md:py-4 rounded-full border border-(--fg-muted)/20 text-(--fg-base) font-medium text-(--text-xs) md:text-(--text-sm) hover:bg-(--fg-muted)/5 transition-all"
+        [attr.aria-label]="content().cta2"
+      >
+        {{ content().cta2 }}
+      </button>
+    </div>
+  </section>
+
+  <!-- Big Immersive Visual -->
+  <section class="relative h-[400px] md:h-[600px] w-full overflow-hidden rounded-(--radius-3xl) shadow-2xl" aria-label="Featured atmosphere">
+     <img src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&q=80&w=2000" 
+          alt="A serene, minimalist workspace filled with soft natural light"
+          fetchpriority="high"
+          decoding="sync"
+          class="absolute inset-0 w-full h-full object-cover transition-transform duration-[3s] hover:scale-105" />
+     <div class="absolute inset-0 bg-linear-to-t from-(--bg-base)/20 to-transparent" aria-hidden="true"></div>
+  </section>
+
+  <!-- Grid with Rhythm & Asymmetry -->
+  <section class="py-(--space-lg)" aria-labelledby="grid-title">
+    <div class="flex flex-col md:flex-row items-end justify-between mb-(--space-xl) gap-6 border-b border-(--fg-muted)/5 pb-(--space-md)">
+      <div class="max-w-md">
+        <h2 id="grid-title" class="text-display-lg text-(--fg-base) mb-3">{{ content().gridTitle }}</h2>
+        <p class="text-(--fg-muted) font-light italic text-(--text-h4) leading-relaxed">{{ content().gridSub }}</p>
+      </div>
+      <button 
+        class="text-(--text-xs) font-bold tracking-widest uppercase text-(--accent) border-b-2 border-(--accent)/30 pb-1 hover:border-(--accent) transition-all"
+        aria-label="Browse the full collection of gear"
+      >
+        Browse Collection
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-(--space-lg) items-start">
+      <!-- Item 1: Large Featured Item -->
+      <div class="md:col-span-8 group cursor-pointer" role="article" aria-labelledby="item-1-title">
+        <div class="aspect-video w-full overflow-hidden rounded-(--radius-3xl) bg-(--bg-surface) border border-(--fg-muted)/5 transition-all group-hover:shadow-3xl group-hover:shadow-(--accent)/5 group-hover:-translate-y-2 p-12">
+          <img src="https://images.unsplash.com/photo-1593642634367-d91a135587b5?auto=format&fit=crop&q=80&w=1200" 
+               alt="A high-end timber studio desk with integrated console space"
+               loading="lazy" decoding="async"
+               class="h-full w-full object-contain filter mix-blend-multiply opacity-90 transition-transform duration-700 group-hover:scale-105" />
+        </div>
+        <div class="mt-(--space-md) flex justify-between items-start">
+          <div>
+            <h3 id="item-1-title" class="text-(--text-h3) text-(--fg-base)">Studio Desk Console</h3>
+            <p class="text-(--text-xs) text-(--fg-muted) font-light tracking-wide uppercase mt-1">Sustainable Oak & Steel</p>
+          </div>
+          <span class="text-(--text-h3) font-serif text-(--accent)" aria-label="Price: 1,200 dollars">$1,200</span>
+        </div>
+      </div>
+
+      <!-- Item 2: Vertical Secondary Item -->
+      <div class="md:col-span-4 group cursor-pointer lg:mt-24" role="article" aria-labelledby="item-2-title">
+        <div class="aspect-[3/4] w-full overflow-hidden rounded-(--radius-3xl) bg-(--bg-surface) border border-(--fg-muted)/5 transition-all group-hover:shadow-3xl group-hover:shadow-(--accent)/5 group-hover:-translate-y-2 p-8">
+          <img src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=800" 
+               alt="Mechanical keyboard with custom slate-textured keycaps"
+               loading="lazy" decoding="async"
+               class="h-full w-full object-contain mix-blend-multiply opacity-90 transition-transform duration-700 group-hover:scale-105" />
+        </div>
+        <div class="mt-(--space-md)">
+           <h3 id="item-2-title" class="text-(--text-h4) text-(--fg-base)">Origin Keyboard</h3>
+           <p class="text-(--text-xs) text-(--fg-muted) font-light tracking-wide uppercase mt-1">Tactile Slate Finish</p>
+           <span class="block mt-4 text-(--text-sm) font-medium text-(--accent)" aria-label="Price: 320 dollars">$320</span>
+        </div>
+      </div>
+
+      <!-- Item 3: Wide Horizontal Item -->
+      <div class="md:col-span-12 group cursor-pointer mt-(--space-lg)" role="article" aria-labelledby="item-3-title">
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-(--space-lg) items-center bg-(--bg-surface)/30 rounded-(--radius-3xl) border border-(--fg-muted)/5 p-(--space-lg) hover:bg-(--bg-surface)/50 transition-colors">
+            <div class="aspect-video w-full overflow-hidden rounded-(--radius-2xl)">
+               <img src="https://images.unsplash.com/photo-1544244015-0cd4b3ffc6b0?auto=format&fit=crop&q=80&w=1000" 
+                    alt="Lumina Lens 35mm Prime camera lens with metallic finish"
+                    loading="lazy" decoding="async"
+                    class="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+            </div>
+            <div class="px-(--space-md)">
+               <span class="text-(--accent) text-(--text-xs) font-bold tracking-widest uppercase">Member Exclusive</span>
+               <h3 id="item-3-title" class="text-(--text-h2) text-(--fg-base) mt-2 mb-4 leading-tight">Lumina Lens 35mm<br/>Prime Collection</h3>
+               <p class="text-(--fg-muted) font-light text-(--text-base) mb-8 max-w-sm">Capture precisely what you see with our custom-engineered optics, designed for the minimalists who seek clarity.</p>
+               <button class="text-(--text-xs) font-bold tracking-widest uppercase border-b border-(--fg-base) pb-1 hover:text-(--accent) hover:border-(--accent) transition-all" aria-label="View details for the Lumina Lens 35mm Prime Collection">Details</button>
+            </div>
+         </div>
+      </div>
+    </div>
+  </section>
+</div>
+
