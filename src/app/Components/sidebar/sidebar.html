@@ -1,55 +1,58 @@
 <div class="flex flex-col h-full py-(--space-lg)">
   <nav class="space-y-(--space-lg)" aria-label="Secondary navigation">
     <section aria-labelledby="collections-heading">
-      <h3 id="collections-heading" class="text-(--text-h4) text-(--fg-base) mb-(--space-md) px-(--space-md)">{{ content().collections }}</h3>
-      <ul class="space-y-(--space-sm)">
+      <h3 id="collections-heading" class="text-(--text-xs) uppercase tracking-[0.2em] font-bold text-(--fg-muted)/60 mb-(--space-md) px-(--space-md)">{{ content().collections }}</h3>
+      <ul class="space-y-1 pr-(--space-md)">
         <li>
           <a 
-            class="flex items-center justify-between group cursor-pointer text-(--text-sm) font-light text-(--fg-muted) hover:text-(--accent) transition-colors px-(--space-md) py-2 rounded-r-full hover:bg-(--accent)/5"
+            class="flex items-center justify-between group cursor-pointer text-(--text-sm) font-light text-(--fg-muted) hover:text-(--accent) transition-all px-(--space-md) py-2.5 rounded-r-full hover:bg-(--accent)/5 hover:translate-x-1 outline-none focus-visible:ring-1 focus-visible:ring-(--accent)/30"
             [attr.aria-label]="'Explore ' + content().audio + ' collection'"
+            tabindex="0"
           >
             {{ content().audio }}
-            <span class="h-1 w-1 rounded-full bg-(--accent) opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>
+            <span class="h-1 w-1 rounded-full bg-(--accent) opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300" aria-hidden="true"></span>
           </a>
         </li>
         <li>
           <a 
-            class="flex items-center justify-between group cursor-pointer text-(--text-sm) font-light text-(--fg-muted) hover:text-(--accent) transition-colors px-(--space-md) py-2 rounded-r-full hover:bg-(--accent)/5"
+            class="flex items-center justify-between group cursor-pointer text-(--text-sm) font-light text-(--fg-muted) hover:text-(--accent) transition-all px-(--space-md) py-2.5 rounded-r-full hover:bg-(--accent)/5 hover:translate-x-1 outline-none focus-visible:ring-1 focus-visible:ring-(--accent)/30"
             [attr.aria-label]="'Explore ' + content().workspace + ' collection'"
+            tabindex="0"
           >
             {{ content().workspace }}
-            <span class="h-1 w-1 rounded-full bg-(--accent) opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true"></span>
+            <span class="h-1 w-1 rounded-full bg-(--accent) opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300" aria-hidden="true"></span>
           </a>
         </li>
         <li>
           <a 
-            class="flex items-center justify-between group cursor-pointer text-(--text-sm) text-(--accent) font-medium px-(--space-md) py-2 bg-(--accent)/5 rounded-r-full"
+            class="flex items-center justify-between group cursor-pointer text-(--text-sm) text-(--accent) font-medium px-(--space-md) py-2.5 bg-(--accent)/5 rounded-r-full translate-x-1 border-l-2 border-(--accent)"
             [attr.aria-label]="'Currently viewing ' + content().ergo + ' collection'"
             aria-current="page"
+            tabindex="0"
           >
             {{ content().ergo }}
-            <span class="h-1 w-1 rounded-full bg-(--accent)" aria-hidden="true"></span>
+            <span class="h-1 w-1 rounded-full bg-(--accent) shadow-[0_0_8px_var(--accent)]" aria-hidden="true"></span>
           </a>
         </li>
       </ul>
     </section>
 
     <section class="mt-(--space-xl) px-(--space-md)" aria-labelledby="discovery-heading">
-      <h3 id="discovery-heading" class="font-serif text-(--text-base) text-(--fg-base) mb-(--space-md)">{{ content().discovery }}</h3>
+      <h3 id="discovery-heading" class="font-serif text-(--text-base) text-(--fg-base) mb-(--space-md) border-b border-(--fg-muted)/10 pb-2">{{ content().discovery }}</h3>
       <ul class="space-y-(--space-md)">
-        <li class="group cursor-pointer">
-          <div class="flex items-center gap-(--space-md)" role="link" tabindex="0" [attr.aria-label]="'View ' + content().product">
-            <div class="h-12 w-12 rounded-(--radius-md) bg-(--bg-base) border border-(--fg-muted)/10 p-1 group-hover:border-(--accent)/30 transition-all overflow-hidden shadow-sm">
+        <li class="group cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-(--accent)/20 rounded-lg p-1">
+          <div class="flex items-center gap-(--space-sm)" role="link" tabindex="0" [attr.aria-label]="'View ' + content().product">
+            <div class="h-14 w-14 rounded-(--radius-md) bg-(--bg-base) border border-(--fg-muted)/10 p-1 group-hover:border-(--accent)/40 transition-all overflow-hidden shadow-sm group-hover:shadow-md">
                <img 
-                 src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=100" 
+                 src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=150" 
                  alt="Preview of the latest studio furniture"
                  loading="lazy" decoding="async"
-                 class="w-full h-full object-cover rounded-sm" 
+                 class="w-full h-full object-cover rounded-sm group-hover:scale-110 transition-transform duration-700" 
                />
             </div>
-            <div>
-              <p class="text-(--text-xs) uppercase tracking-widest text-(--fg-muted)/50">{{ content().latest }}</p>
-              <p class="text-(--text-sm) font-medium text-(--fg-base) group-hover:text-(--accent) transition-colors">{{ content().product }}</p>
+            <div class="flex-1 min-w-0">
+              <p class="text-[10px] uppercase tracking-widest text-(--fg-muted)/60 font-bold mb-0.5">{{ content().latest }}</p>
+              <p class="text-(--text-sm) font-medium text-(--fg-base) group-hover:text-(--accent) transition-colors truncate">{{ content().product }}</p>
             </div>
           </div>
         </li>
@@ -58,14 +61,17 @@
   </nav>
 
   <div class="mt-auto px-(--space-md) pt-(--space-lg)">
-    <div class="p-(--space-md) rounded-(--radius-2xl) bg-(--bg-base) border border-(--fg-muted)/5 text-center shadow-inner">
-      <p class="text-(--text-xs) font-serif italic text-(--fg-muted) mb-(--space-md) leading-relaxed">{{ content().quote }}</p>
-      <button 
-        class="text-(--text-xs) font-bold uppercase tracking-widest text-(--accent) border-b border-transparent hover:border-(--accent) transition-all"
-        aria-label="Join the Curated Weekly newsletter"
-      >
-        {{ content().cta }}
-      </button>
+    <div class="p-(--space-md) rounded-(--radius-2xl) bg-(--bg-surface) border border-(--fg-muted)/5 text-center shadow-sm relative overflow-hidden group/box">
+      <div class="absolute inset-0 bg-gradient-to-br from-(--accent)/5 to-transparent opacity-0 group-hover/box:opacity-100 transition-opacity duration-500"></div>
+      <div class="relative z-10">
+        <p class="text-(--text-xs) font-serif italic text-(--fg-muted) mb-(--space-md) leading-relaxed">{{ content().quote }}</p>
+        <button 
+          class="inline-block text-(--text-xs) font-bold uppercase tracking-widest text-(--accent) border-b border-(--accent)/30 hover:border-(--accent) transition-all py-1 active:scale-95 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-(--accent)/50"
+          aria-label="Join the Curated Weekly newsletter"
+        >
+          {{ content().cta }}
+        </button>
+      </div>
     </div>
   </div>
 </div>

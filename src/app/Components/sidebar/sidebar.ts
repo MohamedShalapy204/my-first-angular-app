@@ -1,5 +1,5 @@
 import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
-import { App } from '../../app';
+import { SettingsService } from '../../Services/settings';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,10 +8,10 @@ import { App } from '../../app';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Sidebar {
-  private readonly app = inject(App);
+  private readonly settings = inject(SettingsService);
 
   protected readonly content = computed(() => {
-    const lang = this.app['lang']();
+    const lang = this.settings.lang();
     return lang === 'ar' ? {
       collections: 'المجموعات',
       audio: 'الصوتيات الأساسية',

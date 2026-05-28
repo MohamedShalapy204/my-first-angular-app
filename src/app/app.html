@@ -1,27 +1,31 @@
-<div class="grid min-h-screen grid-cols-1 grid-rows-[auto_1fr_auto] bg-(--bg-base) text-(--fg-base) transition-colors duration-500">
-  
+<div
+  class="grid min-h-screen grid-cols-1 grid-rows-[auto_1fr_auto] bg-(--bg-base) text-(--fg-base) transition-colors duration-500"
+>
   <!-- Header: Floating-style content within a fixed height container -->
-  <header class="sticky top-0 z-50 col-span-full h-(--header-height) bg-(--bg-base)/80 backdrop-blur-xl border-b border-(--fg-muted)/5">
+  <header
+    class="sticky top-0 z-50 col-span-full h-(--header-height) bg-(--bg-base)/80 backdrop-blur-xl border-b border-(--fg-muted)/5"
+  >
     <div class="h-full px-(--space-md) md:px-(--space-lg)">
-      <app-header 
-        [theme]="theme()" 
-        [lang]="lang()"
-        (onToggleTheme)="toggleTheme()" 
-        (onToggleLanguage)="toggleLanguage()" 
-      />
+      <app-header />
     </div>
   </header>
 
   <div class="flex flex-col lg:flex-row col-span-full min-w-0">
     <!-- Sidebar: Subtle width, anchored to the left on desktop -->
-    <aside class="hidden lg:block w-(--sidebar-width) border-r border-(--fg-muted)/5 bg-(--bg-surface)/30 pt-(--space-xl)">
-      <div class="sticky top-(--header-height) h-[calc(100vh-var(--header-height))] overflow-y-auto px-(--space-md)">
+    <aside
+      class="hidden lg:block w-(--sidebar-width) border-r border-(--fg-muted)/5 bg-(--bg-surface)/30 pt-(--space-xl)"
+    >
+      <div
+        class="sticky top-(--header-height) h-[calc(100vh-var(--header-height))] overflow-y-auto px-(--space-md)"
+      >
         <app-sidebar />
       </div>
     </aside>
 
     <!-- Main Content Area: Centered with asymmetric breathing room -->
-    <main class="flex-1 min-w-0 py-(--space-lg) md:py-(--space-xl) px-(--space-base) sm:px-(--space-md) md:px-(--space-xl)">
+    <main
+      class="flex-1 min-w-0 py-(--space-lg) md:py-(--space-xl) px-(--space-base) sm:px-(--space-md) md:px-(--space-xl)"
+    >
       <div class="mx-auto max-w-(--content-max-width)">
         <router-outlet />
       </div>
@@ -29,13 +33,16 @@
   </div>
 
   <!-- Footer: Generous breathing room and subtle surface deviation -->
-  <footer class="col-span-full bg-(--bg-surface)/40 border-t border-(--fg-muted)/5 py-(--space-xl) px-(--space-md) md:px-(--space-xl)">
-     <div class="mx-auto max-w-(--content-max-width)">
-        @defer (on viewport) {
-          <app-footer />
-        } @placeholder {
-          <div class="min-h-[200px]"></div>
-        }
-     </div>
+  <footer
+    class="col-span-full bg-(--bg-surface)/40 border-t border-(--fg-muted)/5 py-(--space-xl) px-(--space-md) md:px-(--space-xl)"
+  >
+    <div class="mx-auto max-w-(--content-max-width)">
+      @defer (on viewport) {
+        <app-footer />
+      } @placeholder {
+        <div class="min-h-[200px]"></div>
+      }
+    </div>
   </footer>
+  <app-notification-container />
 </div>

@@ -44,6 +44,11 @@ __screenshots__/
 Thumbs.db
 
 # AI files
-.agents/
+.agents
 skills-lock.json
 .impeccable.md
+graphify-out
+.claude
+CLAUDE.md
+testsprite_tests
+.env

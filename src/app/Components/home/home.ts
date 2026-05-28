@@ -1,5 +1,5 @@
 import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
-import { App } from '../../app';
+import { SettingsService } from '../../Services/settings';
 
 @Component({
   selector: 'app-home',
@@ -8,11 +8,11 @@ import { App } from '../../app';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Home {
-  private readonly app = inject(App);
+  private readonly settings = inject(SettingsService);
 
   // Simple reactive translation map
   protected readonly content = computed(() => {
-    const lang = this.app['lang'](); // Quick access to signal
+    const lang = this.settings.lang(); // Quick access to signal
     return lang === 'ar' ? {
       badge: 'مجموعة الأثاث المكتبي ٢٠٢٤',
       title: 'تصميم مُلهم لتركيز <span class="italic text-(--accent)">أعمق</span>.',
