@@ -1,0 +1,8 @@
+<button
+  [class]="classes()"
+  [disabled]="disabled()"
+  [attr.aria-label]="ariaLabel() || null"
+  [attr.aria-disabled]="disabled() || null"
+>
+  <ng-content />
+</button>

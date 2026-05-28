@@ -1,9 +1,10 @@
 import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Button } from '../../Shared/button/button';
 import { SettingsService } from '../../Services/settings';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [Button],
   templateUrl: './home.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

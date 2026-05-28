@@ -26,21 +26,12 @@
       {{ content().desc }}
     </p>
     <div class="flex flex-wrap items-center justify-center gap-4 md:gap-6">
-      <button
-        class="group relative px-8 md:px-12 py-3.5 md:py-4 rounded-full bg-(--fg-base) text-(--bg-base) font-bold text-(--text-xs) md:text-(--text-sm) overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl shadow-(--fg-base)/10 hover:shadow-(--fg-base)/20"
-        [attr.aria-label]="content().cta1"
-      >
-        <span class="relative z-10">{{ content().cta1 }}</span>
-        <div
-          class="absolute inset-0 bg-(--brand-moss) translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"
-        ></div>
-      </button>
-      <button
-        class="px-8 md:px-12 py-3.5 md:py-4 rounded-full border border-(--fg-muted)/20 text-(--fg-base) font-bold text-(--text-xs) md:text-(--text-sm) hover:bg-(--bg-surface) hover:border-(--fg-base)/30 transition-all active:scale-95"
-        [attr.aria-label]="content().cta2"
-      >
+      <app-button variant="solid" size="md" [ariaLabel]="content().cta1">
+        {{ content().cta1 }}
+      </app-button>
+      <app-button variant="outline" size="md" [ariaLabel]="content().cta2">
         {{ content().cta2 }}
-      </button>
+      </app-button>
     </div>
   </section>
 
