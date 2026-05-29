@@ -1,47 +1,29 @@
 <div class="space-y-(--space-2xl) animate-in fade-in slide-in-from-bottom-4 duration-1000">
   <!-- Hero: Airy & Serene -->
-  <!-- impeccable-variants-start f93f01b5 -->
-  <div data-impeccable-variants="f93f01b5" data-impeccable-variant-count="3" style="display: contents">
-    <!-- Original -->
-    <div data-impeccable-variant="original">
-      <section
-        class="max-w-4xl mx-auto text-center pt-(--space-lg) pb-(--space-xl)"
-        aria-labelledby="hero-title"
-      >
-        <div
-          class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-(--accent)/5 border border-(--accent)/10 text-(--accent) text-(--text-xs) font-bold tracking-[0.2em] uppercase mb-(--space-lg) hover:bg-(--accent)/10 transition-colors cursor-default"
-        >
-          <span class="relative flex h-2 w-2">
-            <span
-              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--accent) opacity-75"
-            ></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-(--accent)"></span>
-          </span>
-          {{ content().badge }}
-        </div>
-        <h1
-          id="hero-title"
-          class="text-display-2xl text-(--fg-base) mb-(--space-md) leading-tight"
-          [innerHTML]="content().title"
-        ></h1>
-        <p
-          class="max-w-xl mx-auto text-(--text-h4) font-light text-(--fg-muted) leading-relaxed mb-(--space-lg) italic"
-        >
-          {{ content().desc }}
-        </p>
-        <div class="flex flex-wrap items-center justify-center gap-4 md:gap-6">
-          <app-button variant="solid" size="md" [ariaLabel]="content().cta1">
-            {{ content().cta1 }}
-          </app-button>
-          <app-button variant="outline" size="md" [ariaLabel]="content().cta2">
-            {{ content().cta2 }}
-          </app-button>
-        </div>
-      </section>
-    </div>
-    <!-- Variants: insert below this line -->
+
+  <section class="max-w-6xl mx-auto text-center pt-(--space-3xl) pb-(--space-3xl) px-(--space-xl)" aria-labelledby="hero-title">
+  <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-(--accent)/5 border border-(--accent)/10 text-(--accent) text-(--text-xs) font-bold tracking-[0.2em] uppercase mb-(--space-2xl)">
+  <span class="relative flex h-2 w-2">
+  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--accent) opacity-75"></span>
+  <span class="relative inline-flex rounded-full h-2 w-2 bg-(--accent)"></span>
+  </span>
+  {{ content().badge }}
   </div>
-  <!-- impeccable-variants-end f93f01b5 -->
+  <h1 id="hero-title" class="text-[clamp(3rem,8vw,8rem)] font-serif font-normal leading-none text-(--fg-base) mb-(--space-lg) tracking-[-0.03em] max-w-5xl mx-auto" [innerHTML]="content().title"></h1>
+  <p class="max-w-2xl mx-auto text-(--text-base) font-light text-(--fg-muted) leading-[1.8] tracking-[0.02em] mb-(--space-2xl)">
+  {{ content().desc }}
+  </p>
+  <div class="flex flex-wrap items-center justify-center gap-6">
+    <app-button variant="solid" size="md" [ariaLabel]="content().cta1" link="/shop">
+      {{ content().cta1 }}
+    </app-button>
+    <app-button variant="outline" size="md" [ariaLabel]="content().cta2">
+      {{ content().cta2 }}
+    </app-button>
+  </div>
+  </section>
+
+
 
   <!-- Big Immersive Visual -->
   <section

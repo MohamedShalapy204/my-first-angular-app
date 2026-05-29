@@ -1,12 +1,13 @@
 import { Component, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 export type ButtonVariant = 'solid' | 'outline' | 'ghost';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'app-button',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './button.html',
   host: {
     class: 'inline-block',
@@ -18,6 +19,7 @@ export class Button {
   disabled = input<boolean>(false);
   ariaLabel = input<string>('');
   fullWidth = input<boolean>(false);
+  link = input<string>('');
 
   classes = computed(() => {
     const base = [
