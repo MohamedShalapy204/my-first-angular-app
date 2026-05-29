@@ -1,39 +1,47 @@
 <div class="space-y-(--space-2xl) animate-in fade-in slide-in-from-bottom-4 duration-1000">
   <!-- Hero: Airy & Serene -->
-  <section
-    class="max-w-4xl mx-auto text-center pt-(--space-lg) pb-(--space-xl)"
-    aria-labelledby="hero-title"
-  >
-    <div
-      class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-(--accent)/5 border border-(--accent)/10 text-(--accent) text-(--text-xs) font-bold tracking-[0.2em] uppercase mb-(--space-lg) hover:bg-(--accent)/10 transition-colors cursor-default"
-    >
-      <span class="relative flex h-2 w-2">
-        <span
-          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--accent) opacity-75"
-        ></span>
-        <span class="relative inline-flex rounded-full h-2 w-2 bg-(--accent)"></span>
-      </span>
-      {{ content().badge }}
+  <!-- impeccable-variants-start f93f01b5 -->
+  <div data-impeccable-variants="f93f01b5" data-impeccable-variant-count="3" style="display: contents">
+    <!-- Original -->
+    <div data-impeccable-variant="original">
+      <section
+        class="max-w-4xl mx-auto text-center pt-(--space-lg) pb-(--space-xl)"
+        aria-labelledby="hero-title"
+      >
+        <div
+          class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-(--accent)/5 border border-(--accent)/10 text-(--accent) text-(--text-xs) font-bold tracking-[0.2em] uppercase mb-(--space-lg) hover:bg-(--accent)/10 transition-colors cursor-default"
+        >
+          <span class="relative flex h-2 w-2">
+            <span
+              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-(--accent) opacity-75"
+            ></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-(--accent)"></span>
+          </span>
+          {{ content().badge }}
+        </div>
+        <h1
+          id="hero-title"
+          class="text-display-2xl text-(--fg-base) mb-(--space-md) leading-tight"
+          [innerHTML]="content().title"
+        ></h1>
+        <p
+          class="max-w-xl mx-auto text-(--text-h4) font-light text-(--fg-muted) leading-relaxed mb-(--space-lg) italic"
+        >
+          {{ content().desc }}
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-4 md:gap-6">
+          <app-button variant="solid" size="md" [ariaLabel]="content().cta1">
+            {{ content().cta1 }}
+          </app-button>
+          <app-button variant="outline" size="md" [ariaLabel]="content().cta2">
+            {{ content().cta2 }}
+          </app-button>
+        </div>
+      </section>
     </div>
-    <h1
-      id="hero-title"
-      class="text-display-2xl text-(--fg-base) mb-(--space-md) leading-tight"
-      [innerHTML]="content().title"
-    ></h1>
-    <p
-      class="max-w-xl mx-auto text-(--text-h4) font-light text-(--fg-muted) leading-relaxed mb-(--space-lg) italic"
-    >
-      {{ content().desc }}
-    </p>
-    <div class="flex flex-wrap items-center justify-center gap-4 md:gap-6">
-      <app-button variant="solid" size="md" [ariaLabel]="content().cta1">
-        {{ content().cta1 }}
-      </app-button>
-      <app-button variant="outline" size="md" [ariaLabel]="content().cta2">
-        {{ content().cta2 }}
-      </app-button>
-    </div>
-  </section>
+    <!-- Variants: insert below this line -->
+  </div>
+  <!-- impeccable-variants-end f93f01b5 -->
 
   <!-- Big Immersive Visual -->
   <section
@@ -76,9 +84,9 @@
       </div>
       <button
         class="group flex items-center gap-2 text-(--text-xs) font-bold tracking-widest uppercase text-(--brand-moss) border-b-2 border-transparent hover:border-(--brand-moss) transition-all pb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-(--brand-moss)/30"
-        aria-label="Browse the full collection of gear"
+        [attr.aria-label]="content().browseCollection"
       >
-        Browse Collection
+        {{ content().browseCollection }}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -99,54 +107,37 @@
     <div class="grid grid-cols-1 md:grid-cols-12 gap-(--space-lg) items-start">
       <!-- Item 1: Large Featured Item -->
       <div
-        class="md:col-span-8 group cursor-pointer perspective-1000"
+        class="md:col-span-8 group cursor-pointer"
         role="article"
-        aria-labelledby="item-1-title"
+        aria-labelledby="item-1-title-v3"
       >
         <div
-          class="aspect-video w-full overflow-hidden rounded-(--radius-3xl) bg-(--bg-surface) border border-(--fg-muted)/5 transition-all duration-500 group-hover:shadow-3xl group-hover:shadow-(--accent)/5 group-hover:-translate-y-3 group-hover:rotate-x-1 p-12 relative"
+          class="aspect-video w-full overflow-hidden rounded-(--radius-xl) bg-(--bg-surface) border border-(--fg-muted)/5 transition-all duration-300 group-hover:-translate-y-1 relative"
         >
           <img
             src="https://images.unsplash.com/photo-1593642634367-d91a135587b5?auto=format&fit=crop&q=80&w=1200"
             alt="A high-end timber studio desk with integrated console space"
             loading="lazy"
             decoding="async"
-            class="h-full w-full object-contain filter mix-blend-multiply opacity-90 transition-all duration-700 group-hover:scale-110 group-hover:brightness-105"
+            class="h-full w-full object-contain filter mix-blend-multiply opacity-90 transition-all duration-500 group-hover:scale-105"
           />
-          <div class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-            <div
-              class="h-10 w-10 rounded-full bg-(--bg-base) flex items-center justify-center shadow-lg transform group-hover:rotate-12 transition-transform"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                class="w-5 h-5 text-(--accent)"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
-            </div>
-          </div>
         </div>
-        <div class="mt-(--space-md) flex justify-between items-end">
+        <div class="mt-4 flex justify-between items-start">
           <div>
             <h3
-              id="item-1-title"
-              class="text-(--text-h3) text-(--fg-base) group-hover:text-(--accent) transition-colors"
+              id="item-1-title-v3"
+              class="text-(--text-base) font-medium text-(--fg-base) group-hover:text-(--accent) transition-colors"
             >
-              {{ content().cta1 || 'Studio Desk Console' }}
+              {{ content().item1Title }}
             </h3>
             <p
-              class="text-(--text-xs) text-(--fg-muted) font-bold tracking-[0.15em] uppercase mt-1"
+              class="text-(--text-xs) text-(--fg-muted) font-light mt-0.5"
             >
-              Sustainable Oak & Steel
+              {{ content().item1Sub }}
             </p>
           </div>
           <span
-            class="text-(--text-h3) font-serif text-(--brand-clay) tabular-nums"
-            aria-label="Price: 1,200 dollars"
+            class="text-(--text-base) font-serif text-(--brand-clay)"
             >$1,200</span
           >
         </div>
@@ -154,34 +145,33 @@
 
       <!-- Item 2: Vertical Secondary Item -->
       <div
-        class="md:col-span-4 group cursor-pointer lg:mt-24 perspective-1000"
+        class="md:col-span-4 group cursor-pointer"
         role="article"
-        aria-labelledby="item-2-title"
+        aria-labelledby="item-2-title-v3"
       >
         <div
-          class="aspect-[3/4] w-full overflow-hidden rounded-(--radius-3xl) bg-(--bg-surface) border border-(--fg-muted)/5 transition-all duration-500 group-hover:shadow-3xl group-hover:shadow-(--accent)/5 group-hover:-translate-y-3 group-hover:-rotate-y-2 p-8 relative"
+          class="aspect-[3/4] w-full overflow-hidden rounded-(--radius-xl) bg-(--bg-surface) border border-(--fg-muted)/5 transition-all duration-300 group-hover:-translate-y-1 relative"
         >
           <img
             src="https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=800"
             alt="Mechanical keyboard with custom slate-textured keycaps"
             loading="lazy"
             decoding="async"
-            class="h-full w-full object-contain mix-blend-multiply opacity-90 transition-transform duration-700 group-hover:scale-110"
+            class="h-full w-full object-contain mix-blend-multiply opacity-90 transition-all duration-500 group-hover:scale-105"
           />
         </div>
-        <div class="mt-(--space-md)">
+        <div class="mt-4">
           <h3
-            id="item-2-title"
-            class="text-(--text-h4) text-(--fg-base) group-hover:text-(--accent) transition-colors"
+            id="item-2-title-v3"
+            class="text-(--text-base) font-medium text-(--fg-base) group-hover:text-(--accent) transition-colors"
           >
-            {{ content().cta2 || 'Origin Keyboard' }}
+            {{ content().item2Title }}
           </h3>
-          <p class="text-(--text-xs) text-(--fg-muted) font-bold tracking-[0.15em] uppercase mt-1">
-            Tactile Slate Finish
+          <p class="text-(--text-xs) text-(--fg-muted) font-light mt-0.5">
+            {{ content().item2Sub }}
           </p>
           <span
-            class="block mt-4 text-(--text-sm) font-medium text-(--accent)"
-            aria-label="Price: 320 dollars"
+            class="block mt-1 text-(--text-sm) font-serif text-(--brand-clay)"
             >$320</span
           >
         </div>
@@ -189,66 +179,46 @@
 
       <!-- Item 3: Wide Horizontal Item -->
       <div
-        class="md:col-span-12 group cursor-pointer mt-(--space-lg)"
+        class="md:col-span-12 group cursor-pointer mt-(--space-md)"
         role="article"
-        aria-labelledby="item-3-title"
+        aria-labelledby="item-3-title-v3"
       >
         <div
-          class="grid grid-cols-1 md:grid-cols-2 gap-(--space-lg) items-center bg-(--bg-surface)/20 rounded-(--radius-3xl) border border-(--fg-muted)/5 p-(--space-lg) hover:bg-(--bg-surface)/40 transition-all duration-500 hover:shadow-2xl"
+          class="grid grid-cols-1 md:grid-cols-2 gap-(--space-lg) items-center bg-(--bg-surface)/10 rounded-(--radius-xl) border border-(--fg-muted)/5 p-6 hover:bg-(--bg-surface)/20 transition-all duration-300"
         >
-          <div class="aspect-video w-full overflow-hidden rounded-(--radius-2xl) relative">
+          <div class="aspect-video w-full overflow-hidden rounded-(--radius-lg) relative">
             <img
               src="https://images.unsplash.com/photo-1544244015-0cd4b3ffc6b0?auto=format&fit=crop&q=80&w=1000"
               alt="Lumina Lens 35mm Prime camera lens with metallic finish"
               loading="lazy"
               decoding="async"
-              class="h-full w-full object-cover transition-transform duration-[2s] group-hover:scale-110"
+              class="h-full w-full object-cover transition-transform duration-[2s] group-hover:scale-105"
             />
-            <div
-              class="absolute inset-0 bg-(--accent)/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity"
-            ></div>
           </div>
-          <div class="px-(--space-md)">
+          <div class="px-2">
             <span
-              class="inline-block text-(--brand-clay) text-[10px] font-black tracking-[0.3em] uppercase mb-4 border border-(--brand-clay)/20 px-2 py-1 rounded"
-              >Member Exclusive</span
+              class="inline-block text-(--brand-clay) text-[9px] font-black tracking-widest uppercase mb-2"
+              >{{ content().item3Tag }}</span
             >
             <h3
-              id="item-3-title"
-              class="text-display-lg text-(--fg-base) tracking-tight mb-4 leading-[0.9]"
+              id="item-3-title-v3"
+              class="text-(--text-h3) text-(--fg-base) tracking-tight mb-2"
+              [innerHTML]="content().item3Title"
             >
-              Lumina Lens 35mm<br />Prime Collection
             </h3>
             <p
-              class="text-(--fg-muted) font-light text-(--text-base) mb-8 max-w-sm leading-relaxed"
+              class="text-(--fg-muted) font-light text-(--text-sm) mb-4 max-w-sm leading-relaxed"
             >
-              {{
-                content().desc ||
-                  'Capture precisely what you see with our custom-engineered optics, designed for the minimalists who seek clarity.'
-              }}
+              {{ content().item3Desc }}
             </p>
             <button
-              class="group/btn relative inline-flex items-center gap-2 text-(--text-xs) font-bold tracking-widest uppercase text-(--fg-base) overflow-hidden"
-              aria-label="View details for the Lumina Lens 35mm Prime Collection"
+              class="group/btn relative inline-flex items-center gap-1.5 text-(--text-xs) font-bold tracking-wider uppercase text-(--fg-base) overflow-hidden"
+              [attr.aria-label]="content().details"
             >
               <span
-                class="border-b border-current pb-1 group-hover/btn:text-(--accent) group-hover/btn:border-(--accent) transition-all"
-                >Details</span
+                class="border-b border-current pb-0.5 group-hover/btn:text-(--accent) group-hover/btn:border-(--accent) transition-all"
+                >{{ content().details }}</span
               >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                class="w-4 h-4 opacity-0 -translate-x-2 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 transition-all"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-                />
-              </svg>
             </button>
           </div>
         </div>

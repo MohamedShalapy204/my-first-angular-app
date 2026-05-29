@@ -21,7 +21,16 @@ export class Home {
       cta1: 'تسوق المجموعة',
       cta2: 'قصتنا',
       gridTitle: 'أساسيات هادئة',
-      gridSub: 'أدوات للمهندس المتأمل.'
+      gridSub: 'أدوات للمهندس المتأمل.',
+      browseCollection: 'تصفح المجموعة',
+      item1Title: 'منصة مكتبية مستدامة',
+      item1Sub: 'خشب البلوط المستدام والفولاذ',
+      item2Title: 'لوحة مفاتيح أوريجن',
+      item2Sub: 'ملمس صخري ناعم',
+      item3Tag: 'حصري للأعضاء',
+      item3Title: 'عدسة لومينا ٣٥ ملم<br />مجموعة برايم',
+      item3Desc: 'التقط ما تراه بدقة مع بصرياتنا المصممة خصيصاً للمبسطين الباحثين عن الوضوح.',
+      details: 'التفاصيل'
     } : {
       badge: 'The 2024 Ergonomic Collection',
       title: 'Intentional design for <span class="italic text-(--accent)">deeper</span> focus.',
@@ -29,7 +38,16 @@ export class Home {
       cta1: 'Explore Shop',
       cta2: 'Our Story',
       gridTitle: 'Silent Essentials',
-      gridSub: 'Tools for the thoughtful architect.'
+      gridSub: 'Tools for the thoughtful architect.',
+      browseCollection: 'Browse Collection',
+      item1Title: 'Studio Desk Console',
+      item1Sub: 'Sustainable Oak & Steel',
+      item2Title: 'Origin Keyboard',
+      item2Sub: 'Tactile Slate Finish',
+      item3Tag: 'Member Exclusive',
+      item3Title: 'Lumina Lens 35mm<br />Prime Collection',
+      item3Desc: 'Capture precisely what you see with our custom-engineered optics, designed for the minimalists who seek clarity.',
+      details: 'Details'
     };
   });
 }
