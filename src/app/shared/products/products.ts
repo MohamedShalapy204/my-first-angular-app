@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
-import { ProductCard } from '../../shared/product-card/product-card';
-import { QuickViewModal } from '../../shared/quick-view-modal/quick-view-modal';
+import { ProductCard } from '../product-card/product-card';
+import { QuickViewModal } from '../quick-view-modal/quick-view-modal';
 import { ProductService } from '../../services/product.service';
 import { Iproduct } from '../../models/iproduct';
 import { ProductCardLayout } from '../../models/product-types';
