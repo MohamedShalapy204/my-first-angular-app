@@ -9,7 +9,6 @@ import { NotificationContainer } from './Components/notification-container/notif
   selector: 'app-root',
   imports: [RouterOutlet, Header, Footer, Sidebar, NotificationContainer],
   templateUrl: './app.html',
-  styleUrl: './app.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App {

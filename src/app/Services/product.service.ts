@@ -1,19 +1,12 @@
 import { Injectable, signal } from '@angular/core';
 import { supabase } from './supabase';
-
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image_url: string;
-}
+import { Iproduct } from '../models/iproduct';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  products = signal<Product[]>([]);
+  products = signal<Iproduct[]>([]);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
 
@@ -25,7 +18,7 @@ export class ProductService {
 
     try {
       let request = supabase.from('products').select('*');
-      
+
       if (trimmedQuery) {
         request = request.ilike('name', `%${trimmedQuery}%`);
       }
