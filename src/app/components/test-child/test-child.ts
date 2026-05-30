@@ -1,6 +1,6 @@
 import { CurrencyPipe, UpperCasePipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { Power2Pipe } from '../../Pipes/power2-pipe';
+import { Power2Pipe } from '../../pipes/power2-pipe';
 
 @Component({
   selector: 'app-test-child',

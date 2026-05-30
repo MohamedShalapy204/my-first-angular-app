@@ -1,5 +1,5 @@
 import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
-import { SettingsService } from '../../Services/settings';
+import { SettingsService } from '../../services/settings';
 
 @Component({
   selector: 'app-footer',

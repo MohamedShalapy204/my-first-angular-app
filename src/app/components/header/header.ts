@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, model, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { SettingsService } from '../../Services/settings';
+import { SettingsService } from '../../services/settings';
 
 @Component({
   selector: 'app-header',

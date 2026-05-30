@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NotificationService } from '../../Services/notification';
-import { SettingsService } from '../../Services/settings';
+import { NotificationService } from '../../services/notification';
+import { SettingsService } from '../../services/settings';
 
 @Component({
   selector: 'app-notification-container',

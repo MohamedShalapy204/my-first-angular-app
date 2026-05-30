@@ -2,8 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ProductService } from '../../Services/product.service';
-import { SettingsService } from '../../Services/settings';
+import { ProductService } from '../../services/product.service';
+import { SettingsService } from '../../services/settings';
 
 @Component({
   selector: 'app-search',

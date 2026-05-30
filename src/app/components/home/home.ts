@@ -1,6 +1,6 @@
 import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
-import { Button } from '../../Shared/button/button';
-import { SettingsService } from '../../Services/settings';
+import { Button } from '../../shared/button/button';
+import { SettingsService } from '../../services/settings';
 
 @Component({
   selector: 'app-home',

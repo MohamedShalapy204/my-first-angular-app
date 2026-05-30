@@ -1,9 +1,9 @@
 import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from './Components/header/header';
-import { Footer } from './Components/footer/footer';
-import { Sidebar } from './Components/sidebar/sidebar';
-import { NotificationContainer } from './Components/notification-container/notification-container';
+import { Header } from './components/header/header';
+import { Footer } from './components/footer/footer';
+import { Sidebar } from './components/sidebar/sidebar';
+import { NotificationContainer } from './components/notification-container/notification-container';
 
 @Component({
   selector: 'app-root',
