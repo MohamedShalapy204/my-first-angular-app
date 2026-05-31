@@ -1,0 +1,483 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Lumina Studio | Interactive Sanctuary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Public+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#e5e2dd",
+                    "outline": "#76786b",
+                    "surface-dim": "#dcd9d9",
+                    "tertiary-fixed": "#ffdbcf",
+                    "tertiary-container": "#f6662c",
+                    "surface-container-low": "#f6f3f2",
+                    "surface": "#fcf9f8",
+                    "on-surface": "#1b1c1c",
+                    "error-container": "#ffdad6",
+                    "background": "#fcf9f8",
+                    "on-background": "#1b1c1c",
+                    "on-tertiary-container": "#541700",
+                    "on-secondary-fixed": "#1c1c19",
+                    "secondary": "#5f5e5b",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#e4e2e1",
+                    "on-tertiary-fixed": "#380d00",
+                    "inverse-surface": "#303030",
+                    "surface-bright": "#fcf9f8",
+                    "on-secondary-fixed-variant": "#474743",
+                    "on-primary-fixed": "#161f00",
+                    "primary": "#56642b",
+                    "outline-variant": "#c6c8b8",
+                    "tertiary-fixed-dim": "#ffb59b",
+                    "inverse-primary": "#bdce89",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed-variant": "#3e4c16",
+                    "on-primary-container": "#253000",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#656461",
+                    "secondary-fixed-dim": "#c9c6c2",
+                    "secondary-fixed": "#e5e2dd",
+                    "surface-variant": "#e4e2e1",
+                    "tertiary": "#a93700",
+                    "surface-container": "#f0eded",
+                    "on-error": "#ffffff",
+                    "surface-tint": "#56642b",
+                    "primary-fixed": "#d9eaa3",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#bdce89",
+                    "on-error-container": "#93000a",
+                    "on-surface-variant": "#46483c",
+                    "primary-container": "#8a9a5b",
+                    "on-tertiary-fixed-variant": "#812800",
+                    "inverse-on-surface": "#f3f0f0",
+                    "surface-container-high": "#eae7e7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section-gap": "120px",
+                    "margin-desktop": "64px",
+                    "gutter": "24px",
+                    "margin-mobile": "20px",
+                    "unit": "8px",
+                    "container-max": "1440px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Public Sans"],
+                    "label-md": ["Public Sans"],
+                    "display-lg": ["Playfair Display"],
+                    "headline-md": ["Playfair Display"],
+                    "body-lg": ["Public Sans"],
+                    "headline-lg-mobile": ["Playfair Display"],
+                    "headline-lg": ["Playfair Display"],
+                    "body-md": ["Public Sans"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fcf9f8;
+            color: #1b1c1c;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-shadow {
+            box-shadow: 0px 20px 40px rgba(0,0,0,0.04);
+        }
+        
+        /* 3D Particle Canvas Background */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* 3D Tilt Card Base */
+        .tilt-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.1s ease;
+        }
+        .tilt-card-inner {
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease-out;
+        }
+
+        /* Magnetic Button Container */
+        .magnetic-wrap {
+            display: inline-block;
+        }
+
+        /* Scroll Animation States */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Parallax Layers */
+        .parallax-layer {
+            transition: transform 0.1s ease-out;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-fixed selection:text-on-primary-fixed" data-mode="connect">
+<canvas id="particle-canvas" width="1280" height="1024"></canvas>
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky z-50 bg-surface/90 backdrop-blur-md border-b border-outline/10 h-20 flex justify-between items-center px-margin-desktop max-w-container-max mx-auto">
+<div class="flex items-center gap-12">
+<a class="font-display-lg text-headline-md tracking-tighter text-on-surface" href="/">STUDIO</a>
+<nav class="hidden md:flex gap-8">
+<a class="text-primary font-bold border-b border-primary font-label-md cursor-pointer transition-opacity active:opacity-70" href="#">Shop</a>
+<a class="text-secondary font-label-md hover:text-primary transition-colors duration-300 cursor-pointer transition-opacity active:opacity-70" href="#">Story</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:block relative">
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-transparent border-0 border-b border-outline-variant py-1 pr-10 focus:ring-0 focus:border-primary text-label-md placeholder:text-outline-variant" placeholder="Search" type="text">
+</div>
+<button class="flex items-center gap-1 cursor-pointer transition-opacity active:opacity-70">
+<span class="material-symbols-outlined text-primary">shopping_bag</span>
+</button>
+<button class="flex items-center gap-1 cursor-pointer transition-opacity active:opacity-70">
+<span class="material-symbols-outlined text-primary">person</span>
+</button>
+</div>
+</header>
+<main>
+<!-- Interactive Hero Section -->
+<section class="relative h-[90vh] w-full flex items-center justify-center overflow-hidden bg-surface-dim" id="hero">
+<!-- Parallax Background Layer -->
+<div class="parallax-layer absolute inset-0 z-0 scale-110 opacity-60" data-speed="0.02" style="transform: translate(1.45px, 2.75px);">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-surface"></div>
+<img alt="Atmospheric Background" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfXcMvlShwjv0Fqkt0w0fo13ybM6hQ7N3xdDzeIq7ey3_-Xb8qw2bvl8HJpT-SQ004b-Lb67ixs2AS6Z-sX6WKchlxxL4uDKydiUhaM96qiy_hVgQREeRQOZZDZTYY2_lvL7gn54PInHtk1ndjyQHbPeon59FqUCpK7QxU01n2XCaPOYHjAoEebifcym3X1KQ363JK_KnH2g9YssvOhceHQETexE9OT1lrsV5hWFQkp6y9wyaxx-ZIC78RuBXGMugDoUOBWTjubkCn">
+</div>
+<!-- Monitor Layer -->
+<div class="parallax-layer relative z-20 w-full max-w-5xl px-margin-mobile flex flex-col items-center" data-speed="0.05" style="transform: translate(3.625px, 6.875px);">
+<div class="relative w-full aspect-video overflow-hidden rounded-lg shadow-2xl mb-12">
+<img alt="The Focused Workspace" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfXcMvlShwjv0Fqkt0w0fo13ybM6hQ7N3xdDzeIq7ey3_-Xb8qw2bvl8HJpT-SQ004b-Lb67ixs2AS6Z-sX6WKchlxxL4uDKydiUhaM96qiy_hVgQREeRQOZZDZTYY2_lvL7gn54PInHtk1ndjyQHbPeon59FqUCpK7QxU01n2XCaPOYHjAoEebifcym3X1KQ363JK_KnH2g9YssvOhceHQETexE9OT1lrsV5hWFQkp6y9wyaxx-ZIC78RuBXGMugDoUOBWTjubkCn">
+<div class="absolute inset-0 bg-black/5 pointer-events-none"></div>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-8 text-center drop-shadow-sm">The Focused Workspace</h1>
+<div class="magnetic-wrap">
+<button class="magnetic-btn bg-primary-container text-white px-12 py-5 rounded-full font-label-md hover:opacity-90 transition-all shadow-xl" style="transform: translate(0px);">
+                        Shop Now
+                    </button>
+</div>
+</div>
+</section>
+<!-- Brand Story Section -->
+<section class="reveal py-section-gap px-margin-desktop max-w-container-max mx-auto overflow-hidden active">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-6 md:pr-12">
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-[0.2em] mb-6">Our Philosophy</p>
+<blockquote class="font-headline-lg text-headline-lg mb-8 leading-tight">Meticulously crafted for the <span class="text-primary italic">digital craftsman</span>.</blockquote>
+<p class="font-body-lg text-body-lg text-secondary max-w-md">At Lumina Studio, we believe the workspace is a sanctuary of deep work. Every component in our collection is curated to bring ergonomic luxury and technical precision to your daily flow.</p>
+</div>
+<div class="md:col-span-6 relative mt-12 md:mt-0">
+<div class="aspect-[4/5] overflow-hidden rounded-lg">
+<img alt="Minimalist vase" class="w-full h-full object-cover grayscale-[20%] hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfXcMvlShwjv0Fqkt0w0fo13ybM6hQ7N3xdDzeIq7ey3_-Xb8qw2bvl8HJpT-SQ004b-Lb67ixs2AS6Z-sX6WKchlxxL4uDKydiUhaM96qiy_hVgQREeRQOZZDZTYY2_lvL7gn54PInHtk1ndjyQHbPeon59FqUCpK7QxU01n2XCaPOYHjAoEebifcym3X1KQ363JK_KnH2g9YssvOhceHQETexE9OT1lrsV5hWFQkp6y9wyaxx-ZIC78RuBXGMugDoUOBWTjubkCn">
+</div>
+<div class="absolute -bottom-8 -left-8 hidden lg:block w-48 h-48 rounded-lg overflow-hidden border-8 border-surface editorial-shadow">
+<img alt="Texture detail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlNr5eisaNgo6AMI9yqjS_vgAySXMKcgiKvLlgnK5t17-sY9RV6w4xV3nDyLilGT1xWaEOlvQZknrCfpcai7-I-l5CL_UgQalXNt5dN4ZbBIPUc71Rx7FgFugRL05sX10ziDtLglpwNO--o3wxA-_YM9lHUk1E9ndskUdjCLyu8dJRuf1Q71W-PYYqfUUW3HUGSm16R8LCH3rVHqAvkRQA45Dz3cTrwsUUWFiIu1LgYB-xg3vh2ZZFYPbf5L4RmT6-35ciw_orA4sa">
+</div>
+</div>
+</div>
+</section>
+<!-- Category Grid Section with 3D Tilt -->
+<section class="reveal pb-section-gap px-margin-desktop max-w-container-max mx-auto active">
+<div class="flex flex-col md:flex-row justify-between items-baseline mb-16 gap-4">
+<h2 class="font-headline-lg text-headline-lg">Collections</h2>
+<a class="font-label-md text-label-md text-primary border-b border-primary/20 hover:border-primary transition-colors pb-1" href="#">View All Categories</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Keyboards -->
+<div class="tilt-card group cursor-pointer">
+<div class="tilt-card-inner aspect-[3/4] overflow-hidden rounded-lg mb-6 bg-surface-container-low border border-outline/5 shadow-md">
+<img alt="Keyboards" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlNr5eisaNgo6AMI9yqjS_vgAySXMKcgiKvLlgnK5t17-sY9RV6w4xV3nDyLilGT1xWaEOlvQZknrCfpcai7-I-l5CL_UgQalXNt5dN4ZbBIPUc71Rx7FgFugRL05sX10ziDtLglpwNO--o3wxA-_YM9lHUk1E9ndskUdjCLyu8dJRuf1Q71W-PYYqfUUW3HUGSm16R8LCH3rVHqAvkRQA45Dz3cTrwsUUWFiIu1LgYB-xg3vh2ZZFYPbf5L4RmT6-35ciw_orA4sa">
+</div>
+<div class="flex justify-between items-center px-2">
+<h3 class="font-headline-md text-headline-md group-hover:text-primary transition-colors">Keyboards</h3>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">arrow_forward</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-wider mt-2 px-2">Custom Mechanicals</p>
+</div>
+<!-- Hardware -->
+<div class="tilt-card group cursor-pointer md:mt-12">
+<div class="tilt-card-inner aspect-[3/4] overflow-hidden rounded-lg mb-6 bg-surface-container-low border border-outline/5 shadow-md" style="transform: rotateX(0deg) rotateY(0deg) scale(1);">
+<img alt="Hardware" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAskxyUdQ0KFRElPPHWNYPEijuGxFzvBaGzJHUicgqq1q2i1BaykQpCbIl79fgX30iw8ngXc7h2N_A7V2_LIlthT1WC7a9q9RlQyVKFqQ4kSr2L7801nns54eOU5J8fX5LJZJiSLBqwp8P1_lEenpAlOSn7SZHpVG6vgEI74w6rsmFX0QuLaEys8saFYzfNUBRyIveJ1DFLagvb3YmJJFCBrM3P045URtAqq5i4s-n8d1qEdRcPo4cd-_6G698s8EiNlpAL3wYCYepF">
+</div>
+<div class="flex justify-between items-center px-2">
+<h3 class="font-headline-md text-headline-md group-hover:text-primary transition-colors">Hardware</h3>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">arrow_forward</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-wider mt-2 px-2">Performance Components</p>
+</div>
+<!-- Audio -->
+<div class="tilt-card group cursor-pointer">
+<div class="tilt-card-inner aspect-[3/4] overflow-hidden rounded-lg mb-6 bg-surface-container-low border border-outline/5 shadow-md" style="transform: rotateX(0deg) rotateY(0deg) scale(1);">
+<img alt="Audio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFlOe32mDhI0o5JXPPvQkCLEg12xOHb4FcZijtWpzjLAi88ybARG72ldfG6j6rPjp3LUF0Q0JpxV9XgLxbT3qs9Xo_6ShXOY2vX0-Gw7pjC05prnEn57vRiq3zrGPnLBOKJ8KBU4MY_W0S0ttXUDG-EMznNm134L3ejqgFeQ13JQS-lcavDMJTPhEVWDDxXPiVDaxCtkRPEdkWXrH179e2B-HTFiIjOEKfI-IFN0mGE_TSMjzbM6Bcf7HFfkzzqYYwb739NkbJJF_J">
+</div>
+<div class="flex justify-between items-center px-2">
+<h3 class="font-headline-md text-headline-md group-hover:text-primary transition-colors">Audio</h3>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">arrow_forward</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-wider mt-2 px-2">Studio Grade</p>
+</div>
+</div>
+</section>
+<!-- Featured Product Section -->
+<section class="reveal bg-surface-container-low py-section-gap active">
+<div class="px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-7 order-2 md:order-1">
+<div class="aspect-video overflow-hidden rounded-lg editorial-shadow">
+<img alt="The Studio Desk" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ujY943ot04Mn3EiLP5hvKb9cHiu8-sXdFpZM_F2aBKu46xykSJhOBk3JreKUfJu4laGZ-FXWWCBcytJgbxCAyD3AfISycyTSb0bWzNOAhIy-JTTzwPofQSgT4hkbUuP9DaIIgm0RJtIBREnQw4c7h2NBtJP5fI7YRKX7hhWSH06_poOKqvqu9TewIJM8XzT7rRLIDezqTBWhKoS8_G0wLKSd4QiXP2jhX3EX4CFUVAqPoZbyxlyhRUqW9LO">
+</div>
+</div>
+<div class="md:col-span-5 order-1 md:order-2 mb-12 md:mb-0 md:pl-16">
+<span class="font-label-sm text-label-sm text-primary mb-4 block">Limited Edition</span>
+<h2 class="font-headline-lg text-headline-lg mb-6">The Studio Desk</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">The foundation of deep work. A minimalist surface designed for ergonomic perfection and cable-free clarity, hand-crafted from sustainably sourced solid oak.</p>
+<div class="flex items-center gap-8 mb-10">
+<span class="font-body-lg text-body-lg font-bold text-tertiary">$180.00</span>
+<div class="flex gap-2">
+<span class="w-6 h-6 rounded-full bg-[#2D2D2D] border-2 border-primary cursor-pointer"></span>
+<span class="w-6 h-6 rounded-full bg-[#C9C6C2] border-2 border-transparent hover:border-outline-variant cursor-pointer"></span>
+</div>
+</div>
+<div class="magnetic-wrap">
+<button class="magnetic-btn w-full md:w-auto px-12 py-4 bg-on-surface text-surface rounded-full font-label-md hover:opacity-90 transition-all" style="transform: translate(0px);">
+                                Add to Sanctuary
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter Section -->
+<section class="reveal py-section-gap px-margin-desktop max-w-container-max mx-auto text-center active">
+<div class="max-w-2xl mx-auto">
+<h2 class="font-headline-lg text-headline-lg mb-4">The Monograph</h2>
+<p class="font-body-md text-body-md text-secondary mb-10">Subscribe to receive seasonal curations, design stories, and early access to new collections.</p>
+<form class="flex flex-col md:flex-row gap-4 max-w-md mx-auto">
+<input class="flex-1 bg-transparent border-0 border-b border-outline py-3 focus:ring-0 focus:border-primary text-label-md" placeholder="email@address.com" type="email">
+<div class="magnetic-wrap">
+<button class="magnetic-btn bg-primary text-white px-8 py-3 rounded-full font-label-md hover:bg-opacity-90 transition-all uppercase tracking-widest text-xs" type="submit" style="transform: translate(0px);">Join</button>
+</div>
+</form>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full pt-section-gap pb-8 bg-surface-container-low border-t border-outline/5">
+<div class="grid grid-cols-12 gap-gutter px-margin-desktop max-w-container-max mx-auto">
+<div class="col-span-12 md:col-span-4 mb-12 md:mb-0">
+<a class="font-display-lg text-headline-md text-on-surface block mb-6" href="/">STUDIO</a>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs">Curating premium developer environments and digital sanctuaries since 2024.</p>
+</div>
+<div class="col-span-6 md:col-span-2">
+<h4 class="font-label-md text-label-md text-on-surface mb-6">Collections</h4>
+<ul class="space-y-4">
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200" href="#">Keyboards</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200" href="#">Hardware</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200" href="#">Audio</a></li>
+</ul>
+</div>
+<div class="col-span-6 md:col-span-2">
+<h4 class="font-label-md text-label-md text-on-surface mb-6">Explore</h4>
+<ul class="space-y-4">
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200" href="#">Story</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200" href="#">Journal</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200" href="#">Contact</a></li>
+</ul>
+</div>
+<div class="col-span-6 md:col-span-2">
+<h4 class="font-label-md text-label-md text-on-surface mb-6">Support</h4>
+<ul class="space-y-4">
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200" href="#">Shipping</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200" href="#">Returns</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-tertiary transition-colors duration-200" href="#">Privacy</a></li>
+</ul>
+</div>
+<div class="col-span-6 md:col-span-2 flex flex-col items-end">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">public</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">share</span>
+</div>
+</div>
+</div>
+<div class="mt-20 px-margin-desktop max-w-container-max mx-auto pt-8 border-t border-outline/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-label-sm text-label-sm text-on-surface-variant">© 2024 Studio Monograph. All Rights Reserved.</p>
+<div class="flex gap-6">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Instagram</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Pinterest</span>
+</div>
+</div>
+</footer>
+<script>
+        // --- 1. Ambient 3D Particle System ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.z = Math.random() * 1000;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speed = Math.random() * 0.2 + 0.05;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.z -= this.speed;
+                if (this.z <= 0) {
+                    this.z = 1000;
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                }
+            }
+            draw() {
+                const scale = 500 / (500 + this.z);
+                const x2d = (this.x - canvas.width / 2) * scale + canvas.width / 2;
+                const y2d = (this.y - canvas.height / 2) * scale + canvas.height / 2;
+                const size2d = this.size * scale;
+
+                ctx.fillStyle = `rgba(86, 100, 43, ${this.opacity * (1 - this.z / 1000)})`;
+                ctx.beginPath();
+                ctx.arc(x2d, y2d, size2d, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 80; i++) particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        initParticles();
+        animateParticles();
+
+        // --- 2. Hero Mouse-Tracking Parallax ---
+        const hero = document.getElementById('hero');
+        const layers = document.querySelectorAll('.parallax-layer');
+
+        hero.addEventListener('mousemove', (e) => {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const moveX = (e.clientX - centerX) / centerX;
+            const moveY = (e.clientY - centerY) / centerY;
+
+            layers.forEach(layer => {
+                const speed = parseFloat(layer.getAttribute('data-speed'));
+                const x = moveX * speed * 400;
+                const y = moveY * speed * 400;
+                layer.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+
+        // --- 3. 3D Tilt Effect for Collection Cards ---
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(card => {
+            const inner = card.querySelector('.tilt-card-inner');
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (centerY - y) / 10;
+                const rotateY = (x - centerX) / 10;
+                inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                inner.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+            });
+        });
+
+        // --- 4. Magnetic Hover Effect for Buttons ---
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.35}px, ${y * 0.35}px)`;
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = `translate(0, 0)`;
+            });
+        });
+
+        // --- 5. Scroll Animations with IntersectionObserver ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body></html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>The Focused Workspace | Lumina Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Public+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#812800",
+                    "surface-dim": "#dcd9d9",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#e4e2e1",
+                    "secondary-container": "#e5e2dd",
+                    "on-surface-variant": "#46483c",
+                    "inverse-primary": "#bdce89",
+                    "on-secondary-fixed-variant": "#474743",
+                    "on-primary-fixed-variant": "#3e4c16",
+                    "primary-fixed-dim": "#bdce89",
+                    "tertiary": "#a93700",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-secondary": "#ffffff",
+                    "surface": "#fcf9f8",
+                    "secondary-fixed-dim": "#c9c6c2",
+                    "primary-fixed": "#d9eaa3",
+                    "surface-tint": "#56642b",
+                    "surface-bright": "#fcf9f8",
+                    "inverse-on-surface": "#f3f0f0",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#380d00",
+                    "primary": "#56642b",
+                    "on-secondary-container": "#656461",
+                    "inverse-surface": "#303030",
+                    "on-secondary-fixed": "#1c1c19",
+                    "on-primary-fixed": "#161f00",
+                    "tertiary-fixed": "#ffdbcf",
+                    "secondary": "#5f5e5b",
+                    "surface-container-low": "#f6f3f2",
+                    "outline": "#76786b",
+                    "on-surface": "#1b1c1c",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb59b",
+                    "outline-variant": "#c6c8b8",
+                    "surface-container-high": "#eae7e7",
+                    "tertiary-container": "#f6662c",
+                    "surface-container": "#f0eded",
+                    "on-primary-container": "#253000",
+                    "secondary-fixed": "#e5e2dd",
+                    "on-tertiary-container": "#541700",
+                    "on-background": "#1b1c1c",
+                    "background": "#fcf9f8",
+                    "primary-container": "#8a9a5b",
+                    "surface-variant": "#e4e2e1",
+                    "error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section-gap": "120px",
+                    "margin-mobile": "20px",
+                    "container-max": "1440px",
+                    "unit": "8px",
+                    "gutter": "24px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"],
+                    "headline-md": ["Playfair Display"],
+                    "headline-lg-mobile": ["Playfair Display"],
+                    "label-sm": ["Public Sans"],
+                    "body-lg": ["Public Sans"],
+                    "label-md": ["Public Sans"],
+                    "body-md": ["Public Sans"]
+            },
+            "fontSize": {
+                    "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fcf9f8; /* Soft Bone background as per style guide */
+        }
+        .asymmetric-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-surface-container-low border-b border-outline-variant/30 w-full h-20 sticky top-0 z-50">
+<div class="flex justify-between items-center px-margin-desktop max-w-container-max mx-auto h-full">
+<div class="font-display-lg text-headline-md text-primary dark:text-primary-fixed cursor-pointer">Lumina Studio</div>
+<div class="hidden md:flex items-center gap-8 font-body-md text-body-md">
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer" href="#">Collections</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer" href="#">Studio Gear</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer" href="#">Stories</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed transition-colors duration-300 cursor-pointer" href="#">Sustainability</a>
+</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined cursor-pointer transition-opacity active:opacity-70 text-primary">shopping_bag</span>
+<span class="material-symbols-outlined cursor-pointer transition-opacity active:opacity-70 text-primary">person</span>
+<button class="md:hidden material-symbols-outlined text-primary">menu</button>
+</div>
+</div>
+</nav>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop overflow-hidden">
+<!-- Hero Section: The Focused Workspace -->
+<section class="section-gap pt-16 flex flex-col md:flex-row gap-16 items-center">
+<div class="w-full md:w-7/12">
+<div class="relative overflow-hidden rounded-lg bg-surface-container-low">
+<img alt="The Focused Workspace" class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/ADBb0uibbiefEL8a61JpcVswkMdmbIQerdzy72QLOOxLTYj1iUaKFE0UBJ4v_DSAeAkgU9wHJ2m8fPjzikcmeoy8qoE1B4PPI8UJGEsnknT16JprhwboJpSDhPjMSWCwPOI-vKsj3fyzIcfdwYaD1QeseXSTunAli87Od40DVIUjU6b-R8pYUwbuAyS-1sR_a6yIBXB4cvyKlca9ERIpYEOVkbD4xp9FCxjx4pfD3WGAKcdZ5UuhKzsM4hEpOqY">
+</div>
+</div>
+<div class="w-full md:w-5/12 flex flex-col gap-8">
+<div class="space-y-4">
+<span class="font-label-md text-label-md text-primary tracking-widest uppercase">Signature Collection</span>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">The Focused Workspace</h1>
+<p class="font-body-lg text-body-lg text-secondary max-w-md">
+                        A sanctuary of intentionality. The Focused Workspace combines organic materials with precision engineering to create an environment where clarity of thought and peak productivity coexist.
+                    </p>
+</div>
+<div class="space-y-2">
+<p class="font-body-md text-body-md text-secondary">Price</p>
+<p class="font-headline-md text-headline-md text-tertiary">$2,418.00</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 pt-4">
+<button class="flex-1 bg-primary text-on-primary font-label-md text-label-md py-5 rounded-full hover:bg-primary/90 transition-all active:scale-[0.98]">
+                        Add to Bag
+                    </button>
+<button class="flex-1 border border-outline text-on-surface font-label-md text-label-md py-5 rounded-full hover:bg-surface-container-low transition-all active:scale-[0.98]">
+                        Customize Setup
+                    </button>
+</div>
+<div class="pt-6 border-t border-outline-variant/30">
+<div class="flex items-center gap-4">
+<div class="flex text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary">4.9 Based on 128 Reviews</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Product Gallery/Details: The Studio Desk -->
+<section class="mt-[120px] mb-[120px]">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-5 space-y-8 order-2 md:order-1">
+<span class="font-label-md text-label-md text-primary tracking-widest uppercase">The Foundation</span>
+<h2 class="font-headline-md text-headline-md">The Studio Desk</h2>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+                        Crafted from hand-selected solid American Walnut, the Studio Desk is the centerpiece of the Focused Workspace. Each surface is finished with a natural oil-rubbed patina that deepens in character over years of use.
+                    </p>
+<div class="flex flex-wrap gap-3">
+<span class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 font-label-sm text-label-sm">Solid Walnut</span>
+<span class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 font-label-sm text-label-sm">Hand-Finished</span>
+<span class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 font-label-sm text-label-sm">Sustainably Sourced</span>
+</div>
+</div>
+<div class="md:col-span-7 order-1 md:order-2">
+<div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-low shadow-sm">
+<img alt="The Studio Desk" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ujY943ot04Mn3EiLP5hvKb9cHiu8-sXdFpZM_F2aBKu46xykSJhOBk3JreKUfJu4laGZ-FXWWCBcytJgbxCAyD3AfISycyTSb0bWzNOAhIy-JTTzwPofQSgT4hkbUuP9DaIIgm0RJtIBREnQw4c7h2NBtJP5fI7YRKX7hhWSH06_poOKqvqu9TewIJM8XzT7rRLIDezqTBWhKoS8_G0wLKSd4QiXP2jhX3EX4CFUVAqPoZbyxlyhRUqW9LO">
+</div>
+</div>
+</div>
+</section>
+<!-- Technical Specifications Grid -->
+<section class="section-gap bg-surface-container-low -mx-margin-desktop px-margin-desktop py-24">
+<div class="max-w-container-max mx-auto">
+<div class="mb-16 text-center">
+<h2 class="font-headline-md text-headline-md mb-4">Precision Engineering</h2>
+<p class="font-body-md text-body-md text-secondary">Every component measured for focus and longevity.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+<!-- Spec Item 1 -->
+<div class="p-8 bg-surface rounded-lg border border-outline-variant/20 flex flex-col gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">desktop_windows</span>
+<h4 class="font-label-md text-label-md uppercase tracking-tight">Display</h4>
+<p class="font-body-md text-body-md text-secondary">49" Ultra-wide curved panel, 5K resolution with studio-grade color accuracy and 120Hz refresh.</p>
+</div>
+<!-- Spec Item 2 -->
+<div class="p-8 bg-surface rounded-lg border border-outline-variant/20 flex flex-col gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">texture</span>
+<h4 class="font-label-md text-label-md uppercase tracking-tight">Surface</h4>
+<p class="font-body-md text-body-md text-secondary">1.5" thickness solid walnut slab with chamfered edges for ergonomic forearm support.</p>
+</div>
+<!-- Spec Item 3 -->
+<div class="p-8 bg-surface rounded-lg border border-outline-variant/20 flex flex-col gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">settings_input_component</span>
+<h4 class="font-label-md text-label-md uppercase tracking-tight">Cable Management</h4>
+<p class="font-body-md text-body-md text-secondary">Integrated under-desk routing system with magnetic covers and a hidden power distribution hub.</p>
+</div>
+<!-- Spec Item 4 -->
+<div class="p-8 bg-surface rounded-lg border border-outline-variant/20 flex flex-col gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">straighten</span>
+<h4 class="font-label-md text-label-md uppercase tracking-tight">Dimensions</h4>
+<p class="font-body-md text-body-md text-secondary">W: 160cm x D: 80cm x H: 74cm. Optimized for ergonomic reach and deep workstation setups.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Social Proof: Customer Reflections -->
+<section class="section-gap py-24 border-t border-outline-variant/20">
+<div class="flex flex-col items-center mb-16 text-center">
+<span class="font-label-md text-label-md text-primary mb-2">Voices of Creators</span>
+<h2 class="font-headline-md text-headline-md">Customer Reflections</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<!-- Review 1 -->
+<div class="flex flex-col gap-6">
+<div class="flex text-tertiary mb-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<blockquote class="font-headline-md text-body-lg italic leading-relaxed text-on-surface">
+                        "The transition to a focused desk was the single best investment I made for my creative output this year. The wood's warmth is grounding."
+                    </blockquote>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Elena G.</p>
+<p class="font-label-sm text-label-sm text-secondary">Senior Designer, Flux Agency</p>
+</div>
+</div>
+<!-- Review 2 -->
+<div class="flex flex-col gap-6 border-l border-outline-variant/30 pl-0 md:pl-12">
+<div class="flex text-tertiary mb-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<blockquote class="font-headline-md text-body-lg italic leading-relaxed text-on-surface">
+                        "Finally, a setup that respects silence. The cable management is a masterpiece of engineering. My mind feels lighter every morning."
+                    </blockquote>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Marcus T.</p>
+<p class="font-label-sm text-label-sm text-secondary">Architect &amp; Developer</p>
+</div>
+</div>
+<!-- Review 3 -->
+<div class="flex flex-col gap-6 border-l border-outline-variant/30 pl-0 md:pl-12">
+<div class="flex text-tertiary mb-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<blockquote class="font-headline-md text-body-lg italic leading-relaxed text-on-surface">
+                        "Minimalism without compromise. Every texture feels intentional. Lumina Studio understands the luxury of space and focus."
+                    </blockquote>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Sarah K.</p>
+<p class="font-label-sm text-label-sm text-secondary">Visual Artist</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-container-lowest w-full py-section-gap mt-16">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-gutter max-w-container-max mx-auto">
+<div class="flex flex-col gap-4">
+<div class="font-headline-md text-headline-md text-on-surface dark:text-on-surface-variant">Lumina Studio</div>
+<p class="font-label-sm text-label-sm text-secondary dark:text-secondary-fixed-dim">© 2024 Lumina Studio. Designed for Focus.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8 font-label-sm text-label-sm">
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-tertiary transition-colors duration-200 underline-offset-4 hover:underline" href="#">Shipping &amp; Returns</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-tertiary transition-colors duration-200 underline-offset-4 hover:underline" href="#">Technical Support</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-tertiary transition-colors duration-200 underline-offset-4 hover:underline" href="#">Privacy Policy</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-tertiary transition-colors duration-200 underline-offset-4 hover:underline" href="#">Contact</a>
+</div>
+<div class="flex gap-4">
+<a class="text-secondary hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+<a class="text-secondary hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for gallery image
+        const productImages = document.querySelectorAll('img');
+        productImages.forEach(img => {
+            img.addEventListener('mouseenter', () => {
+                img.style.transition = 'transform 1.2s cubic-bezier(0.23, 1, 0.32, 1)';
+            });
+        });
+
+        // Sticky Nav subtle shadow on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-sm');
+                nav.classList.add('bg-surface/95');
+                nav.classList.add('backdrop-blur-md');
+            } else {
+                nav.classList.remove('shadow-sm');
+                nav.classList.remove('bg-surface/95');
+                nav.classList.remove('backdrop-blur-md');
+            }
+        });
+    </script>
+</body></html>

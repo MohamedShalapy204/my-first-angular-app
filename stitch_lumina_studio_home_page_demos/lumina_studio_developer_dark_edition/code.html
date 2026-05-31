@@ -1,0 +1,270 @@
+<!DOCTYPE html><html class="scroll-smooth dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Lumina Studio | Essence of Calm</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#dfe4de",
+                    "surface-dim": "#101412",
+                    "on-tertiary-fixed-variant": "#603961",
+                    "background": "#101412",
+                    "error-container": "#93000a",
+                    "surface-bright": "#353a37",
+                    "secondary": "#c2c8c3",
+                    "surface-container-highest": "#313633",
+                    "on-secondary-fixed": "#171d1a",
+                    "surface-container-lowest": "#0a0f0d",
+                    "inverse-on-surface": "#2c322e",
+                    "tertiary": "#eab6e6",
+                    "on-tertiary": "#472249",
+                    "on-secondary-container": "#b4bab5",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-container": "#431e44",
+                    "on-error": "#690005",
+                    "tertiary-container": "#b384b1",
+                    "outline": "#909284",
+                    "surface-tint": "#bdce89",
+                    "on-tertiary-fixed": "#300c32",
+                    "tertiary-fixed": "#ffd6fa",
+                    "surface-variant": "#313633",
+                    "on-surface": "#dfe4de",
+                    "secondary-container": "#444a47",
+                    "on-primary-fixed-variant": "#3e4c16",
+                    "primary-container": "#8a9a5b",
+                    "on-primary": "#283501",
+                    "secondary-fixed-dim": "#c2c8c3",
+                    "primary-fixed-dim": "#bdce89",
+                    "surface-container": "#1c211e",
+                    "on-primary-fixed": "#161f00",
+                    "on-secondary-fixed-variant": "#424845",
+                    "surface-container-high": "#262b28",
+                    "surface-container-low": "#181d1a",
+                    "on-primary-container": "#253000",
+                    "primary": "#bdce89",
+                    "surface": "#101412",
+                    "on-surface-variant": "#c6c8b8",
+                    "primary-fixed": "#d9eaa3",
+                    "outline-variant": "#46483c",
+                    "error": "#ffb4ab",
+                    "secondary-fixed": "#dee4df",
+                    "on-background": "#dfe4de",
+                    "on-secondary": "#2c322f",
+                    "inverse-primary": "#56642b",
+                    "tertiary-fixed-dim": "#eab6e6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "section-gap": "120px",
+                    "margin-desktop": "64px",
+                    "unit": "8px",
+                    "max-width": "1440px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Playfair Display"],
+                    "display-lg-mobile": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"],
+                    "label-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #101412;
+            color: #dfe4de;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .editorial-shadow {
+            box-shadow: 0px 20px 40px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky z-50 bg-surface-container-low border-b border-outline/10 h-20 flex justify-between items-center px-margin-desktop max-w-max mx-auto">
+<div class="flex items-center gap-12">
+<a class="font-display-lg text-headline-md tracking-tighter text-on-surface" href="/">STUDIO</a>
+<nav class="hidden md:flex gap-8">
+<a class="text-primary font-bold border-b border-primary font-label-md cursor-pointer transition-opacity active:opacity-70" href="#">Shop</a>
+<a class="text-secondary font-label-md hover:text-primary transition-colors duration-300 cursor-pointer transition-opacity active:opacity-70" href="#">Story</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:block relative">
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="bg-transparent border-0 border-b border-outline-variant py-1 pr-10 focus:ring-0 focus:border-primary text-label-md placeholder:text-outline-variant text-on-surface" placeholder="Search" type="text">
+</div>
+<button class="flex items-center gap-1 cursor-pointer transition-opacity active:opacity-70">
+<span class="material-symbols-outlined text-primary">shopping_bag</span>
+</button>
+<button class="flex items-center gap-1 cursor-pointer transition-opacity active:opacity-70">
+<span class="material-symbols-outlined text-primary">person</span>
+</button>
+</div>
+</header>
+<main>
+<!-- Video Hero Section -->
+<section class="relative h-[80vh] w-full flex items-center justify-center overflow-hidden"><div class="absolute inset-0 bg-surface-dim/40 z-10"></div><img alt="Pro Developer Setup" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfXcMvlShwjv0Fqkt0w0fo13ybM6hQ7N3xdDzeIq7ey3_-Xb8qw2bvl8HJpT-SQ004b-Lb67ixs2AS6Z-sX6WKchlxxL4uDKydiUhaM96qiy_hVgQREeRQOZZDZTYY2_lvL7gn54PInHtk1ndjyQHbPeon59FqUCpK7QxU01n2XCaPOYHjAoEebifcym3X1KQ363JK_KnH2g9YssvOhceHQETexE9OT1lrsV5hWFQkp6y9wyaxx-ZIC78RuBXGMugDoUOBWTjubkCn"><div class="relative z-20 text-center px-margin-mobile"><h1 class="font-display-lg text-display-lg text-white mb-8">Engineered for Focus</h1><button class="bg-primary text-on-primary px-10 py-4 rounded-full font-label-md hover:opacity-90 transition-all transform hover:scale-105 active:scale-95 shadow-lg">Shop the Setup</button></div></section>
+<!-- Brand Story Section -->
+<section class="py-section-gap px-margin-desktop max-w-max mx-auto overflow-hidden">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-6 md:pr-12" data-aos="fade-up">
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-[0.2em] mb-6">Our Philosophy</p>
+<blockquote class="font-display-lg text-[40px] text-on-surface mb-8 leading-tight">Precision tools for the <span class="text-primary italic">digital craftsman</span>.</blockquote>
+<p class="font-body-lg text-body-lg text-secondary max-w-md">At Lumina Studio, we understand that code is art. Every component in our catalog is selected to enhance your cognitive flow and bring industrial elegance to your build.</p>
+</div>
+<div class="md:col-span-6 relative mt-12 md:mt-0">
+<div class="aspect-[4/5] overflow-hidden rounded-lg">
+<img alt="Minimalist vase" class="w-full h-full object-cover grayscale-[10%] contrast-[1.1] hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVoTvHt03ukjt-gw1Vml3FHNztI-9SmiR509wUCm70XmuEdoUb0fh9s0_YA6aDLn0mFV5FEOcJZuLjSP6QYu09sX38xkmlSq409W1s7i012vafSOMWIQe8tazjk06SsNN88Q8N3ljX4zGutodhuKAUgFvOGLrgclO3VFbBMgD5_jNWjKYRt9krw0UP50RvNdyQmlm4MNorxOWbRJVcKHFvdl0AQPq8tvCE_huSQqJTEB-vi8K9cdXXDq7OZh8_XZh792ziWg-Vortf">
+</div>
+<div class="absolute -bottom-8 -left-8 hidden lg:block w-48 h-48 rounded-lg overflow-hidden border-8 border-surface-container-low editorial-shadow">
+<img alt="Texture detail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK5zP0tQHVk28lar9HvP_71K-61YPcUbs2f3WhyawdSQQ8fIN4NC3GIj7zLOZ0iAS8hlACn6gqKZw3WulTvynNqPc53KpvNu6eRkJE3X2z7yiFCN7ltSm5Qpv6dbst3vw03xstvNiK4JmWn5CjIS7Um5U_7tbrIK0yjZFdq5jWHoytPtZLegN2nMMjTItAWwl1w_QnX9d7TLdt9wic0X9R3CySfBUIJXd9QCrnxq9rUFP3uRBmYAU1qvzRUQxEvGXvW_1wWGKWlQzA">
+</div>
+</div>
+</div>
+</section>
+<!-- Category Grid Section -->
+<section class="pb-section-gap px-margin-desktop max-w-max mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-baseline mb-16 gap-4">
+<h2 class="font-display-lg text-[40px] text-on-surface">Collections</h2>
+<a class="font-label-sm text-label-sm text-primary border-b border-primary/20 hover:border-primary transition-colors pb-1" href="#">View All Categories</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter"><div class="group cursor-pointer"><div class="aspect-[3/4] overflow-hidden rounded-lg mb-6 bg-surface-container border border-outline/10"><img alt="Keyboards" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out brightness-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlNr5eisaNgo6AMI9yqjS_vgAySXMKcgiKvLlgnK5t17-sY9RV6w4xV3nDyLilGT1xWaEOlvQZknrCfpcai7-I-l5CL_UgQalXNt5dN4ZbBIPUc71Rx7FgFugRL05sX10ziDtLglpwNO--o3wxA-_YM9lHUk1E9ndskUdjCLyu8dJRuf1Q71W-PYYqfUUW3HUGSm16R8LCH3rVHqAvkRQA45Dz3cTrwsUUWFiIu1LgYB-xg3vh2ZZFYPbf5L4RmT6-35ciw_orA4sa"></div><div class="flex justify-between items-center"><h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Keyboards</h3><span class="material-symbols-outlined text-outline-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">arrow_forward</span></div><p class="font-label-sm text-label-sm text-outline uppercase tracking-wider mt-2">Custom Mechanicals</p></div><div class="group cursor-pointer md:mt-12"><div class="aspect-[3/4] overflow-hidden rounded-lg mb-6 bg-surface-container border border-outline/10"><img alt="Hardware" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out brightness-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAskxyUdQ0KFRElPPHWNYPEijuGxFzvBaGzJHUicgqq1q2i1BaykQpCbIl79fgX30iw8ngXc7h2N_A7V2_LIlthT1WC7a9q9RlQyVKFqQ4kSr2L7801nns54eOU5J8fX5LJZJiSLBqwp8P1_lEenpAlOSn7SZHpVG6vgEI74w6rsmFX0QuLaEys8saFYzfNUBRyIveJ1DFLagvb3YmJJFCBrM3P045URtAqq5i4s-n8d1qEdRcPo4cd-_6G698s8EiNlpAL3wYCYepF"></div><div class="flex justify-between items-center"><h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Hardware</h3><span class="material-symbols-outlined text-outline-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">arrow_forward</span></div><p class="font-label-sm text-label-sm text-outline uppercase tracking-wider mt-2">Performance Components</p></div><div class="group cursor-pointer"><div class="aspect-[3/4] overflow-hidden rounded-lg mb-6 bg-surface-container border border-outline/10"><img alt="Audio" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out brightness-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFlOe32mDhI0o5JXPPvQkCLEg12xOHb4FcZijtWpzjLAi88ybARG72ldfG6j6rPjp3LUF0Q0JpxV9XgLxbT3qs9Xo_6ShXOY2vX0-Gw7pjC05prnEn57vRiq3zrGPnLBOKJ8KBU4MY_W0S0ttXUDG-EMznNm134L3ejqgFeQ13JQS-lcavDMJTPhEVWDDxXPiVDaxCtkRPEdkWXrH179e2B-HTFiIjOEKfI-IFN0mGE_TSMjzbM6Bcf7HFfkzzqYYwb739NkbJJF_J"></div><div class="flex justify-between items-center"><h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Audio</h3><span class="material-symbols-outlined text-outline-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">arrow_forward</span></div><p class="font-label-sm text-label-sm text-outline uppercase tracking-wider mt-2">Studio Grade</p></div></div>
+</section>
+<!-- Featured Product Section -->
+<section class="bg-surface-container-low py-section-gap">
+<div class="px-margin-desktop max-w-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-7 order-2 md:order-1">
+<div class="aspect-video overflow-hidden rounded-lg editorial-shadow">
+<img alt="Featured lamp" class="w-full h-full object-cover brightness-90" src="https://lh3.googleusercontent.com/aida/ADBb0ujY943ot04Mn3EiLP5hvKb9cHiu8-sXdFpZM_F2aBKu46xykSJhOBk3JreKUfJu4laGZ-FXWWCBcytJgbxCAyD3AfISycyTSb0bWzNOAhIy-JTTzwPofQSgT4hkbUuP9DaIIgm0RJtIBREnQw4c7h2NBtJP5fI7YRKX7hhWSH06_poOKqvqu9TewIJM8XzT7rRLIDezqTBWhKoS8_G0wLKSd4QiXP2jhX3EX4CFUVAqPoZbyxlyhRUqW9LO">
+</div>
+</div>
+<div class="md:col-span-5 order-1 md:order-2 mb-12 md:mb-0 md:pl-16">
+<span class="font-label-sm text-label-sm text-primary mb-4 block uppercase tracking-widest">Limited Edition</span>
+<h2 class="font-display-lg text-[40px] text-on-surface mb-6">The Studio Desk</h2>
+<p class="font-body-md text-body-md text-secondary mb-8">A foundation for your finest work. Hand-crafted from solid walnut, this desk features integrated cable management and a surface optimized for precision peripherals.</p>
+<div class="flex items-center gap-8 mb-10">
+<span class="font-body-lg text-body-lg font-bold text-on-surface">$1,450.00</span>
+<div class="flex gap-2">
+<span class="w-6 h-6 rounded-full bg-[#2D2D2D] border-2 border-primary cursor-pointer"></span>
+<span class="w-6 h-6 rounded-full bg-[#C9C6C2] border-2 border-transparent hover:border-outline-variant cursor-pointer"></span>
+</div>
+</div>
+<button class="w-full md:w-auto px-12 py-4 bg-primary text-on-primary rounded-full font-label-md hover:opacity-90 transition-all">Configure Workspace</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter Section -->
+<section class="py-section-gap px-margin-desktop max-w-max mx-auto text-center">
+<div class="max-w-2xl mx-auto">
+<h2 class="font-display-lg text-[40px] text-on-surface mb-4">The Monograph</h2>
+<p class="font-body-md text-body-md text-secondary mb-10">Subscribe to receive seasonal curations, design stories, and early access to new collections.</p>
+<form class="flex flex-col md:flex-row gap-4 max-w-md mx-auto">
+<input class="flex-1 bg-transparent border-0 border-b border-outline py-3 focus:ring-0 focus:border-primary text-label-md text-on-surface" placeholder="email@address.com" type="email">
+<button class="bg-primary text-on-primary px-8 py-3 rounded-full font-label-md hover:bg-opacity-90 transition-all uppercase tracking-widest text-xs" type="submit">Join</button>
+</form>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full pt-section-gap pb-8 bg-surface-container-low border-t border-outline/5">
+<div class="grid grid-cols-12 gap-gutter px-margin-desktop max-w-max mx-auto">
+<div class="col-span-12 md:col-span-4 mb-12 md:mb-0">
+<a class="font-display-lg text-headline-md text-on-surface block mb-6" href="/">STUDIO</a>
+<p class="font-body-md text-body-md text-secondary max-w-xs">
+                    Curating quiet luxury for the intentional home since 2024.
+                </p>
+</div>
+<div class="col-span-6 md:col-span-2">
+<h4 class="font-label-sm text-label-sm text-on-surface mb-6 uppercase tracking-wider">Collections</h4>
+<ul class="space-y-4">
+<li><a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors duration-200" href="#">Ceramics</a></li>
+<li><a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors duration-200" href="#">Textiles</a></li>
+<li><a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors duration-200" href="#">Fragrance</a></li>
+</ul>
+</div>
+<div class="col-span-6 md:col-span-2">
+<h4 class="font-label-sm text-label-sm text-on-surface mb-6 uppercase tracking-wider">Explore</h4>
+<ul class="space-y-4">
+<li><a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors duration-200" href="#">Story</a></li>
+<li><a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors duration-200" href="#">Journal</a></li>
+<li><a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors duration-200" href="#">Contact</a></li>
+</ul>
+</div>
+<div class="col-span-6 md:col-span-2">
+<h4 class="font-label-sm text-label-sm text-on-surface mb-6 uppercase tracking-wider">Support</h4>
+<ul class="space-y-4">
+<li><a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors duration-200" href="#">Shipping</a></li>
+<li><a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors duration-200" href="#">Returns</a></li>
+<li><a class="font-label-sm text-label-sm text-secondary hover:text-primary transition-colors duration-200" href="#">Privacy</a></li>
+</ul>
+</div>
+<div class="col-span-6 md:col-span-2 flex flex-col items-end">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-secondary hover:text-primary cursor-pointer transition-colors">public</span>
+<span class="material-symbols-outlined text-secondary hover:text-primary cursor-pointer transition-colors">share</span>
+</div>
+</div>
+</div>
+<div class="mt-20 px-margin-desktop max-w-max mx-auto pt-8 border-t border-outline/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-label-sm text-label-sm text-secondary">© 2024 Studio Monograph. All Rights Reserved.</p>
+<div class="flex gap-6">
+<span class="font-label-sm text-label-sm text-secondary hover:text-primary cursor-pointer">Instagram</span>
+<span class="font-label-sm text-label-sm text-secondary hover:text-primary cursor-pointer">Pinterest</span>
+</div>
+</div>
+</footer>
+<script>
+        // Smooth entrance micro-interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100', 'translate-y-0');
+                        entry.target.classList.remove('opacity-0', 'translate-y-10');
+                    }
+                });
+            }, observerOptions);
+
+            // Apply fade-in animation to sections
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+                observer.observe(section);
+            });
+        });
+    </script>
+</body></html>

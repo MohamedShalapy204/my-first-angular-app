@@ -1,0 +1,229 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Public+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fcf9f8;
+            color: #1b1c1c;
+            -webkit-font-smoothing: antialiased;
+        }
+        .form-input-focus:focus {
+            outline: none;
+            border-bottom-color: #56642b;
+            transition: border-color 0.3s ease;
+        }
+        /* Custom thin borders for the quiet luxury aesthetic */
+        .thin-border {
+            border-width: 0.5px;
+            border-color: rgba(45, 45, 45, 0.1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#56642b",
+                      "tertiary-container": "#f6662c",
+                      "error-container": "#ffdad6",
+                      "primary-container": "#8a9a5b",
+                      "on-background": "#1b1c1c",
+                      "surface-dim": "#dcd9d9",
+                      "secondary-container": "#e5e2dd",
+                      "inverse-on-surface": "#f3f0f0",
+                      "tertiary-fixed-dim": "#ffb59b",
+                      "surface-container-low": "#f6f3f2",
+                      "secondary-fixed-dim": "#c9c6c2",
+                      "on-secondary-fixed-variant": "#474743",
+                      "on-error-container": "#93000a",
+                      "on-surface-variant": "#46483c",
+                      "primary-fixed": "#d9eaa3",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed": "#1c1c19",
+                      "surface-tint": "#56642b",
+                      "secondary": "#5f5e5b",
+                      "inverse-surface": "#303030",
+                      "tertiary": "#a93700",
+                      "secondary-fixed": "#e5e2dd",
+                      "error": "#ba1a1a",
+                      "surface": "#fcf9f8",
+                      "background": "#fcf9f8",
+                      "surface-container": "#f0eded",
+                      "on-primary-fixed": "#161f00",
+                      "on-primary-fixed-variant": "#3e4c16",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed": "#ffdbcf",
+                      "outline-variant": "#c6c8b8",
+                      "on-primary-container": "#253000",
+                      "on-secondary-container": "#656461",
+                      "primary-fixed-dim": "#bdce89",
+                      "on-tertiary-fixed": "#380d00",
+                      "on-surface": "#1b1c1c",
+                      "surface-container-high": "#eae7e7",
+                      "on-tertiary-fixed-variant": "#812800",
+                      "on-error": "#ffffff",
+                      "inverse-primary": "#bdce89",
+                      "outline": "#76786b",
+                      "surface-container-highest": "#e4e2e1",
+                      "surface-bright": "#fcf9f8",
+                      "surface-variant": "#e4e2e1",
+                      "on-secondary": "#ffffff",
+                      "on-tertiary-container": "#541700"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "container-max": "1440px",
+                      "section-gap": "120px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Playfair Display"],
+                      "headline-lg": ["Playfair Display"],
+                      "body-md": ["Public Sans"],
+                      "label-md": ["Public Sans"],
+                      "headline-md": ["Playfair Display"],
+                      "label-sm": ["Public Sans"],
+                      "display-lg": ["Playfair Display"],
+                      "body-lg": ["Public Sans"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                      "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- TopAppBar Fragmented Rendering -->
+<header class="w-full top-0 sticky z-50 bg-background dark:bg-on-background border-b border-on-background/10">
+<div class="flex justify-between items-center px-margin-desktop py-unit max-w-container-max mx-auto w-full">
+<div class="font-headline-lg text-headline-lg tracking-tight text-on-background dark:text-inverse-on-surface cursor-pointer">
+                Lumina Studio
+            </div>
+<nav class="hidden md:flex items-center space-x-8">
+<a class="font-body-md text-body-md text-secondary font-normal hover:text-primary transition-colors duration-300" href="#">Gallery</a>
+<a class="font-body-md text-body-md text-secondary font-normal hover:text-primary transition-colors duration-300" href="#">Story</a>
+<a class="font-body-md text-body-md text-secondary font-normal hover:text-primary transition-colors duration-300" href="#">Studio</a>
+</nav>
+<div class="flex items-center space-x-6">
+<span class="material-symbols-outlined cursor-pointer text-secondary hover:text-primary transition-colors" data-icon="shopping_bag">shopping_bag</span>
+<span class="material-symbols-outlined cursor-pointer text-secondary hover:text-primary transition-colors" data-icon="person">person</span>
+</div>
+</div>
+</header>
+<main class="flex-grow flex items-center justify-center py-section-gap px-margin-mobile md:px-margin-desktop">
+<div class="max-w-container-max w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+<!-- Left Side: Editorial Content -->
+<div class="lg:col-span-6 xl:col-span-5 flex flex-col space-y-8 order-2 lg:order-1 mt-12 lg:mt-0">
+<div class="space-y-4">
+<span class="font-label-md text-label-md text-primary uppercase tracking-widest">The Circle</span>
+<h1 class="font-display-lg text-display-lg leading-tight">Joining the Studio Circle</h1>
+<p class="font-body-lg text-body-lg text-secondary max-w-md">Become part of an intentional community of creators. Our inner circle represents the foundation of Lumina’s creative journey.</p>
+</div>
+<div class="space-y-10 py-6 border-l border-outline-variant/30 pl-8">
+<div class="flex flex-col space-y-2">
+<span class="font-label-md text-label-md text-tertiary">Priority Access</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Be the first to secure our limited drops and artisanal studio gear before general release.</p>
+</div>
+<div class="flex flex-col space-y-2">
+<span class="font-label-md text-label-md text-tertiary">Exclusive Narratives</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Receive behind-the-scenes insights into our design process and creative monographs.</p>
+</div>
+<div class="flex flex-col space-y-2">
+<span class="font-label-md text-label-md text-tertiary">Studio Events</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Invitations to private gallery showings and digital workshop sessions.</p>
+</div>
+</div>
+<div class="relative w-full aspect-[4/3] overflow-hidden rounded-lg thin-border group">
+<img alt="Studio Interior" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A serene and minimalist photography studio filled with natural light streaming through large industrial windows. The space features clean white walls, a single high-end leather chair, and a tripod-mounted camera. The aesthetic is sophisticated and quiet luxury, emphasizing open space and intentional design with a palette of warm bones and soft greys. Soft ambient shadows fall across the polished concrete floor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBP66QZwXul498O_ebIOY6eo3_FCeZILEtxkqHon6izKubPp1TSqsghHyoB6y-HmR_kdlmbH-c4xtD61gEG2LqKRbEBZ4wSU7UmnFDT4Q2XxK2RAYfeR-XQdOmvxSibhGyiCm28IaPHjKeFdm5X-7qBaGCcHjn8g7tCE32KbGWrAyDZk50MuGfaFpUjerfzu6dyoQNs5ETXHmldguKP7G8Fe-cZxQZ1c488w77BxEXfLmnKuECwxyKFYmoLdEvk2wG0bLq7moTBq8z">
+</div>
+</div>
+<!-- Right Side: Registration Form -->
+<div class="lg:col-span-6 lg:col-start-8 xl:col-span-4 xl:col-start-9 order-1 lg:order-2">
+<div class="bg-surface-container-lowest p-8 md:p-12 rounded-lg thin-border shadow-sm">
+<div class="mb-12">
+<h2 class="font-headline-md text-headline-md mb-2">Create Account</h2>
+<p class="font-body-md text-body-md text-on-secondary-fixed-variant">Enter your details to begin your journey.</p>
+</div>
+<form class="space-y-10" onsubmit="event.preventDefault();">
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm uppercase text-on-surface-variant block" for="full_name">Full Name</label>
+<input class="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-outline-variant/40 py-3 font-body-md text-body-md form-input-focus placeholder:text-outline-variant/60" id="full_name" name="full_name" placeholder="Evelyn Thorne" type="text">
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm uppercase text-on-surface-variant block" for="email">Email Address</label>
+<input class="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-outline-variant/40 py-3 font-body-md text-body-md form-input-focus placeholder:text-outline-variant/60" id="email" name="email" placeholder="evelyn@studio.com" type="email">
+</div>
+<div class="space-y-1">
+<label class="font-label-sm text-label-sm uppercase text-on-surface-variant block" for="password">Password</label>
+<input class="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-outline-variant/40 py-3 font-body-md text-body-md form-input-focus placeholder:text-outline-variant/60" id="password" name="password" placeholder="••••••••" type="password">
+</div>
+<div class="pt-6">
+<button class="w-full bg-primary text-white py-5 rounded-full font-label-md text-label-md hover:bg-primary/90 transition-all active:scale-[0.98]" type="submit">
+                                Register
+                            </button>
+</div>
+<div class="flex flex-col items-center space-y-4 pt-4">
+<p class="font-body-md text-body-md text-secondary">
+                                Already have an account? 
+                                <a class="text-on-background font-semibold hover:text-primary transition-colors underline underline-offset-4 decoration-outline-variant" href="#">Sign In</a>
+</p>
+</div>
+</form>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Fragmented Rendering -->
+<footer class="w-full mt-section-gap bg-surface-container-low border-t border-outline-variant/20">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-12 w-full max-w-container-max mx-auto">
+<div class="flex flex-col space-y-2 mb-8 md:mb-0 items-center md:items-start">
+<span class="font-headline-md text-headline-md text-on-surface">Lumina Studio</span>
+<span class="font-body-md text-body-md text-on-surface-variant font-label-sm text-label-sm">© 2024 Lumina Studio. All Rights Reserved.</span>
+</div>
+<div class="flex space-x-8">
+<a class="font-body-md text-body-md font-label-sm text-label-sm text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="font-body-md text-body-md font-label-sm text-label-sm text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Terms</a>
+<a class="font-body-md text-body-md font-label-sm text-label-sm text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Shipping</a>
+<a class="font-body-md text-body-md font-label-sm text-label-sm text-on-secondary-fixed-variant hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for form feedback
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.querySelector('label').classList.add('text-primary');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.querySelector('label').classList.remove('text-primary');
+            });
+        });
+    </script>
+</body></html>

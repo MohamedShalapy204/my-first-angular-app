@@ -1,0 +1,330 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>The Developer Collection | Lumina Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Public+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "surface": "#fcf9f8",
+                    "on-surface-variant": "#46483c",
+                    "on-secondary": "#ffffff",
+                    "background": "#fcf9f8",
+                    "surface-container-high": "#eae7e7",
+                    "on-primary-fixed-variant": "#3e4c16",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed-variant": "#812800",
+                    "surface-tint": "#56642b",
+                    "on-secondary-fixed": "#1c1c19",
+                    "secondary-fixed": "#e5e2dd",
+                    "on-primary-fixed": "#161f00",
+                    "surface-dim": "#dcd9d9",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#ffdbcf",
+                    "on-tertiary-fixed": "#380d00",
+                    "tertiary": "#a93700",
+                    "error": "#ba1a1a",
+                    "surface-container": "#f0eded",
+                    "tertiary-container": "#f6662c",
+                    "surface-bright": "#fcf9f8",
+                    "primary-fixed-dim": "#bdce89",
+                    "inverse-on-surface": "#f3f0f0",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#e4e2e1",
+                    "secondary-fixed-dim": "#c9c6c2",
+                    "on-background": "#1b1c1c",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#bdce89",
+                    "primary-fixed": "#d9eaa3",
+                    "surface-container-highest": "#e4e2e1",
+                    "secondary-container": "#e5e2dd",
+                    "outline": "#76786b",
+                    "surface-container-low": "#f6f3f2",
+                    "on-surface": "#1b1c1c",
+                    "tertiary-fixed-dim": "#ffb59b",
+                    "primary-container": "#8a9a5b",
+                    "primary": "#56642b",
+                    "secondary": "#5f5e5b",
+                    "outline-variant": "#c6c8b8",
+                    "on-tertiary-container": "#541700",
+                    "inverse-surface": "#303030",
+                    "on-secondary-fixed-variant": "#474743",
+                    "on-secondary-container": "#656461",
+                    "on-primary": "#ffffff",
+                    "on-primary-container": "#253000"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "margin-desktop": "64px",
+                    "section-gap": "120px",
+                    "gutter": "24px",
+                    "container-max": "1440px",
+                    "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Playfair Display"],
+                    "label-md": ["Public Sans"],
+                    "body-lg": ["Public Sans"],
+                    "label-sm": ["Public Sans"],
+                    "headline-lg-mobile": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"],
+                    "body-md": ["Public Sans"],
+                    "headline-lg": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fcf9f8;
+            -webkit-font-smoothing: antialiased;
+        }
+        .editorial-shadow {
+            box-shadow: 0px 20px 40px rgba(0,0,0,0.04);
+        }
+        .asymmetric-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .product-card-img-wrapper {
+            aspect-ratio: 4/5;
+            overflow: hidden;
+            background-color: #eae7e7;
+        }
+        .product-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .product-card:hover .product-card-img {
+            transform: scale(1.05);
+        }
+        .sticky-filter {
+            position: sticky;
+            top: 100px;
+        }
+    </style>
+</head>
+<body class="text-on-background">
+<!-- TopNavBar -->
+<header class="bg-background dark:bg-background w-full top-0 sticky z-50 border-b border-on-background/10 flat no shadows">
+<nav class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-unit max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-medium text-on-background dark:text-on-background cursor-pointer active:scale-95 transition-all">
+                Lumina Studio
+            </div>
+<div class="hidden md:flex items-center gap-gutter">
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors cursor-pointer" href="#">Studio</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-primary font-bold border-b border-primary pb-1 cursor-pointer" href="#">Hardware</a>
+<a class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors cursor-pointer" href="#">Archive</a>
+</div>
+<div class="flex items-center gap-gutter">
+<button class="cursor-pointer transition-all active:scale-95 hover:opacity-70">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="cursor-pointer transition-all active:scale-95 hover:opacity-70">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</button>
+<button class="md:hidden cursor-pointer transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</nav>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-section-gap">
+<!-- Hero Section -->
+<section class="mb-section-gap max-w-3xl">
+<h1 class="font-display-lg text-display-lg mb-unit">The Developer Collection</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Intentional tools for digital craftsmen. A curated selection of high-performance hardware and studio furniture designed to elevate the creative process.</p>
+</section>
+<div class="flex flex-col lg:flex-row gap-gutter">
+<!-- Sidebar Filtering -->
+<aside class="w-full lg:w-1/4 mb-gutter lg:mb-0">
+<div class="sticky-filter space-y-gutter">
+<div>
+<h3 class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mb-unit">Category</h3>
+<ul class="space-y-2">
+<li class=""><button class="font-body-md text-body-md text-primary font-semibold hover:text-primary transition-colors">All Products</button></li>
+<li class=""><button class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors">Keyboards</button></li>
+<li class=""><button class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors">Hardware</button></li>
+<li class=""><button class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors">Audio</button></li>
+<li class=""><button class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors">Furniture</button></li>
+</ul>
+</div><div class="py-unit"><h3 class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mb-unit">Price Range</h3><div class="flex items-center gap-2"><div class="relative flex-1"><span class="absolute left-3 top-1/2 -translate-y-1/2 font-label-md text-on-surface-variant/50">$</span><input type="number" placeholder="Min" class="w-full pl-7 pr-2 py-2 bg-transparent border-0 border-b border-outline-variant font-body-md text-body-md focus:ring-0 focus:border-primary"></div><span class="text-outline-variant font-body-md">—</span><div class="relative flex-1"><span class="absolute left-3 top-1/2 -translate-y-1/2 font-label-md text-on-surface-variant/50">$</span><input type="number" placeholder="Max" class="w-full pl-7 pr-2 py-2 bg-transparent border-0 border-b border-outline-variant font-body-md text-body-md focus:ring-0 focus:border-primary"></div></div></div>
+<div>
+<h3 class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mb-unit">Sort By</h3>
+<select class="w-full border-0 border-b border-outline-variant bg-transparent py-2 font-body-md text-body-md focus:ring-0 focus:border-primary">
+<option>Newest Arrivals</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+</select>
+</div>
+<div class="hidden lg:block pt-gutter">
+<div class="p-6 bg-secondary-container rounded-lg">
+<p class="font-label-sm text-label-sm uppercase tracking-widest mb-unit opacity-60">Craftsmanship</p>
+<p class="font-body-md text-body-md italic leading-relaxed text-on-secondary-container">"The tools we use define the boundary of our focus."</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Product Grid -->
+<section class="w-full lg:w-3/4">
+<div class="mb-unit lg:mb-gutter w-full relative"><div class="relative flex items-center group"><span class="material-symbols-outlined absolute left-4 text-on-surface-variant/50 group-focus-within:text-primary transition-colors">search</span><input type="text" placeholder="Search our collection..." class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-0 border-b border-outline-variant focus:border-primary focus:ring-0 font-body-md text-on-surface transition-all placeholder:text-on-surface-variant/40"></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-x-gutter gap-y-section-gap">
+<!-- Product 1: Large Feature -->
+<div class="product-card group cursor-pointer md:col-span-2 lg:col-span-1" style="transition: 0.3s;">
+<div class="product-card-img-wrapper mb-gutter rounded-sm">
+<img class="product-card-img" data-alt="A professional walnut-finished mechanical keyboard resting on a soft felt desk mat. The keyboard features cream-colored keycaps and a custom wooden case, illuminated by warm, diffused morning light coming through a window. The aesthetic is extremely minimalist and focused on high-quality natural textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH1I8Efbm6uRKfWRIdzbdxd7wymdQSUtLKKbqyss0t2c60uFtvlvK37ztKSI25YkKutGcjd5vcGYYVJiax5kCbLfARjoS8YAj7rq1FDQ_pGl8OrNaU_AL238LBFCixdRXpwe7S0DxiTMhUFynYWTuqQvL9L16KNne95o-NvMCiJr1N50vvlQTXEB8jv49OgKbQDX3KEmp5BRN3Imc7FrP_Xw2MbN-iuQOTTQY-Yi2AKsAg93bfDB74s15kts2WDkRz6Tg4ImRHYTpv">
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md group-hover:text-primary transition-colors">Walnut Artisan Keyboard</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Solid American walnut chassis with tactile mechanical switches.</p>
+</div>
+<span class="font-label-md text-label-md text-tertiary ml-4">$420.00</span>
+</div>
+</div>
+<!-- Product 2 -->
+<div class="product-card group cursor-pointer" style="transition: 0.3s;">
+<div class="product-card-img-wrapper mb-gutter rounded-sm">
+<img class="product-card-img" data-alt="A close-up high-detail shot of a brushed aluminum graphics card with teal glowing accents. The component shows intricate circuitry and cooling fins, representing high-end industrial design and performance engineering. The lighting is dramatic and moody, emphasizing the metallic textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQIh5MLDKddOu_DP9LS3dFfVGJCh1DKo2YliVCZCnftGaY7qR1yP1N4QIiJA-sZTF9XvcjkvNDJUHfJgAgJoNPs8PehEsi1umyDP3-ixhbKLb7iWqdtihskKaHoUMpooln7ZizfPMfyQzyjyWUCVerX9-jtDWuWhBzqqDSSts-kNTrRQ4yM_NbVwSxWpijTkVowUgamhoP5lqVbBGHX6fvyv3OvPdnLtyxme4QkzkdewR8xmENCC05V79iLcL15ov5F72Uii0t-pEu">
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md group-hover:text-primary transition-colors">RTX Studio Core</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Industrial-grade processing for rendering and deep learning.</p>
+</div>
+<span class="font-label-md text-label-md text-tertiary ml-4">$1,299.00</span>
+</div>
+</div>
+<!-- Product 3 -->
+<div class="product-card group cursor-pointer" style="transition: 0.3s;">
+<div class="product-card-img-wrapper mb-gutter rounded-sm">
+<img class="product-card-img" data-alt="An ultrawide curved monitor centered on a minimalist light-oak desk. A small potted succulent and a single ceramic mug sit beside it against a clean white wall. The scene is bathed in soft, natural daylight, emphasizing a serene and highly productive workspace environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBro4RmJJIFoOKtBdc3c9VuFuU65HFD-7oMqUfzNeaWajlwR3DIWsKNj-uFrHkHuwxl9GBeJbcu5NBTFqhuJSYRmnRF7tcVzc9ihcqH4jXs-E0GeQHo5zM8lpZ_qNYT4evm71m8yZK8LrgLoDVqKgshMT9GB5EKzIQFRIYlO3vG3KuuzMiv_bs9BnM7ZmBlJtbLqMbNHklYgYgNgUP3RV3Z_zVsBoPJ4nWuM4mU0FiWG0hXF52i03CrVPOYr6T7CxkbQuxAcW91hv3M">
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md group-hover:text-primary transition-colors">Horizon Display 38"</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Ultrawide curved panel with 99.9% sRGB color accuracy.</p>
+</div>
+<span class="font-label-md text-label-md text-tertiary ml-4">$1,150.00</span>
+</div>
+</div>
+<!-- Product 4 -->
+<div class="product-card group cursor-pointer" style="transition: 0.3s;">
+<div class="product-card-img-wrapper mb-gutter rounded-sm">
+<img class="product-card-img" data-alt="A professional matte black dynamic microphone mounted on a high-end boom arm in a recording studio. Behind it, vertical wooden acoustic panels provide a warm, textured backdrop. The lighting is precise, highlighting the metallic mesh and sleek silhouette of the audio equipment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbhAAsz4D18JDoOo6yh_eE6iqRGKSOIYIZGeCyz6eM8V69aMa5cj6uj3ZgbLzhKByOELXS4VRRi48HSEmmK8Cylec0CdDq9PvQ_qZTflBjZNHEzxmHGnkw35ITGqcS7nCTxoHhL5td2D30QbmCXT8dhldIiTd1gsUgxU54Rls36t4zo3TyQcyVe93zbi4OpHw92Z7GWbVJ2-rsU-05Qh_MDiDGvj9KjR15siNiz21MtP3nMoj1oItcWcedW1OG6Zwhusx9G8C6OObG">
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md group-hover:text-primary transition-colors">Vocalist Pro Mic</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Broadcast-quality dynamic cardioid for professional audio.</p>
+</div>
+<span class="font-label-md text-label-md text-tertiary ml-4">$399.00</span>
+</div>
+</div>
+<!-- Product 5 -->
+<div class="product-card group cursor-pointer" style="transition: 0.3s;">
+<div class="product-card-img-wrapper mb-gutter rounded-sm">
+<img class="product-card-img" data-alt="A sage green ceramic minimalist vase sitting on a textured stone pedestal against a neutral tan background. The lighting creates subtle shadows that define the smooth, organic form of the pottery. The aesthetic is clean, sophisticated, and focused on material honesty." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAr7Q--CuTrA-vp_sIh1RWkvluE_P2THQU45COYxEN2CwAXVPH57K7sZAbKejG3dpxHsoT9674LyZ5n3I2UCAQXNfLDBJ1AGUJJdiQc_FiezBMy1K5RzTp0pojwGgkJt23T6ZPcwh6bDq8WMPg4qGsLCP9mZBovmvnjyH8ktx-J1qxMm0Q7tpLqQrRjiooVehmVzz2aLwATezD2lZnVQ0A6lTkyxv3yBjlIxOmmjufS_Z8IfSg1f9gGV88h1dW7WeWmJU7VEF2q_F6Q">
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md group-hover:text-primary transition-colors">Sage Studio Vessel</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Hand-thrown stoneware for studio essentials or flora.</p>
+</div>
+<span class="font-label-md text-label-md text-tertiary ml-4">$85.00</span>
+</div>
+</div>
+<!-- Product 6: Wide Feature -->
+<div class="product-card group cursor-pointer md:col-span-2" style="transition: 0.3s;">
+<div class="product-card-img-wrapper mb-gutter rounded-sm h-[400px]">
+<img class="product-card-img" data-alt="A wide, airy studio shot of a custom oak desk with thick side panels. The desk is sparsely decorated with a modern black lamp and a white vase with dried flowers. In the background, a large abstract painting in earthy tones hangs on the wall, and bright sunlight streams in from a large window." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQOl7xNqBsjsz7c_UahSN1sLJCvbV70OUzQoRZaw1dx9jcWsq40iYjWbnWXmu0DD9A3OKKcfI2fcc-EWKwmwRJJO8H7FLOBgA2E3gh1D-vYGy-boyX94yUGmtX5yQLhZlr2WsTFE1VGnNL9d44JqsItPmzc6Chv3xTRCqwfJlV3s3bseTV1EHF6qyt2zyd6o3FMGoFKftgLsmRqoV5TX4Y-7N8jOFwpiIsKojDiy7ncEXGY1MH6ijbS_B43hF93941BFxNf0Zbp3DK">
+</div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-headline-md group-hover:text-primary transition-colors">Craftsman Oak Desk</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Solid white oak with integrated cable management and concealed drawers.</p>
+</div>
+<span class="font-label-md text-label-md text-tertiary ml-4">$2,450.00</span>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<nav class="flex justify-center items-center gap-4 mt-section-gap">
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant hover:bg-primary-container hover:text-white transition-all">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="font-label-md text-label-md text-primary font-bold px-4 h-10 flex items-center border-b-2 border-primary">1</button>
+<button class="font-label-md text-label-md text-on-surface-variant px-4 h-10 flex items-center hover:text-primary transition-colors">2</button>
+<button class="font-label-md text-label-md text-on-surface-variant px-4 h-10 flex items-center hover:text-primary transition-colors">3</button>
+<span class="font-label-md text-label-md text-on-surface-variant px-2">...</span>
+<button class="font-label-md text-label-md text-on-surface-variant px-4 h-10 flex items-center hover:text-primary transition-colors">8</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant hover:bg-primary-container hover:text-white transition-all">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</nav>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-background dark:bg-background w-full mt-section-gap border-t border-on-background/10 flat no shadows">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-gutter gap-unit max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md text-on-background">Lumina Studio</div>
+<div class="flex flex-wrap justify-center gap-6 my-gutter md:my-0">
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant/60 hover:text-on-background transition-colors hover:underline underline-offset-4" href="#">Shipping</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant/60 hover:text-on-background transition-colors hover:underline underline-offset-4" href="#">Terms</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant/60 hover:text-on-background transition-colors hover:underline underline-offset-4" href="#">Sustainability</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant/60 hover:text-on-background transition-colors hover:underline underline-offset-4" href="#">Contact</a>
+</div>
+<div class="font-label-sm text-label-sm uppercase tracking-widest text-secondary dark:text-secondary-fixed-dim text-center md:text-right">
+                © 2024 Lumina Studio. Designed for Intentionality.
+            </div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for product cards
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'all 0.3s ease';
+            });
+        });
+
+        // Search action mockup
+        const searchBtn = document.querySelector('[data-icon="search"]').parentElement;
+        searchBtn.addEventListener('click', () => {
+            console.log('Search interface activated');
+            // Mock interaction: toggle a search bar or overlay
+        });
+    </script>
+
+
+</body></html>
