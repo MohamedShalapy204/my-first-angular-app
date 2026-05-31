@@ -1,0 +1,46 @@
+<section #collections appScrollReveal class="pb-section-gap px-padding-desktop max-w-[1440px] mx-auto">
+  <div class="flex flex-col md:flex-row justify-between items-baseline mb-16 gap-4">
+    <h2 class="text-h2 font-display">{{ translate('home.collections') }}</h2>
+    <a class="text-sm text-primary border-b border-primary/20 hover:border-primary transition-colors pb-1" href="#">
+      {{ translate('home.viewAll') }}
+    </a>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Keyboards -->
+    <div class="tilt-card group cursor-pointer">
+      <div class="tilt-card-inner aspect-[3/4] overflow-hidden rounded-lg mb-6 bg-surface-container-low border border-outline/5 shadow-md">
+        <img alt="Keyboards" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlNr5eisaNgo6AMI9yqjS_vgAySXMKcgiKvLlgnK5t17-sY9RV6w4xV3nDyLilGT1xWaEOlvQZknrCfpcai7-I-l5CL_UgQalXNt5dN4ZbBIPUc71Rx7FgFugRL05sX10ziDtLglpwNO--o3wxA-_YM9lHUk1E9ndskUdjCLyu8dJRuf1Q71W-PYYqfUUW3HUGSm16R8LCH3rVHqAvkRQA45Dz3cTrwsUUWFiIu1LgYB-xg3vh2ZZFYPbf5L4RmT6-35ciw_orA4sa">
+      </div>
+      <div class="flex justify-between items-center px-2">
+        <h3 class="text-h4 font-display group-hover:text-primary transition-colors">{{ translate('home.category.keyboards') }}</h3>
+        <span class="material-symbols-outlined text-outline-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>
+      <p class="text-xs text-outline uppercase tracking-wider mt-2 px-2">{{ translate('home.category.keyboards.sub') }}</p>
+    </div>
+    <!-- Hardware -->
+    <div class="tilt-card group cursor-pointer md:mt-12">
+      <div class="tilt-card-inner aspect-[3/4] overflow-hidden rounded-lg mb-6 bg-surface-container-low border border-outline/5 shadow-md">
+        <img alt="Hardware" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAskxyUdQ0KFRElPPHWNYPEijuGxFzvBaGzJHUicgqq1q2i1BaykQpCbIl79fgX30iw8ngXc7h2N_A7V2_LIlthT1WC7a9q9RlQyVKFqQ4kSr2L7801nns54eOU5J8fX5LJZJiSLBqwp8P1_lEenpAlOSn7SZHpVG6vgEI74w6rsmFX0QuLaEys8saFYzfNUBRyIveJ1DFLagvb3YmJJFCBrM3P045URtAqq5i4s-n8d1qEdRcPo4cd-_6G698s8EiNlpAL3wYCYepF">
+      </div>
+      <div class="flex justify-between items-center px-2">
+        <h3 class="text-h4 font-display group-hover:text-primary transition-colors">{{ translate('home.category.hardware') }}</h3>
+        <span class="material-symbols-outlined text-outline-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>
+      <p class="text-xs text-outline uppercase tracking-wider mt-2 px-2">{{ translate('home.category.hardware.sub') }}</p>
+    </div>
+    <!-- Audio -->
+    <div class="tilt-card group cursor-pointer">
+      <div class="tilt-card-inner aspect-[3/4] overflow-hidden rounded-lg mb-6 bg-surface-container-low border border-outline/5 shadow-md">
+        <img alt="Audio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFlOe32mDhI0o5JXPPvQkCLEg12xOHb4FcZijtWpzjLAi88ybARG72ldfG6j6rPjp3LUF0Q0JpxV9XgLxbT3qs9Xo_6ShXOY2vX0-Gw7pjC05prnEn57vRiq3zrGPnLBOKJ8KBU4MY_W0S0ttXUDG-EMznNm134L3ejqgFeQ13JQS-lcavDMJTPhEVWDDxXPiVDaxCtkRPEdkWXrH179e2B-HTFiIjOEKfI-IFN0mGE_TSMjzbM6Bcf7HFfkzzqYYwb739NkbJJF_J">
+      </div>
+      <div class="flex justify-between items-center px-2">
+        <h3 class="text-h4 font-display group-hover:text-primary transition-colors">{{ translate('home.category.audio') }}</h3>
+        <span class="material-symbols-outlined text-outline-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">arrow_forward</span>
+      </div>
+      <p class="text-xs text-outline uppercase tracking-wider mt-2 px-2">{{ translate('home.category.audio.sub') }}</p>
+    </div>
+  </div>
+</section>

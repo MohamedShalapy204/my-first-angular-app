@@ -1,0 +1,15 @@
+<section #newsletter appScrollReveal class="py-section-gap px-padding-desktop max-w-[1440px] mx-auto text-center">
+  <div class="max-w-2xl mx-auto">
+    <h2 class="text-h2 font-display mb-4">{{ translate('home.newsletter.title') }}</h2>
+    <p class="text-base text-secondary mb-10">{{ translate('home.newsletter.description') }}</p>
+    <form class="flex flex-col md:flex-row gap-4 max-w-md mx-auto">
+      <input class="flex-1 bg-transparent border-0 border-b border-outline py-3 focus:ring-0 focus:border-primary text-sm"
+        placeholder="email@address.com" type="email">
+      <div class="magnetic-wrap">
+        <button class="magnetic-btn bg-primary text-white px-8 py-3 rounded-full text-xs font-semibold uppercase tracking-widest hover:bg-opacity-90 transition-all" type="submit">
+          {{ translate('home.newsletter.cta') }}
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,193 +1,178 @@
 @import "tailwindcss";
 
+@theme {
+  /* ── Spacing (8px base) ── */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-base: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2.5rem;
+  --spacing-xl: 4rem;
+  --spacing-2xl: 6.5rem;
+  --spacing-section-gap: 7.5rem;
+  --spacing-3xl: 10rem;
+
+  /* ── Padding ── */
+  --spacing-padding-sm: 1rem;
+  --spacing-padding-md: 1.5rem;
+  --spacing-padding-desktop: 4rem;
+
+  /* ── Margin ── */
+  --spacing-margin-sm: 1rem;
+  --spacing-margin-md: 1.5rem;
+  --spacing-margin-desktop: 4rem;
+
+  /* ── Radius ── */
+  --radius-sm: 0.125rem;
+  --radius-default: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-full: 9999px;
+
+  /* ── Font Families ── */
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Public Sans', system-ui, sans-serif;
+
+  /* ── Font Sizes ── */
+  --text-display-2xl: clamp(4.5rem, 12vw, 9rem);
+  --text-display-xl: clamp(3.5rem, 9vw, 6.5rem);
+  --text-display-lg: clamp(2.5rem, 7vw, 4.5rem);
+  --text-h1: 3.052rem;
+  --text-h2: 2.441rem;
+  --text-h3: 1.953rem;
+  --text-h4: 1.563rem;
+  --text-base: 1rem;
+  --text-sm: 0.875rem;
+  --text-xs: 0.75rem;
+
+  /* ── Line Heights ── */
+  --lh-display: 1.05;
+  --lh-heading: 1.2;
+  --lh-body: 1.6;
+
+  /* ── Colors (Light) ── */
+  --color-background: oklch(0.98 0.003 150);
+  --color-surface: oklch(1 0 0);
+  --color-surface-dim: oklch(0.94 0.003 150);
+  --color-surface-bright: oklch(0.98 0.003 150);
+  --color-surface-container-lowest: oklch(1 0 0);
+  --color-surface-container-low: oklch(0.97 0.003 150);
+  --color-surface-container: oklch(0.95 0.003 150);
+  --color-surface-container-high: oklch(0.93 0.003 150);
+  --color-surface-container-highest: oklch(0.91 0.003 150);
+  --color-surface-variant: oklch(0.85 0.02 210);
+
+  --color-on-surface: oklch(0.2 0.01 150);
+  --color-on-surface-variant: oklch(0.55 0.01 150);
+  --color-on-background: oklch(0.2 0.01 150);
+
+  --color-primary: oklch(0.38 0.06 145);
+  --color-on-primary: oklch(1 0 0);
+  --color-primary-container: oklch(0.55 0.06 145);
+  --color-on-primary-container: oklch(0.15 0.02 145);
+
+  --color-secondary: oklch(0.45 0.08 145);
+  --color-on-secondary: oklch(1 0 0);
+  --color-secondary-container: oklch(0.85 0.04 145);
+  --color-on-secondary-container: oklch(0.2 0.02 145);
+
+  --color-tertiary: oklch(0.45 0.14 35);
+  --color-on-tertiary: oklch(1 0 0);
+  --color-tertiary-container: oklch(0.6 0.12 35);
+  --color-on-tertiary-container: oklch(0.2 0.02 35);
+
+  --color-outline: oklch(0.5 0.01 150);
+  --color-outline-variant: oklch(0.82 0.01 150);
+
+  --color-inverse-surface: oklch(0.2 0.01 150);
+  --color-inverse-on-surface: oklch(0.95 0.003 150);
+  --color-inverse-primary: oklch(0.75 0.06 145);
+
+  --color-error: oklch(0.55 0.2 25);
+  --color-on-error: oklch(1 0 0);
+  --color-error-container: oklch(0.6 0.18 25);
+  --color-on-error-container: oklch(0.2 0.02 25);
+
+  --color-success: oklch(0.5 0.12 145);
+  --color-warning: oklch(0.8 0.12 70);
+  --color-info: oklch(0.85 0.02 210);
+}
+
 @layer base {
-  :root {
-    /* ── Surface ── */
-    --background: oklch(0.98 0.003 150);
-    --surface: oklch(1 0 0);
-    --surface-dim: oklch(0.94 0.003 150);
-    --surface-bright: oklch(0.98 0.003 150);
-    --surface-container-lowest: oklch(1 0 0);
-    --surface-container-low: oklch(0.97 0.003 150);
-    --surface-container: oklch(0.95 0.003 150);
-    --surface-container-high: oklch(0.93 0.003 150);
-    --surface-container-highest: oklch(0.91 0.003 150);
-
-    /* ── On-Surface (Text) ── */
-    --on-surface: oklch(0.2 0.01 150);
-    --on-surface-variant: oklch(0.55 0.01 150);
-    --on-background: oklch(0.2 0.01 150);
-
-    /* ── Primary (Sage Green) ── */
-    --primary: oklch(0.38 0.06 145);
-    --on-primary: oklch(1 0 0);
-    --primary-container: oklch(0.55 0.06 145);
-    --on-primary-container: oklch(0.15 0.02 145);
-
-    /* ── Secondary (Deep Slate Moss) ── */
-    --secondary: oklch(0.45 0.08 145);
-    --on-secondary: oklch(1 0 0);
-    --secondary-container: oklch(0.85 0.04 145);
-    --on-secondary-container: oklch(0.2 0.02 145);
-
-    /* ── Tertiary (Warm Terracotta) ── */
-    --tertiary: oklch(0.45 0.14 35);
-    --on-tertiary: oklch(1 0 0);
-    --tertiary-container: oklch(0.6 0.12 35);
-    --on-tertiary-container: oklch(0.2 0.02 35);
-
-    /* ── Outline ── */
-    --outline: oklch(0.5 0.01 150);
-    --outline-variant: oklch(0.82 0.01 150);
-
-    /* ── Inverse ── */
-    --inverse-surface: oklch(0.2 0.01 150);
-    --inverse-on-surface: oklch(0.95 0.003 150);
-    --inverse-primary: oklch(0.75 0.06 145);
-
-    /* ── Semantic ── */
-    --error: oklch(0.55 0.2 25);
-    --on-error: oklch(1 0 0);
-    --error-container: oklch(0.6 0.18 25);
-    --on-error-container: oklch(0.2 0.02 25);
-    --success: oklch(0.5 0.12 145);
-    --warning: oklch(0.8 0.12 70);
-    --info: oklch(0.85 0.02 210);
-
-    /* ── Surface Variant ── */
-    --surface-variant: oklch(0.85 0.02 210);
-    --on-surface-variant: oklch(0.55 0.01 150);
-
-    /* ── Layout ── */
-    --content-max-width: 1440px;
-    --header-height: 5.5rem;
-    --sidebar-width: 280px;
-
-    /* ── Radius ── */
-    --radius-sm: 0.125rem;
-    --radius: 0.25rem;
-    --radius-md: 0.375rem;
-    --radius-lg: 0.5rem;
-    --radius-xl: 0.75rem;
-    --radius-2xl: 1.5rem;
-    --radius-3xl: 2rem;
-    --radius-full: 9999px;
-
-    /* ── Spacing (8px base) ── */
-    --space-xs: 0.25rem;   /* 4px */
-    --space-sm: 0.5rem;    /* 8px */
-    --space-base: 1rem;    /* 16px */
-    --space-md: 1.5rem;    /* 24px */
-    --space-lg: 2.5rem;    /* 40px */
-    --space-xl: 4rem;      /* 64px */
-    --space-2xl: 6.5rem;   /* 104px */
-    --space-section-gap: 7.5rem; /* 120px */
-    --space-3xl: 10rem;    /* 160px */
-
-    /* ── Typography ── */
-    --font-display: 'Playfair Display', serif;
-    --font-body: 'Public Sans', system-ui, sans-serif;
-
-    /* ── Display Sizes (Fluid) ── */
-    --text-display-2xl: clamp(4.5rem, 12vw, 9rem);
-    --text-display-xl: clamp(3.5rem, 9vw, 6.5rem);
-    --text-display-lg: clamp(2.5rem, 7vw, 4.5rem);
-
-    /* ── Heading Sizes ── */
-    --text-h1: 3.052rem;
-    --text-h2: 2.441rem;
-    --text-h3: 1.953rem;
-    --text-h4: 1.563rem;
-
-    /* ── Body Sizes ── */
-    --text-base: 1rem;
-    --text-sm: 0.875rem;
-    --text-xs: 0.75rem;
-
-    /* ── Line Heights ── */
-    --lh-display: 1.05;
-    --lh-heading: 1.2;
-    --lh-body: 1.6;
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
   }
 
-  [data-theme="dark"] {
-    /* ── Surface (Dark) ── */
-    --background: oklch(0.14 0.01 160);
-    --surface: oklch(0.18 0.01 160);
-    --surface-dim: oklch(0.14 0.01 160);
-    --surface-bright: oklch(0.24 0.01 160);
-    --surface-container-lowest: oklch(0.1 0.01 160);
-    --surface-container-low: oklch(0.16 0.01 160);
-    --surface-container: oklch(0.18 0.01 160);
-    --surface-container-high: oklch(0.22 0.01 160);
-    --surface-container-highest: oklch(0.26 0.01 160);
-
-    /* ── On-Surface (Dark) ── */
-    --on-surface: oklch(0.9 0.01 160);
-    --on-surface-variant: oklch(0.7 0.01 160);
-    --on-background: oklch(0.9 0.01 160);
-
-    /* ── Primary (Dark) ── */
-    --primary: oklch(0.75 0.06 145);
-    --on-primary: oklch(0.2 0.02 145);
-    --primary-container: oklch(0.55 0.06 145);
-    --on-primary-container: oklch(0.9 0.02 145);
-
-    /* ── Secondary (Dark) ── */
-    --secondary: oklch(0.75 0.05 145);
-    --on-secondary: oklch(0.2 0.02 145);
-    --secondary-container: oklch(0.3 0.04 145);
-    --on-secondary-container: oklch(0.85 0.03 145);
-
-    /* ── Tertiary (Dark) ── */
-    --tertiary: oklch(0.75 0.1 35);
-    --on-tertiary: oklch(0.25 0.02 35);
-    --tertiary-container: oklch(0.55 0.1 35);
-    --on-tertiary-container: oklch(0.9 0.01 35);
-
-    /* ── Outline (Dark) ── */
-    --outline: oklch(0.55 0.01 160);
-    --outline-variant: oklch(0.3 0.01 160);
-
-    /* ── Inverse (Dark) ── */
-    --inverse-surface: oklch(0.9 0.01 160);
-    --inverse-on-surface: oklch(0.2 0.01 160);
-    --inverse-primary: oklch(0.38 0.06 145);
-
-    /* ── Semantic (Dark) ── */
-    --error: oklch(0.75 0.15 25);
-    --on-error: oklch(0.2 0.02 25);
-    --error-container: oklch(0.5 0.15 25);
-    --on-error-container: oklch(0.9 0.01 25);
-    --success: oklch(0.75 0.1 145);
-    --warning: oklch(0.85 0.1 70);
-    --info: oklch(0.75 0.05 210);
-
-    /* ── Surface Variant (Dark) ── */
-    --surface-variant: oklch(0.25 0.02 160);
-
-    /* ── Line Heights (Dark: slightly more breathing room) ── */
-    --lh-body: 1.7;
-  }
-
-  /* ── Backward Compatibility Aliases ── */
   :root {
-    --bg-base: var(--background);
-    --bg-surface: var(--surface);
-    --fg-base: var(--on-surface);
-    --fg-muted: var(--on-surface-variant);
-    --accent: var(--primary);
-    --accent-fg: var(--on-primary);
-    --brand-moss: var(--secondary);
-    --brand-clay: var(--tertiary);
-    --brand-mist: var(--surface-variant);
+    /* ── Backward Compatibility Aliases ── */
+    --bg-base: var(--color-background);
+    --bg-surface: var(--color-surface);
+    --fg-base: var(--color-on-surface);
+    --fg-muted: var(--color-on-surface-variant);
+    --accent: var(--color-primary);
+    --accent-fg: var(--color-on-primary);
+    --brand-moss: var(--color-secondary);
+    --brand-clay: var(--color-tertiary);
+    --brand-mist: var(--color-surface-variant);
     --font-heading: var(--font-display);
   }
 
-  /* ── Body ── */
+  [data-theme="dark"] {
+    --color-background: oklch(0.14 0.01 160);
+    --color-surface: oklch(0.18 0.01 160);
+    --color-surface-dim: oklch(0.14 0.01 160);
+    --color-surface-bright: oklch(0.24 0.01 160);
+    --color-surface-container-lowest: oklch(0.1 0.01 160);
+    --color-surface-container-low: oklch(0.16 0.01 160);
+    --color-surface-container: oklch(0.18 0.01 160);
+    --color-surface-container-high: oklch(0.22 0.01 160);
+    --color-surface-container-highest: oklch(0.26 0.01 160);
+    --color-surface-variant: oklch(0.25 0.02 160);
+
+    --color-on-surface: oklch(0.9 0.01 160);
+    --color-on-surface-variant: oklch(0.7 0.01 160);
+    --color-on-background: oklch(0.9 0.01 160);
+
+    --color-primary: oklch(0.75 0.06 145);
+    --color-on-primary: oklch(0.2 0.02 145);
+    --color-primary-container: oklch(0.55 0.06 145);
+    --color-on-primary-container: oklch(0.9 0.02 145);
+
+    --color-secondary: oklch(0.75 0.05 145);
+    --color-on-secondary: oklch(0.2 0.02 145);
+    --color-secondary-container: oklch(0.3 0.04 145);
+    --color-on-secondary-container: oklch(0.85 0.03 145);
+
+    --color-tertiary: oklch(0.75 0.1 35);
+    --color-on-tertiary: oklch(0.25 0.02 35);
+    --color-tertiary-container: oklch(0.55 0.1 35);
+    --color-on-tertiary-container: oklch(0.9 0.01 35);
+
+    --color-outline: oklch(0.55 0.01 160);
+    --color-outline-variant: oklch(0.3 0.01 160);
+
+    --color-inverse-surface: oklch(0.9 0.01 160);
+    --color-inverse-on-surface: oklch(0.2 0.01 160);
+    --color-inverse-primary: oklch(0.38 0.06 145);
+
+    --color-error: oklch(0.75 0.15 25);
+    --color-on-error: oklch(0.2 0.02 25);
+    --color-error-container: oklch(0.5 0.15 25);
+    --color-on-error-container: oklch(0.9 0.01 25);
+
+    --color-success: oklch(0.75 0.1 145);
+    --color-warning: oklch(0.85 0.1 70);
+    --color-info: oklch(0.75 0.05 210);
+
+    --lh-body: 1.7;
+  }
+
   body {
-    background-color: var(--background);
-    color: var(--on-surface);
+    background-color: var(--color-background);
+    color: var(--color-on-surface);
     font-family: var(--font-body);
     font-size: var(--text-base);
     line-height: var(--lh-body);
@@ -203,13 +188,12 @@
     font-family: 'Inter', system-ui, sans-serif;
   }
 
-  /* ── Headings ── */
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     font-weight: 500;
     letter-spacing: -0.02em;
     line-height: var(--lh-heading);
-    color: var(--on-surface);
+    color: var(--color-on-surface);
   }
 
   h1 { font-size: var(--text-h1); line-height: var(--lh-display); }
@@ -217,27 +201,19 @@
   h3 { font-size: var(--text-h3); }
   h4 { font-size: var(--text-h4); }
 
-  /* ── Display Utility Classes ── */
-  .text-display-2xl { font-size: var(--text-display-2xl); line-height: var(--lh-display); letter-spacing: -0.04em; font-family: var(--font-display); }
-  .text-display-xl { font-size: var(--text-display-xl); line-height: var(--lh-display); letter-spacing: -0.03em; font-family: var(--font-display); }
-  .text-display-lg { font-size: var(--text-display-lg); line-height: var(--lh-display); letter-spacing: -0.03em; font-family: var(--font-display); }
-
-  /* ── Body ── */
   p {
     max-width: 70ch;
   }
 
-  /* ── Links ── */
   a {
-    color: var(--primary);
+    color: var(--color-primary);
     text-decoration: none;
     transition: color 0.2s ease;
   }
   a:hover {
-    color: var(--tertiary);
+    color: var(--color-tertiary);
   }
 
-  /* ── Custom Scrollbar ── */
   ::-webkit-scrollbar {
     width: 4px;
   }
@@ -245,16 +221,52 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: oklch(from var(--on-surface-variant) l c h / 0.2);
+    background: oklch(from var(--color-on-surface-variant) l c h / 0.2);
     border-radius: 10px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: oklch(from var(--primary) l c h / 0.4);
+    background: oklch(from var(--color-primary) l c h / 0.4);
   }
 
-  /* ── Selection ── */
   ::selection {
-    background: oklch(from var(--primary) l c h / 0.2);
-    color: var(--on-surface);
+    background: oklch(from var(--color-primary) l c h / 0.2);
+    color: var(--color-on-surface);
   }
+}
+
+/* ── 3D Effects & Animations ── */
+
+/* Scroll Reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 3D Tilt Card */
+.tilt-card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.1s ease;
+}
+.tilt-card-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease-out;
+}
+
+/* Magnetic Button */
+.magnetic-wrap {
+  display: inline-block;
+}
+.magnetic-btn {
+  will-change: transform;
+}
+
+/* Parallax Layer */
+.parallax-layer {
+  transition: transform 0.1s ease-out;
 }
