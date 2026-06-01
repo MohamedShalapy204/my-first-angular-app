@@ -1,12 +1,11 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { TranslationService } from '../../services/translation';
-import { ScrollReveal } from '../home/scroll-reveal';
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ScrollReveal],
+  imports: [],
   host: { class: 'block w-full' },
 })
 export class ProductDetail {

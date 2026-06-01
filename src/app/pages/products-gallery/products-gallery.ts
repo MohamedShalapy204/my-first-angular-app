@@ -2,13 +2,12 @@ import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { TranslationService } from '../../services/translation';
 import { SidebarFilter } from './sidebar-filter';
 import { ProductGrid } from './product-grid';
-import { Pagination } from './pagination';
 
 @Component({
   selector: 'app-products-gallery',
   templateUrl: './products-gallery.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [SidebarFilter, ProductGrid, Pagination],
+  imports: [SidebarFilter, ProductGrid],
   host: { class: 'block w-full' },
 })
 export class ProductsGallery {
