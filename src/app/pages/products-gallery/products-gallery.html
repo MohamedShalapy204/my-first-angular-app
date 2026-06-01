@@ -1,0 +1,15 @@
+<main class="max-w-[1440px] mx-auto px-padding-desktop py-section-gap">
+  <!-- Hero Section -->
+  <section class="mb-section-gap max-w-3xl">
+    <h1 class="text-display-lg font-display mb-unit">{{ translate('gallery.title') }}</h1>
+    <p class="text-lg text-on-surface-variant">{{ translate('gallery.description') }}</p>
+  </section>
+
+  <div class="flex flex-col lg:flex-row gap-6">
+    <!-- Sidebar Filtering -->
+    <app-sidebar-filter class="w-full lg:w-1/4 mb-6 lg:mb-0" />
+
+    <!-- Product Grid -->
+    <app-product-grid class="w-full lg:w-3/4" />
+  </div>
+</main>

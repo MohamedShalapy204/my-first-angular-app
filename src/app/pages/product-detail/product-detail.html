@@ -1,0 +1,111 @@
+<main class="max-w-[1440px] mx-auto px-padding-desktop overflow-hidden">
+  <!-- Hero Section: The Focused Workspace -->
+  <section class="pt-16 flex flex-col md:flex-row gap-16 items-center">
+    <div class="w-full md:w-7/12">
+      <div class="relative overflow-hidden rounded-lg bg-surface-container-low">
+        <img alt="The Focused Workspace" class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
+          src="https://lh3.googleusercontent.com/aida/ADBb0uibbiefEL8a61JpcVswkMdmbIQerdzy72QLOOxLTYj1iUaKFE0UBJ4v_DSAeAkgU9wHJ2m8fPjzikcmeoy8qoE1B4PPI8UJGEsnknT16JprhwboJpSDhPjMSWCwPOI-vKsj3fyzIcfdwYaD1QeseXSTunAli87Od40DVIUjU6b-R8pYUwbuAyS-1sR_a6yIBXB4cvyKlca9ERIpYEOVkbD4xp9FCxjx4pfD3WGAKcdZ5UuhKzsM4hEpOqY">
+      </div>
+    </div>
+    <div class="w-full md:w-5/12 flex flex-col gap-8">
+      <div class="space-y-4">
+        <span class="text-sm text-primary tracking-widest uppercase">Signature Collection</span>
+        <h1 class="text-h2 font-display text-on-surface">The Focused Workspace</h1>
+        <p class="text-lg text-secondary max-w-md">
+          A sanctuary of intentionality. The Focused Workspace combines organic materials with precision engineering to create an environment where clarity of thought and peak productivity coexist.
+        </p>
+      </div>
+      <div class="space-y-2">
+        <p class="text-secondary">Price</p>
+        <p class="text-h4 text-tertiary font-bold">$2,418.00</p>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-4 pt-4">
+        <button class="flex-1 bg-primary text-on-primary py-5 rounded-full hover:bg-primary/90 transition-all active:scale-[0.98]">
+          Add to Bag
+        </button>
+        <button class="flex-1 border border-outline text-on-surface py-5 rounded-full hover:bg-surface-container-low transition-all active:scale-[0.98]">
+          Customize Setup
+        </button>
+      </div>
+      <div class="pt-6 border-t border-outline-variant/30">
+        <div class="flex items-center gap-4">
+          <div class="flex text-tertiary">
+            @for (star of [1,2,3,4,5]; track star) {
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            }
+          </div>
+          <span class="text-xs text-secondary">4.9 Based on 128 Reviews</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Gallery/Details: The Studio Desk -->
+  <section class="mt-section-gap mb-section-gap">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+      <div class="md:col-span-5 space-y-8 order-2 md:order-1">
+        <span class="text-sm text-primary tracking-widest uppercase">The Foundation</span>
+        <h2 class="text-h4 font-display">The Studio Desk</h2>
+        <p class="text-base text-secondary leading-relaxed">
+          Crafted from hand-selected solid American Walnut, the Studio Desk is the centerpiece of the Focused Workspace. Each surface is finished with a natural oil-rubbed patina that deepens in character over years of use.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <span class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-xs">Solid Walnut</span>
+          <span class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-xs">Hand-Finished</span>
+          <span class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-xs">Sustainably Sourced</span>
+        </div>
+      </div>
+      <div class="md:col-span-7 order-1 md:order-2">
+        <div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-low shadow-sm">
+          <img alt="The Studio Desk" class="w-full h-full object-cover"
+            src="https://lh3.googleusercontent.com/aida/ADBb0ujY943ot04Mn3EiLP5hvKb9cHiu8-sXdFpZM_F2aBKu46xykSJhOBk3JreKUfJu4laGZ-FXWWCBcytJgbxCAyD3AfISycyTSb0bWzNOAhIy-JTTzwPofQSgT4hkbUuP9DaIIgm0RJtIBREnQw4c7h2NBtJP5fI7YRKX7hhWSH06_poOKqvqu9TewIJM8XzT7rRLIDezqTBWhKoS8_G0wLKSd4QiXP2jhX3EX4CFUVAqPoZbyxlyhRUqW9LO">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technical Specifications Grid -->
+  <section class="bg-surface-container-low -mx-padding-desktop px-padding-desktop py-24">
+    <div class="max-w-[1440px] mx-auto">
+      <div class="mb-16 text-center">
+        <h2 class="text-h4 font-display mb-4">Precision Engineering</h2>
+        <p class="text-secondary">Every component measured for focus and longevity.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        @for (spec of specs; track spec.title) {
+          <div class="p-8 bg-surface rounded-lg border border-outline-variant/20 flex flex-col gap-4">
+            <span class="material-symbols-outlined text-primary text-3xl">{{ spec.icon }}</span>
+            <h4 class="text-sm uppercase tracking-tight">{{ spec.title }}</h4>
+            <p class="text-secondary">{{ spec.description }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof: Customer Reflections -->
+  <section class="py-24 border-t border-outline-variant/20">
+    <div class="flex flex-col items-center mb-16 text-center">
+      <span class="text-sm text-primary mb-2">Voices of Creators</span>
+      <h2 class="text-h4 font-display">Customer Reflections</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      @for (review of reviews; track review.name; let i = $index) {
+        <div class="flex flex-col gap-6" [class.border-l]="i > 0" [class.pl-0]="i === 0" [class.md:pl-12]="i > 0" [class.border-outline-variant/30]="i > 0">
+          <div class="flex text-tertiary mb-2">
+            @for (star of [1,2,3,4,5]; track star) {
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+            }
+          </div>
+          <blockquote class="text-body-lg italic leading-relaxed text-on-surface">
+            {{ review.quote }}
+          </blockquote>
+          <div>
+            <p class="text-sm font-bold text-on-surface">{{ review.name }}</p>
+            <p class="text-xs text-secondary">{{ review.role }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+</main>

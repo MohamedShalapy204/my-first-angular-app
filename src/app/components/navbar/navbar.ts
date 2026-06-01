@@ -1,10 +1,12 @@
 import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { SettingsService } from '../../services/settings';
 import { TranslationService } from '../../services/translation';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.html',
+  imports: [RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'block w-full',

@@ -4,20 +4,20 @@
   <div class="flex items-center gap-12">
     <a
       class="font-display text-h3 font-medium tracking-tighter text-on-surface hover:text-primary transition-colors"
-      href="/"
+      routerLink="/"
     >
       STUDIO
     </a>
     <nav class="hidden md:flex gap-8">
       <a
         class="text-primary font-bold border-b border-primary text-sm font-semibold tracking-wide cursor-pointer transition-opacity active:opacity-70"
-        href="#"
+        routerLink="/products"
       >
         {{ translate('nav.shop') }}
       </a>
       <a
         class="text-secondary text-sm tracking-wide hover:text-primary transition-colors duration-300 cursor-pointer active:opacity-70"
-        href="#"
+        routerLink="/products"
       >
         {{ translate('nav.story') }}
       </a>
@@ -44,13 +44,13 @@
       <span class="material-symbols-outlined text-primary">search</span>
     </button>
 
-    <button class="flex items-center cursor-pointer transition-opacity active:opacity-70" aria-label="Shopping bag">
+    <a routerLink="/cart" class="flex items-center cursor-pointer transition-opacity active:opacity-70" aria-label="Shopping bag">
       <span class="material-symbols-outlined text-primary">shopping_bag</span>
-    </button>
+    </a>
 
-    <button class="flex items-center cursor-pointer transition-opacity active:opacity-70" aria-label="Profile">
+    <a routerLink="/profile" class="flex items-center cursor-pointer transition-opacity active:opacity-70" aria-label="Profile">
       <span class="material-symbols-outlined text-primary">person</span>
-    </button>
+    </a>
 
     <button
       class="flex items-center cursor-pointer transition-opacity active:opacity-70"

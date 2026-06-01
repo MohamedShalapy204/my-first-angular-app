@@ -41,7 +41,32 @@ export type TranslationKey =
   | 'home.featured.cta'
   | 'home.newsletter.title'
   | 'home.newsletter.description'
-  | 'home.newsletter.cta';
+  | 'home.newsletter.cta'
+  | 'gallery.title'
+  | 'gallery.description'
+  | 'bag.title'
+  | 'bag.subtitle'
+  | 'bag.checkout'
+  | 'bag.promo'
+  | 'bag.apply'
+  | 'bag.subtotal'
+  | 'bag.shipping'
+  | 'bag.tax'
+  | 'bag.total'
+  | 'product.addToBag'
+  | 'product.customize'
+  | 'product.reviews'
+  | 'product.collection'
+  | 'product.foundation'
+  | 'product.engineering'
+  | 'product.voices'
+  | 'profile.savedSetups'
+  | 'profile.viewAll'
+  | 'profile.viewSetup'
+  | 'profile.orderHistory'
+  | 'profile.account'
+  | 'profile.concierge'
+  | 'profile.contactAdvisor';
 
 const translations: Record<Lang, Record<TranslationKey, string>> = {
   en: {
@@ -85,6 +110,31 @@ const translations: Record<Lang, Record<TranslationKey, string>> = {
     'home.newsletter.title': 'The Monograph',
     'home.newsletter.description': 'Subscribe to receive seasonal curations, design stories, and early access to new collections.',
     'home.newsletter.cta': 'Join',
+    'gallery.title': 'The Developer Collection',
+    'gallery.description': 'Intentional tools for digital craftsmen. A curated selection of high-performance hardware and studio furniture designed to elevate the creative process.',
+    'bag.title': 'Shopping Bag',
+    'bag.subtitle': 'Your intentional selection of crafted objects.',
+    'bag.checkout': 'Proceed to Checkout',
+    'bag.promo': 'Gift card or promo code',
+    'bag.apply': 'Apply',
+    'bag.subtotal': 'Subtotal',
+    'bag.shipping': 'Shipping',
+    'bag.tax': 'Tax',
+    'bag.total': 'Total',
+    'product.addToBag': 'Add to Bag',
+    'product.customize': 'Customize Setup',
+    'product.reviews': 'Based on 128 Reviews',
+    'product.collection': 'Signature Collection',
+    'product.foundation': 'The Foundation',
+    'product.engineering': 'Precision Engineering',
+    'product.voices': 'Voices of Creators',
+    'profile.savedSetups': 'Saved Hardware Setups',
+    'profile.viewAll': 'View All',
+    'profile.viewSetup': 'View Setup',
+    'profile.orderHistory': 'Order History',
+    'profile.account': 'Account',
+    'profile.concierge': 'Lumina Concierge',
+    'profile.contactAdvisor': 'Contact Advisor',
   },
   ar: {
     'nav.shop': 'المتجر',
@@ -127,6 +177,31 @@ const translations: Record<Lang, Record<TranslationKey, string>> = {
     'home.newsletter.title': 'المونوغراف',
     'home.newsletter.description': 'اشترك لتلقي تنسيقات موسمية وقصص تصميم ووصول مبكر للمجموعات الجديدة.',
     'home.newsletter.cta': 'انضم',
+    'gallery.title': 'مجموعة المطورين',
+    'gallery.description': 'أدوات مقصودة للحرفيين الرقميين. مجموعة منتقاة من الأجهزة عالية الأداء وأثاث الاستوديو المصمم لرفع مستوى العملية الإبداعية.',
+    'bag.title': 'حقيبة التسوق',
+    'bag.subtitle': 'اختياراتك المقصودة من الأ工艺品.',
+    'bag.checkout': 'المتابعة إلى الدفع',
+    'bag.promo': 'بطاقة هدية أو رمز ترويجي',
+    'bag.apply': 'تطبيق',
+    'bag.subtotal': 'المجموع الفرعي',
+    'bag.shipping': 'الشحن',
+    'bag.tax': 'الضريبة',
+    'bag.total': 'الإجمالي',
+    'product.addToBag': 'أضف إلى الحقيبة',
+    'product.customize': 'تخصيص الإعداد',
+    'product.reviews': 'بناءً على 128 تقييم',
+    'product.collection': 'المجموعة المميزة',
+    'product.foundation': 'الأساس',
+    'product.engineering': 'هندسة دقيقة',
+    'product.voices': 'أصوات المبدعين',
+    'profile.savedSetups': 'إعدادات الأجهزة المحفوظة',
+    'profile.viewAll': 'عرض الكل',
+    'profile.viewSetup': 'عرض الإعداد',
+    'profile.orderHistory': 'سجل الطلبات',
+    'profile.account': 'الحساب',
+    'profile.concierge': 'خدمة كونسيرج لومينا',
+    'profile.contactAdvisor': 'اتصل بالمستشار',
   },
 };
 

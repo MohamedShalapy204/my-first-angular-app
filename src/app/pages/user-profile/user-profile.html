@@ -1,0 +1,121 @@
+<main class="max-w-[1440px] mx-auto px-padding-desktop py-12 md:py-24">
+  <!-- Hero Section / User Overview -->
+  <section class="mb-section-gap">
+    <div class="flex flex-col md:flex-row items-start md:items-center gap-8 mb-12">
+      <div class="relative">
+        <div class="w-32 h-32 md:w-48 md:h-48 rounded-full border border-outline-variant p-2">
+          <img alt="Marcus T." class="w-full h-full rounded-full object-cover"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiogTYbLp-aRuIHs2_cFW-_b6zx8KZVjOIVaL21N2o8CNXNvv-e2dc977yOGu43udvXSGU-33v8vVhegUp7jtS0BLkBE7egrh3W2zGR78MBT8DzSB9NUSYIdv6v_zrbjpgveRECUadLB_UYx20EF6AUHkrlrPl-Ywc5CwpCJ445W5o2oeM2JHBVuXfB8NzilkAz4JLMj86ABGsEAY18_of-fpbn9xi2VkOQpSpbSlaLkSeET6ngfIccObxEfMKIoWMdTdX4pN2N2lY">
+        </div>
+        <div class="absolute bottom-2 right-2 bg-primary text-on-primary px-3 py-1 rounded-full text-xs uppercase tracking-widest">
+          Platinum
+        </div>
+      </div>
+      <div class="max-w-2xl">
+        <h1 class="text-h2 md:text-display-lg font-display mb-2">Marcus T.</h1>
+        <p class="text-lg text-on-surface-variant leading-relaxed">
+          Digital craftsman and architect specializing in high-performance workspaces.
+          Curating environments where intention meets execution.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Asymmetric Layout Content -->
+  <div class="grid grid-cols-12 gap-6">
+    <!-- Account Settings Sidebar -->
+    <aside class="col-span-12 md:col-span-3 space-y-12">
+      <div class="space-y-6">
+        <h3 class="text-sm uppercase tracking-[0.2em] text-secondary">Account</h3>
+        <ul class="space-y-4">
+          @for (link of sidebarLinks; track link.label) {
+            <li>
+              <a class="flex items-center gap-2 transition-all hover:translate-x-1"
+                [class]="link.active ? 'text-primary font-medium' : 'text-on-surface-variant hover:text-primary'"
+                href="#">
+                {{ link.label }}
+                @if (link.active) {
+                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                }
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="p-8 border border-outline-variant/20 bg-surface-container-low rounded-lg">
+        <h4 class="text-h4 font-display mb-2">Lumina Concierge</h4>
+        <p class="text-on-surface-variant mb-6">Need a custom hardware consultation? Your dedicated advisor is ready.</p>
+        <button class="w-full py-4 px-6 bg-secondary text-on-secondary rounded-full text-sm uppercase tracking-wider hover:opacity-90 transition-opacity">
+          Contact Advisor
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Profile Content -->
+    <div class="col-span-12 md:col-span-9 space-y-section-gap">
+      <!-- Saved Hardware Setups -->
+      <section>
+        <div class="flex justify-between items-end mb-8">
+          <h2 class="text-h2 font-display">Saved Hardware Setups</h2>
+          <a class="text-sm uppercase tracking-widest text-primary border-b border-primary/30 pb-1" routerLink="/products">View All</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          @for (setup of savedSetups; track setup.name) {
+            <div class="group">
+              <a [routerLink]="['/product', $index + 1]" class="block">
+                <div class="relative overflow-hidden mb-6 aspect-[1.75] bg-surface-container">
+                  <img [alt]="setup.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" [src]="setup.image">
+                  @if (setup.tag) {
+                    <div class="absolute top-4 right-4">
+                      <span class="bg-surface/90 backdrop-blur-md px-3 py-1 rounded-full text-xs uppercase">{{ setup.tag }}</span>
+                    </div>
+                  }
+                </div>
+              </a>
+              <h3 class="text-h4 font-display mb-2">{{ setup.name }}</h3>
+              <p class="text-on-surface-variant mb-4">{{ setup.description }}</p>
+              <a class="inline-flex items-center gap-2 text-sm uppercase tracking-widest text-secondary hover:text-primary transition-colors" [routerLink]="['/product', $index + 1]">
+                View Setup <span class="material-symbols-outlined text-sm">north_east</span>
+              </a>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Order History -->
+      <section>
+        <div class="flex justify-between items-end mb-8">
+          <h2 class="text-h2 font-display">Order History</h2>
+        </div>
+        <div class="space-y-4">
+          @for (order of orders; track order.name) {
+            <div class="flex flex-col md:flex-row md:items-center justify-between p-8 border border-outline-variant/20 hover:border-outline transition-colors group">
+              <div class="flex gap-6 items-center">
+                <div class="w-20 h-20 bg-surface-container flex items-center justify-center rounded">
+                  <span class="material-symbols-outlined text-outline">{{ order.icon }}</span>
+                </div>
+                <div>
+                  <h4 class="text-xl group-hover:text-primary transition-colors">{{ order.name }}</h4>
+                  <p class="text-xs uppercase tracking-widest text-on-surface-variant/60">Ordered: {{ order.date }}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-12 mt-4 md:mt-0">
+                <div class="text-right">
+                  <p class="text-xs uppercase tracking-widest text-on-surface-variant/60">Status</p>
+                  <p class="text-primary font-medium flex items-center gap-1 justify-end">
+                    <span class="w-1.5 h-1.5 bg-primary rounded-full"></span> {{ order.status }}
+                  </p>
+                </div>
+                <div class="text-right">
+                  <p class="text-xs uppercase tracking-widest text-on-surface-variant/60">Total</p>
+                  <p class="text-tertiary font-bold">{{ order.total }}</p>
+                </div>
+                <button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">chevron_right</button>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,25 @@
+<a
+  [routerLink]="['/product', product().id]"
+  class="product-card group cursor-pointer block"
+  [class.md:col-span-2]="wide()"
+  style="transition: 0.3s;"
+>
+  <div
+    class="mb-6 rounded-sm overflow-hidden bg-surface-container-high"
+    [class.h-[400px]]="wide()"
+    [class.aspect-[4/5]]]="!wide()"
+  >
+    <img
+      class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+      [src]="product().image"
+      [alt]="product().name"
+    />
+  </div>
+  <div class="flex justify-between items-start">
+    <div>
+      <h3 class="text-h4 font-display group-hover:text-primary transition-colors">{{ product().name }}</h3>
+      <p class="text-base text-on-surface-variant mt-1">{{ product().description }}</p>
+    </div>
+    <span class="text-sm text-tertiary ml-4">{{ product().price }}</span>
+  </div>
+</a>

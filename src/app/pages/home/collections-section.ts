@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, ElementRef, ViewChild, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { TranslationService } from '../../services/translation';
 import { ScrollReveal } from './scroll-reveal';
 
@@ -7,7 +8,7 @@ import { ScrollReveal } from './scroll-reveal';
   selector: 'app-collections-section',
   templateUrl: './collections-section.html',
   standalone: true,
-  imports: [ScrollReveal],
+  imports: [ScrollReveal, RouterLink],
   host: { class: 'block w-full' },
 })
 export class CollectionsSection implements AfterViewInit {

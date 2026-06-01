@@ -1,17 +1,17 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { TranslationService } from '../../services/translation';
+import { SidebarFilter } from './sidebar-filter';
+import { ProductGrid } from './product-grid';
+import { Pagination } from './pagination';
 
 @Component({
-  selector: 'app-footer',
-  templateUrl: './footer.html',
-  imports: [RouterLink],
+  selector: 'app-products-gallery',
+  templateUrl: './products-gallery.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    class: 'block w-full',
-  },
+  imports: [SidebarFilter, ProductGrid, Pagination],
+  host: { class: 'block w-full' },
 })
-export class Footer {
+export class ProductsGallery {
   private readonly t = inject(TranslationService);
 
   translate(key: Parameters<TranslationService['t']>[0]): string {
