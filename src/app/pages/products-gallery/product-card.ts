@@ -1,14 +1,16 @@
 import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CurrencyPipe } from '@angular/common';
+import { Iproduct } from '../../models/iproduct';
 
 @Component({
   selector: 'app-product-card',
   templateUrl: './product-card.html',
-  imports: [RouterLink],
+  imports: [RouterLink, CurrencyPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block w-full' },
 })
 export class ProductCard {
-  product = input.required<{ id: number; name: string; description: string; price: string; image: string }>();
+  product = input.required<Iproduct>();
   wide = input(false);
 }
