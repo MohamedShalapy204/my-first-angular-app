@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { LoggingService } from './logging.service';
 import { LogWriter } from './log-writer';
-import { ActionTracker } from './action-tracker';
-import { PerformanceTracker } from './performance-tracker';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('LoggingService', () => {

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, type ElementRef, signal, viewChild } from '@angular/core';
 import { TestChild } from '../test-child/test-child';
 
 @Component({
@@ -8,7 +8,20 @@ import { TestChild } from '../test-child/test-child';
 })
 export class Test {
   totalOrderPrice = signal<number>(0);
-  subscripTotalOrderPrice(totalOrderPrice:number){
-    this.totalOrderPrice.set(totalOrderPrice)
+  myInp = viewChild<ElementRef>('userNameInp');
+  testChild = viewChild<TestChild>('testChild');
+
+  constructor() {
+    console.log('constructor: ', this.myInp());
+  }
+  ngAfterViewInit() {
+    this.myInp()!.nativeElement.value = 'hi';
+    this.myInp()!.nativeElement.focus();
+    console.log('ngAfterViewInit: ', this.myInp()?.nativeElement);
+    console.log('ngAfterViewInit: ', this.testChild());
+  }
+
+  subscripTotalOrderPrice(totalOrderPrice: number) {
+    this.totalOrderPrice.set(totalOrderPrice);
   }
 }

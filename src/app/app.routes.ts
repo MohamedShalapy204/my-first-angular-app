@@ -1,15 +1,13 @@
-import { Routes } from '@angular/router';
+import type { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('./pages/home/home').then((m) => m.Home),
+    loadComponent: () => import('./pages/home/home').then((m) => m.Home),
   },
   {
     path: 'products',
-    loadComponent: () =>
-      import('./pages/products-gallery/products-gallery').then((m) => m.ProductsGallery),
+    loadComponent: () => import('./pages/products-gallery/products-gallery').then((m) => m.ProductsGallery),
   },
   {
     path: 'product/:id',
@@ -18,17 +16,26 @@ export const routes: Routes = [
   },
   {
     path: 'cart',
-    loadComponent: () =>
-      import('./pages/shopping-bag/shopping-bag').then((m) => m.ShoppingBag),
+    loadComponent: () => import('./pages/shopping-bag/shopping-bag').then((m) => m.ShoppingBag),
   },
   {
     path: 'profile',
-    loadComponent: () =>
-      import('./pages/user-profile/user-profile').then((m) => m.UserProfile),
+    loadComponent: () => import('./pages/user-profile/user-profile').then((m) => m.UserProfile),
   },
   {
     path: 'test',
-    loadComponent: ()=> 
-      import('./components/test/test').then((m)=>m.Test)
-  }
+    loadComponent: () => import('./components/test/test').then((m) => m.Test),
+  },
+  {
+    path: 'about',
+    loadComponent: () => import('./pages/about-us/about-us').then((m) => m.AboutUs),
+  },
+  {
+    path: 'unauthorized',
+    loadComponent: () => import('./pages/unauthorized/unauthorized').then((m) => m.Unauthorized),
+  },
+  {
+    path: '**',
+    loadComponent: () => import('./pages/not-found/not-found').then((m) => m.NotFound),
+  },
 ];

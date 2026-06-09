@@ -13,19 +13,19 @@ export class LoggingService {
   private readonly perfTracker = inject(PerformanceTracker);
 
   debug(message: string, context?: LogContext): void {
-    this.write('debug', message, context);
+    this.logWriter.write({ timestamp: Date.now(), level: 'debug', message, context });
   }
 
   info(message: string, context?: LogContext): void {
-    this.write('info', message, context);
+    this.logWriter.write({ timestamp: Date.now(), level: 'info', message, context });
   }
 
   warn(message: string, context?: LogContext): void {
-    this.write('warn', message, context);
+    this.logWriter.write({ timestamp: Date.now(), level: 'warn', message, context });
   }
 
   error(message: string, context?: LogContext): void {
-    this.write('error', message, context);
+    this.logWriter.write({ timestamp: Date.now(), level: 'error', message, context });
   }
 
   trackAction(type: ActionType, data?: Record<string, unknown>): void {
@@ -38,18 +38,5 @@ export class LoggingService {
 
   endTimer(label: string): number | null {
     return this.perfTracker.endTimer(label);
-  }
-
-  private write(
-    level: 'debug' | 'info' | 'warn' | 'error',
-    message: string,
-    context?: LogContext,
-  ): void {
-    this.logWriter.write({
-      timestamp: Date.now(),
-      level,
-      message,
-      context,
-    });
   }
 }

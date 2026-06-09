@@ -1,0 +1,83 @@
+<main class="max-w-[1440px] mx-auto px-padding-desktop py-12 md:py-24">
+  <!-- Hero Section -->
+  <section class="mb-section-gap">
+    <div class="max-w-[48rem]">
+      <p class="text-sm uppercase tracking-[0.2em] text-primary mb-4">
+        {{ translate('about.hero.label') }}
+      </p>
+      <h1 class="text-display-lg font-display mb-6">{{ translate('about.hero.title') }}</h1>
+      <p class="text-on-surface-variant text-lg leading-relaxed max-w-[42rem]">
+        {{ translate('about.hero.description') }}
+      </p>
+    </div>
+  </section>
+
+  <!-- Mission Statement -->
+  <section class="mb-section-gap">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <div class="aspect-[4/3] bg-surface-container rounded-lg flex items-center justify-center">
+        <span class="material-symbols-outlined text-outline text-8xl">storefront</span>
+      </div>
+      <div>
+        <h2 class="text-h2 font-display mb-6">{{ translate('about.mission.title') }}</h2>
+        <p class="text-on-surface-variant leading-relaxed mb-4">
+          {{ translate('about.mission.description1') }}
+        </p>
+        <p class="text-on-surface-variant leading-relaxed">
+          {{ translate('about.mission.description2') }}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="mb-section-gap">
+    <div class="text-center mb-12">
+      <h2 class="text-h2 font-display mb-4">{{ translate('about.values.title') }}</h2>
+      <div class="w-16 h-0.5 bg-primary mx-auto"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      @for (value of values; track value.titleKey) {
+        <div
+          class="p-8 border border-outline-variant/20 hover:border-outline transition-colors text-center"
+        >
+          <span class="material-symbols-outlined text-primary text-5xl mb-6 block">{{
+            value.icon
+          }}</span>
+          <h3 class="text-h4 font-display mb-4">{{ translate(value.titleKey) }}</h3>
+          <p class="text-on-surface-variant leading-relaxed">
+            {{ translate(value.descriptionKey) }}
+          </p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="mb-section-gap">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 py-12 border-y border-outline-variant/20">
+      @for (stat of stats; track stat.labelKey) {
+        <div class="text-center">
+          <p class="text-display-sm font-display text-primary mb-2">{{ stat.value }}</p>
+          <p class="text-sm uppercase tracking-widest text-on-surface-variant">
+            {{ translate(stat.labelKey) }}
+          </p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="text-center">
+    <h2 class="text-h2 font-display mb-4">{{ translate('about.cta.title') }}</h2>
+    <p class="text-on-surface-variant mb-8 max-w-[32rem] mx-auto">
+      {{ translate('about.cta.description') }}
+    </p>
+    <a
+      routerLink="/products"
+      class="inline-block px-8 py-4 bg-primary text-on-primary rounded-full text-sm uppercase tracking-wider font-medium hover:opacity-90 transition-opacity"
+    >
+      {{ translate('about.cta.button') }}
+    </a>
+  </section>
+</main>
