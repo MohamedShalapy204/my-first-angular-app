@@ -57,3 +57,15 @@ testsprite_tests
 wiki
 opencode.jsonc
 AGENTS.md
+# Local Pi runtime state
+.atl/
+
+# mcp server
+.mcp.json
+context.md
+#ai
+.opencode
+.specify
+.context
+docs
+.llm-wiki

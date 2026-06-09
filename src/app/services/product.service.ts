@@ -1,18 +1,24 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { supabase } from './supabase';
-import { Iproduct } from '../models/iproduct';
+import type { Iproduct } from '../models/iproduct';
+import { LoggingService } from '../logging';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
+  private readonly logger = inject(LoggingService);
+
   products = signal<Iproduct[]>([]);
   loading = signal<boolean>(false);
   error = signal<string | null>(null);
 
   async searchProducts(query: string) {
     const trimmedQuery = query.trim();
-    console.log('Searching products with query:', trimmedQuery);
+    this.logger.info('Searching products with query:', {
+      component: 'ProductService',
+      query: trimmedQuery,
+    });
     this.loading.set(true);
     this.error.set(null);
 
@@ -24,13 +30,20 @@ export class ProductService {
       }
 
       const { data, error } = await request;
-      console.log('Supabase response:', { data, error });
+      this.logger.info('Supabase response:', {
+        component: 'ProductService',
+        dataCount: data?.length,
+        hasError: !!error,
+      });
 
       if (error) throw error;
       this.products.set(data || []);
     } catch (err: any) {
       this.error.set(err.message);
-      console.error('Error searching products:', err);
+      this.logger.error('Error searching products:', {
+        component: 'ProductService',
+        error: err.message,
+      });
     } finally {
       this.loading.set(false);
     }
