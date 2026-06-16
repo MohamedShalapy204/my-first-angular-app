@@ -26,7 +26,9 @@
 
   <div class="flex items-center gap-6">
     <div class="hidden md:block relative">
-      <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">
+      <span
+        class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none"
+      >
         search
       </span>
       <input
@@ -44,13 +46,48 @@
       <span class="material-symbols-outlined text-primary">search</span>
     </button>
 
-    <a routerLink="/cart" class="flex items-center cursor-pointer transition-opacity active:opacity-70" aria-label="Shopping bag">
+    <a
+      routerLink="/cart"
+      class="flex items-center cursor-pointer transition-opacity active:opacity-70"
+      aria-label="Shopping bag"
+    >
       <span class="material-symbols-outlined text-primary">shopping_bag</span>
     </a>
 
-    <a routerLink="/profile" class="flex items-center cursor-pointer transition-opacity active:opacity-70" aria-label="Profile">
-      <span class="material-symbols-outlined text-primary">person</span>
-    </a>
+    @if (isAuthenticated()) {
+      <!-- Authenticated: Show profile + logout -->
+      <a
+        routerLink="/profile"
+        class="flex items-center cursor-pointer transition-opacity active:opacity-70"
+        aria-label="Profile"
+      >
+        <span class="material-symbols-outlined text-primary">person</span>
+      </a>
+
+      <button
+        class="flex items-center cursor-pointer transition-opacity active:opacity-70"
+        (click)="logout()"
+        aria-label="Logout"
+      >
+        <span class="material-symbols-outlined text-primary">logout</span>
+      </button>
+    } @else {
+      <!-- Guest: Show login + register -->
+      <a
+        routerLink="/login"
+        class="flex items-center cursor-pointer transition-opacity active:opacity-70"
+        aria-label="Login"
+      >
+        <span class="material-symbols-outlined text-primary">login</span>
+      </a>
+      <a
+        routerLink="/register"
+        class="flex items-center cursor-pointer transition-opacity active:opacity-70"
+        aria-label="Register"
+      >
+        <span class="material-symbols-outlined text-primary">person_add</span>
+      </a>
+    }
 
     <button
       class="flex items-center cursor-pointer transition-opacity active:opacity-70"

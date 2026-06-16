@@ -1,0 +1,159 @@
+<main class="min-h-screen flex flex-col md:flex-row">
+  <!-- Left Side: Editorial Photography (Visible on MD+) -->
+  <section
+    class="hidden md:flex md:w-1/2 lg:w-3/5 relative overflow-hidden bg-surface-container-low"
+  >
+    <div class="absolute inset-0 z-0">
+      <img
+        class="w-full h-full object-cover grayscale opacity-90 transition-transform duration-[10000ms] hover:scale-110"
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5l-Qrm34IIb4wDwH5nYMiSKnsNzwxxRUgQw5vlRbi5UrdLR1xb_x83YLr1rXuFnm4QGReXlZUTEdZS7aztu2Je7_J-RgkucZi4cUdVU0TbY2Gd13fiK_RGnI6cCiHK3CDPOz0O4Dy0W-2gZHHBzVFJThoExJBSKXWi_HhlWDgwE3GpCUQr82AlcJ3IhPPdasSHOOvaY4qx7WaELfAU59QhcrWZ2uEPKxKuSFea3DqbvTGzwfXHdzrLg4Qwg418hPvcG8q2U_9ifTK"
+        alt="A high-end editorial shot of a minimalist photography studio"
+      />
+    </div>
+    <!-- Branded Overlay -->
+    <div
+      class="relative z-10 flex flex-col justify-between p-16 w-full h-full text-inverse-on-surface bg-on-background/10 backdrop-blur-[2px]"
+    >
+      <div class="font-headline-lg text-5xl tracking-tight">Lumina Studio</div>
+      <div class="max-w-md">
+        <p class="font-headline-md text-3xl italic mb-4 opacity-90">
+          "Crafting light into legacy."
+        </p>
+        <p class="font-body-md text-lg opacity-70 leading-relaxed">
+          Join an elite community of digital craftsmen where intentionality meets artistic
+          excellence.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Right Side: Authentication Canvas -->
+  <section class="flex-1 flex items-center justify-center p-5 md:p-16 bg-background">
+    <div class="w-full max-w-[420px] space-y-10">
+      <!-- Brand Mobile Header -->
+      <div class="md:hidden text-center mb-8">
+        <h1
+          class="font-headline-lg-mobile text-headline-lg-mobile tracking-tighter text-on-background"
+        >
+          Lumina Studio
+        </h1>
+      </div>
+
+      <!-- Header -->
+      <header class="space-y-2">
+        <h2 class="font-headline-lg text-headline-lg text-on-background">Welcome Back</h2>
+        <p class="font-body-md text-on-surface-variant">Access your curated studio workspace.</p>
+      </header>
+
+      <!-- Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Email Field -->
+        <div class="space-y-2 group">
+          <label
+            class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant group-focus-within:text-primary transition-colors"
+            for="email"
+          >
+            Email Address
+          </label>
+          <div class="relative">
+            <input
+              class="w-full bg-transparent border-0 border-b border-outline-variant py-4 px-0 font-body-md text-on-background placeholder:text-outline-variant transition-all duration-300 focus:border-primary"
+              id="email"
+              formControlName="email"
+              placeholder="name@lumina.studio"
+              type="email"
+            />
+          </div>
+          @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+            <p class="text-error text-sm mt-1">
+              @if (loginForm.get('email')?.errors?.['required']) {
+                Email is required
+              } @else if (loginForm.get('email')?.errors?.['email']) {
+                Please enter a valid email
+              }
+            </p>
+          }
+        </div>
+
+        <!-- Password Field -->
+        <div class="space-y-2 group">
+          <div class="flex justify-between items-end">
+            <label
+              class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant group-focus-within:text-primary transition-colors"
+              for="password"
+            >
+              Password
+            </label>
+            <a
+              class="font-label-sm text-label-sm text-outline hover:text-primary transition-colors"
+              href="#"
+              >Forgot Password?</a
+            >
+          </div>
+          <div class="relative">
+            <input
+              class="w-full bg-transparent border-0 border-b border-outline-variant py-4 px-0 font-body-md text-on-background placeholder:text-outline-variant transition-all duration-300 focus:border-primary"
+              id="password"
+              formControlName="password"
+              placeholder="••••••••"
+              [type]="showPassword() ? 'text' : 'password'"
+            />
+            <button
+              class="absolute right-0 bottom-4 text-outline-variant hover:text-on-surface transition-colors"
+              type="button"
+              (click)="togglePasswordVisibility()"
+            >
+              <span class="material-symbols-outlined text-[20px]">
+                {{ showPassword() ? 'visibility_off' : 'visibility' }}
+              </span>
+            </button>
+          </div>
+          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+            <p class="text-error text-sm mt-1">
+              @if (loginForm.get('password')?.errors?.['required']) {
+                Password is required
+              } @else if (loginForm.get('password')?.errors?.['minlength']) {
+                Password must be at least 6 characters
+              }
+            </p>
+          }
+        </div>
+
+        <!-- Error Message -->
+        @if (errorMessage()) {
+          <div class="bg-error-container text-on-error-container p-4 rounded-lg text-sm">
+            {{ errorMessage() }}
+          </div>
+        }
+
+        <!-- Action Button -->
+        <div class="pt-6">
+          <button
+            class="w-full bg-on-background text-surface py-5 px-8 rounded-full font-label-md text-label-md hover:bg-primary transition-all duration-300 active:scale-[0.98] shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            type="submit"
+            [disabled]="loading()"
+          >
+            @if (loading()) {
+              <app-loading-spinner message="Signing In..." />
+            } @else {
+              Sign In
+            }
+          </button>
+        </div>
+      </form>
+
+      <!-- Footer Link -->
+      <footer class="text-center pt-8">
+        <p class="font-body-md text-on-surface-variant">
+          New to Lumina?
+          <a
+            class="text-on-background font-semibold underline underline-offset-4 hover:text-primary transition-colors"
+            routerLink="/register"
+          >
+            Create an Account
+          </a>
+        </p>
+      </footer>
+    </div>
+  </section>
+</main>

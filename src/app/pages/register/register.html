@@ -1,0 +1,178 @@
+<main class="flex-grow flex items-center justify-center py-32 px-5 md:px-16">
+  <div class="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+    <!-- Left Side: Editorial Content -->
+    <div
+      class="lg:col-span-6 xl:col-span-5 flex flex-col space-y-8 order-2 lg:order-1 mt-12 lg:mt-0"
+    >
+      <div class="space-y-4">
+        <span class="font-label-md text-label-md text-primary uppercase tracking-widest"
+          >The Circle</span
+        >
+        <h1 class="font-display-lg text-display-lg leading-tight">Joining the Studio Circle</h1>
+        <p class="font-body-lg text-body-lg text-secondary max-w-md">
+          Become part of an intentional community of creators. Our inner circle represents the
+          foundation of Lumina's creative journey.
+        </p>
+      </div>
+
+      <div class="space-y-10 py-6 border-l border-outline-variant/30 pl-8">
+        <div class="flex flex-col space-y-2">
+          <span class="font-label-md text-label-md text-tertiary">Priority Access</span>
+          <p class="font-body-md text-body-md text-on-surface-variant">
+            Be the first to secure our limited drops and artisanal studio gear before general
+            release.
+          </p>
+        </div>
+        <div class="flex flex-col space-y-2">
+          <span class="font-label-md text-label-md text-tertiary">Exclusive Narratives</span>
+          <p class="font-body-md text-body-md text-on-surface-variant">
+            Receive behind-the-scenes insights into our design process and creative monographs.
+          </p>
+        </div>
+        <div class="flex flex-col space-y-2">
+          <span class="font-label-md text-label-md text-tertiary">Studio Events</span>
+          <p class="font-body-md text-body-md text-on-surface-variant">
+            Invitations to private gallery showings and digital workshop sessions.
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="relative w-full aspect-[4/3] overflow-hidden rounded-lg border border-on-background/10 group"
+      >
+        <img
+          alt="Studio Interior"
+          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBP66QZwXul498O_ebIOY6eo3_FCeZILEtxkqHon6izKubPp1TSqsghHyoB6y-HmR_kdlmbH-c4xtD61gEG2LqKRbEBZ4wSU7UmnFDT4Q2XxK2RAYfeR-XQdOmvxSibhGyiCm28IaPHjKeFdm5X-7qBaGCcHjn8g7tCE32KbGWrAyDZk50MuGfaFpUjerfzu6dyoQNs5ETXHmldguKP7G8Fe-cZxQZ1c488w77BxEXfLmnKuECwxyKFYmoLdEvk2wG0bLq7moTBq8z"
+        />
+      </div>
+    </div>
+
+    <!-- Right Side: Registration Form -->
+    <div class="lg:col-span-6 lg:col-start-8 xl:col-span-4 xl:col-start-9 order-1 lg:order-2">
+      <div
+        class="bg-surface-container-lowest p-8 md:p-12 rounded-lg border border-on-background/10 shadow-sm"
+      >
+        <div class="mb-12">
+          <h2 class="font-headline-md text-headline-md mb-2">Create Account</h2>
+          <p class="font-body-md text-body-md text-on-secondary-fixed-variant">
+            Enter your details to begin your journey.
+          </p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-10">
+          <!-- Name Field -->
+          <div class="space-y-1">
+            <label
+              class="font-label-sm text-label-sm uppercase text-on-surface-variant block"
+              for="name"
+            >
+              Full Name
+            </label>
+            <input
+              class="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-outline-variant/40 py-3 font-body-md text-body-md focus:outline-none focus:border-primary transition-colors duration-300 placeholder:text-outline-variant/60"
+              id="name"
+              formControlName="name"
+              placeholder="Evelyn Thorne"
+              type="text"
+            />
+            @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+              <p class="text-error text-sm mt-1">
+                @if (registerForm.get('name')?.errors?.['required']) {
+                  Name is required
+                }
+              </p>
+            }
+          </div>
+
+          <!-- Email Field -->
+          <div class="space-y-1">
+            <label
+              class="font-label-sm text-label-sm uppercase text-on-surface-variant block"
+              for="email"
+            >
+              Email Address
+            </label>
+            <input
+              class="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-outline-variant/40 py-3 font-body-md text-body-md focus:outline-none focus:border-primary transition-colors duration-300 placeholder:text-outline-variant/60"
+              id="email"
+              formControlName="email"
+              placeholder="evelyn@studio.com"
+              type="email"
+            />
+            @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+              <p class="text-error text-sm mt-1">
+                @if (registerForm.get('email')?.errors?.['required']) {
+                  Email is required
+                } @else if (registerForm.get('email')?.errors?.['email']) {
+                  Please enter a valid email
+                }
+              </p>
+            }
+          </div>
+
+          <!-- Password Field -->
+          <div class="space-y-1">
+            <label
+              class="font-label-sm text-label-sm uppercase text-on-surface-variant block"
+              for="password"
+            >
+              Password
+            </label>
+            <input
+              class="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-outline-variant/40 py-3 font-body-md text-body-md focus:outline-none focus:border-primary transition-colors duration-300 placeholder:text-outline-variant/60"
+              id="password"
+              formControlName="password"
+              placeholder="••••••••"
+              type="password"
+            />
+            @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+              <p class="text-error text-sm mt-1">
+                @if (registerForm.get('password')?.errors?.['required']) {
+                  Password is required
+                } @else if (registerForm.get('password')?.errors?.['minlength']) {
+                  Password must be at least 6 characters
+                }
+              </p>
+            }
+          </div>
+
+          <!-- Error Message -->
+          @if (errorMessage()) {
+            <div class="bg-error-container text-on-error-container p-4 rounded-lg text-sm">
+              {{ errorMessage() }}
+            </div>
+          }
+
+          <!-- Submit Button -->
+          <div class="pt-6">
+            <button
+              class="w-full bg-primary text-white py-5 rounded-full font-label-md text-label-md hover:bg-primary/90 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+              type="submit"
+              [disabled]="loading()"
+            >
+              @if (loading()) {
+                <app-loading-spinner message="Creating Account..." />
+              } @else {
+                Register
+              }
+            </button>
+          </div>
+
+          <!-- Login Link -->
+          <div class="flex flex-col items-center space-y-4 pt-4">
+            <p class="font-body-md text-body-md text-secondary">
+              Already have an account?
+              <a
+                class="text-on-background font-semibold hover:text-primary transition-colors underline underline-offset-4 decoration-outline-variant"
+                routerLink="/login"
+              >
+                Sign In
+              </a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
