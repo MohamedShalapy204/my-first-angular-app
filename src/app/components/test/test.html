@@ -1,4 +1,86 @@
-<app-test-child #testChild (onTotalOrderChange)="subscripTotalOrderPrice($event)"/>
-<div>message from the parent {{totalOrderPrice()}} </div>
-<input type="text" class="border" #userNameInp>
+<app-test-child #testChild (onTotalOrderChange)="subscripTotalOrderPrice($event)" />
+<div>message from the parent {{ totalOrderPrice() }}</div>
+<input type="text" class="border" #userNameInp />
 <!-- <button (click)="changeUserName(userNameInp.value)">change</button> -->
+
+<!-- Add Product Form -->
+<div>product:{{newProduct|json}}</div>
+<div class="border p-4 my-4">
+  <h2 class="text-lg font-bold mb-2">Add Product</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="grid grid-cols-2 gap-2">
+      <input
+        type="number"
+        placeholder="ID"
+        [(ngModel)]="newProduct.id"
+        name="id"
+        class="border p-1"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Name"
+        [(ngModel)]="newProduct.name"
+        name="name"
+        class="border p-1"
+        required
+      />
+      <input
+        type="number"
+        placeholder="Category ID"
+        [(ngModel)]="newProduct.categoryId"
+        name="categoryId"
+        class="border p-1"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Description"
+        [(ngModel)]="newProduct.description"
+        name="description"
+        class="border p-1"
+        required
+      />
+      <input
+        type="number"
+        placeholder="Price"
+        [(ngModel)]="newProduct.price"
+        name="price"
+        class="border p-1"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Image URL"
+        [(ngModel)]="newProduct.image_url"
+        name="image_url"
+        class="border p-1"
+        required
+      />
+      <input
+        type="number"
+        placeholder="Count"
+        [(ngModel)]="newProduct.count"
+        name="count"
+        class="border p-1"
+        required
+      />
+      <input
+        type="number"
+        placeholder="Rating"
+        [(ngModel)]="newProduct.rating"
+        name="rating"
+        class="border p-1"
+      />
+    </div>
+    <button type="submit" class="mt-2 bg-blue-500 text-white px-4 py-1">Add Product</button>
+  </form>
+  @if (successMessage) {
+    <div class="text-green-500 mt-2">{{ successMessage }}</div>
+  }
+  @if (errorMessage) {
+    <div class="text-red-500 mt-2">{{ errorMessage }}</div>
+  }
+</div>
+
+<app-product-grid [products]="products"></app-product-grid>

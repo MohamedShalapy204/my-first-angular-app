@@ -15,37 +15,43 @@ import type { UserRole } from '../models/user.model';
 export class AuthService {
   private notificationService = inject(NotificationService);
 
-  /** Current authenticated user */
   readonly user = signal<User | null>(null);
-
-  /** True while checking initial auth state */
   readonly loading = signal<boolean>(true);
-
-  /** Error message if auth operation failed */
   readonly error = signal<string | null>(null);
 
   constructor() {
-    this.initializeAuthListener();
+    this.loadSessionSync();
+    this.listenForChanges();
   }
 
-  private initializeAuthListener(): void {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      this.user.set(session?.user ?? null);
-      this.loading.set(false);
-    });
+  // Read session synchronously from localStorage (Supabase stores in 'sb-*-auth-token')
+  private loadSessionSync(): void {
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key?.startsWith('sb-') && key.endsWith('-auth-token')) {
+          const stored = localStorage.getItem(key);
+          if (stored) {
+            const session = JSON.parse(stored);
+            this.user.set(session?.user ?? null);
+          }
+          break;
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to parse stored auth session:', e);
+    }
+    this.loading.set(false);
+  }
 
-    // Listen for auth changes
+  // Sync across tabs when user logs in/out elsewhere
+  private listenForChanges(): void {
     supabase.auth.onAuthStateChange((_event, session) => {
       this.user.set(session?.user ?? null);
       this.loading.set(false);
     });
   }
 
-  /**
-   * Sign in with email and password.
-   * Shows success/error toast notifications.
-   */
   async login(email: string, password: string): Promise<void> {
     this.error.set(null);
 
@@ -65,10 +71,6 @@ export class AuthService {
     this.notificationService.show('Successfully logged in', 'success');
   }
 
-  /**
-   * Register a new user.
-   * Shows success/error toast notifications.
-   */
   async register(email: string, password: string, name?: string): Promise<void> {
     this.error.set(null);
 
@@ -91,10 +93,6 @@ export class AuthService {
     this.notificationService.show('Registration successful! Please check your email.', 'success');
   }
 
-  /**
-   * Sign out the current user.
-   * Shows success toast notification.
-   */
   async logout(): Promise<void> {
     const { error } = await supabase.auth.signOut();
 
@@ -107,9 +105,7 @@ export class AuthService {
     this.notificationService.show('Successfully logged out', 'success');
   }
 
-  /**
-   * Sanitize error messages to avoid leaking internal details.
-   */
+  // Map Supabase errors to generic messages (prevents email enumeration)
   private sanitizeErrorMessage(error: string): string {
     if (error.includes('Invalid login') || error.includes('invalid credentials')) {
       return 'Invalid email or password';
@@ -120,17 +116,10 @@ export class AuthService {
     return 'An error occurred. Please try again.';
   }
 
-  /**
-   * Check if user is authenticated.
-   */
   isAuthenticated(): boolean {
     return this.user() !== null;
   }
 
-  /**
-   * Check if user has the specified role.
-   * Defaults to 'user' role if not set.
-   */
   hasRole(role: UserRole): boolean {
     const user = this.user();
     if (!user) return false;

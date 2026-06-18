@@ -69,3 +69,6 @@ context.md
 .context
 docs
 .llm-wiki
+
+# backend
+server
