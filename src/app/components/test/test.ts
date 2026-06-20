@@ -5,6 +5,9 @@ import { ApiProducts } from '../../services/api-products';
 import type { Iproduct } from '../../models/iproduct';
 import { ProductGrid } from '../../pages/products-gallery/product-grid';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { decrement, increment } from '../../store/counter/counter.action';
 
 @Component({
   selector: 'app-test',
@@ -68,5 +71,17 @@ export class Test {
 
   resetForm() {
     this.newProduct = {} as Iproduct;
+  }
+  ////////////test store///////////////////
+  private store = inject(Store<{ counter: number }>);
+  counter$: Observable<number> = this.store.select('counter');
+  increaseCounter(){
+    this.store.dispatch({type: '[Counter] Increment'});
+  }
+  decreaseCounter(){
+    this.store.dispatch({type: '[Counter] Decrement'});
+  }
+  resetCounter(){
+    this.store.dispatch({ type: '[Counter] Reset' });
   }
 }
