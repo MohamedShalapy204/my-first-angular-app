@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 3: Component Lifecycle & Signals</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .lifecycle-diagram {
+            background: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 3 of ∞</strong> • Angular Lifecycle & Signals • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0002-templates-and-data-binding.html">← Lesson 2</a>
+    </div>
+    
+    <h1>Component Lifecycle & Signals</h1>
+    
+    <p>You know how to build components and bind data. Now let's understand <em>when</em> things happen in a component's life, and how Angular's modern signals make state management elegant.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> Components have a lifecycle with specific hooks. Signals provide a reactive alternative to traditional state management, making updates automatic and efficient.
+    </div>
+    
+    <h2>The Component Lifecycle</h2>
+    
+    <p>Every Angular component goes through a series of steps from creation to destruction:</p>
+    
+    <div class="lifecycle-diagram">
+Creation → Change Detection → Destruction
+    ↓         ↓              ↓
+Constructor → Lifecycle Hooks → ngOnDestroy
+    ↓         ↓
+@Input()   ngOnChanges
+@ViewChild  ngOnInit
+           ngAfterViewInit
+           etc.</div>
+    
+    <h2>Essential Lifecycle Hooks</h2>
+    
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Hook</th>
+                <th>When It Runs</th>
+                <th>Common Use Cases</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>constructor</code></td>
+                <td>Class instantiation</td>
+                <td>Dependency injection only</td>
+            </tr>
+            <tr>
+                <td><code>ngOnChanges</code></td>
+                <td>After @Input changes</td>
+                <td>React to parent changes</td>
+            </tr>
+            <tr>
+                <td><code>ngOnInit</code></td>
+                <td>After first ngOnChanges</td>
+                <td>Component initialization</td>
+            </tr>
+            <tr>
+                <td><code>ngAfterViewInit</code></td>
+                <td>After view initializes</td>
+                <td>Access @ViewChild elements</td>
+            </tr>
+            <tr>
+                <td><code>ngOnDestroy</code></td>
+                <td>Before destruction</td>
+                <td>Cleanup subscriptions</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h3>The Complete Lifecycle</h3>
+    <pre><code>@Component({...})
+export class UserComponent implements OnInit, OnDestroy {
+  private subscription!: Subscription;
+  
+  constructor(private userService: UserService) {
+    // 1. Constructor - inject dependencies only
+    console.log('Constructor');
+  }
+  
+  ngOnChanges(changes: SimpleChanges) {
+    // 2. On Changes - when @Input properties change
+    console.log('Changes:', changes);
+  }
+  
+  ngOnInit() {
+    // 3. On Init - component initialized
+    console.log('Component initialized');
+    this.subscription = this.userService.getUsers()
+      .subscribe(users => this.users = users);
+  }
+  
+  ngAfterViewInit() {
+    // 4. After View Init - view ready
+    console.log('View ready');
+    // Safe to access @ViewChild here
+  }
+  
+  ngOnDestroy() {
+    // 5. On Destroy - cleanup
+    console.log('Cleaning up');
+    this.subscription.unsubscribe();
+  }
+}</code></pre>
+    
+    <div class="warning">
+        <strong>Common Mistake:</strong> Don't put initialization logic in the constructor. Use <code>ngOnInit</code> instead. The constructor runs before Angular sets up inputs and view children.
+    </div>
+    
+    <div class="question">
+        <strong>Think About It:</strong> Why does Angular separate constructor from ngOnInit? What would break if you accessed @ViewChild in the constructor?
+    </div>
+    
+    <h2>Angular Signals: Modern Reactivity</h2>
+    
+    <p>Signals are Angular's answer to reactive state management. They automatically track dependencies and update the UI when state changes.</p>
+    
+    <h3>Basic Signals</h3>
+    <pre><code>import { Component, signal, computed } from '@angular/core';
+    
+@Component({...})
+export class CounterComponent {
+  // Signal with initial value
+  count = signal(0);
+  
+  // Computed signal (derived state)
+  doubleCount = computed(() => this.count() * 2);
+  
+  // Method to update
+  increment() {
+    this.count.update(n => n + 1);
+    // Or: this.count.set(this.count() + 1);
+  }
+}</code></pre>
+    
+    <h3>Why Signals Are Different</h3>
+    <ul>
+        <li><strong>Automatic tracking:</strong> No manual change detection needed</li>
+        <li><strong>Efficient updates:</strong> Only re-renders what depends on changed signals</li>
+        <li><strong>Computed values:</strong> Automatically recompute when dependencies change</li>
+        <li><strong>Easy testing:</strong> Simple to mock and test</li>
+    </ul>
+    
+    <h3>Signal Patterns</h3>
+    <pre><code>// Writable signal
+const user = signal&lt;User&gt;({ name: 'Alice', age: 30 });
+user.set({ name: 'Bob', age: 25 });
+user.update(u => ({ ...u, age: u.age + 1 }));
+
+// Computed signal (read-only, derived)
+const displayName = computed(() => `${user().name} (${user().age})`);
+
+// Effect (side effects)
+effect(() => {
+  console.log('User changed:', user());
+  // Automatically re-runs when user() changes
+});
+
+// Signal from observable
+const users = toSignal(this.userService.getUsers(), { initialValue: [] });</code></pre>
+    
+    <div class="key-concept">
+        <strong>Signal vs Observable:</strong> Signals are synchronous and push-based. Observables are asynchronous and pull-based. Use signals for UI state, observables for async operations.
+    </div>
+    
+    <h2>Signals in Templates</h2>
+    
+    <pre><code>@Component({
+  template: `
+    &lt;div&gt;
+      &lt;h2&gt;Count: {{ count() }}&lt;/h2&gt;
+      &lt;p&gt;Double: {{ doubleCount() }}&lt;/p&gt;
+      &lt;button (click)="increment()"&gt;+1&lt;/button&gt;
+      
+      &lt;!-- Automatic updates --&gt;
+      @if (count() > 5) {
+        &lt;p&gt;Count is greater than 5!&lt;/p&gt;
+      }
+      
+      &lt;!-- List with signals --&gt;
+      @for (item of items(); track item.id) {
+        &lt;div&gt;{{ item.name }}&lt;/div&gt;
+      }
+    &lt;/div&gt;
+  `
+})
+export class SignalDemoComponent {
+  count = signal(0);
+  doubleCount = computed(() => this.count() * 2);
+  items = signal&lt;Item[]&gt;([]);
+  
+  increment() {
+    this.count.update(n => n + 1);
+  }
+}</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Create a signal-based todo list component with:<br>
+        1. <code>todos</code> signal holding array of todo items<br>
+        2. <code>completedCount</code> computed signal<br>
+        3. <code>addTodo()</code> method<br>
+        4. Template showing count and list
+    </div>
+    
+    <h2>When to Use Each Pattern</h2>
+    
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Scenario</th>
+                <th>Use</th>
+                <th>Why</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Simple component state</td>
+                <td>Signals</td>
+                <td>Automatic updates, minimal boilerplate</td>
+            </tr>
+            <tr>
+                <td>Async data streams</td>
+                <td>Observables</td>
+                <td>Handle HTTP, WebSocket, intervals</td>
+            </tr>
+            <tr>
+                <td>Complex state logic</td>
+                <td>Signals + computed</td>
+                <td>Derived state without manual tracking</td>
+            </tr>
+            <tr>
+                <td>Form state</td>
+                <td>Reactive Forms</td>
+                <td>Validation, async validators</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Lifecycle with Signals</h2>
+    
+    <pre><code>@Component({...})
+export class UserComponent implements OnInit {
+  user = signal&lt;User | null&gt;(null);
+  
+  // Effect runs when user signal changes
+  constructor() {
+    effect(() => {
+      const currentUser = this.user();
+      if (currentUser) {
+        console.log('User loaded:', currentUser.name);
+      }
+    });
+  }
+  
+  ngOnInit() {
+    // Load user after component initializes
+    this.userService.getCurrentUser()
+      .subscribe(user => this.user.set(user));
+  }
+}</code></pre>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/components/lifecycle">Component Lifecycle Guide</a> &amp; <a href="https://angular.dev/guide/signals">Signals Guide</a><br>
+        Focus on: Lifecycle hook order, signal API, computed signals, effects.
+    </div>
+    
+    <h2>Common Patterns</h2>
+    
+    <h3>1. Cleanup Pattern</h3>
+    <pre><code>export class DataComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject&lt;void&gt;();
+  
+  ngOnInit() {
+    this.dataService.getData()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => this.data = data);
+  }
+  
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+}</code></pre>
+    
+    <h3>2. Signal with Initial Data</h3>
+    <pre><code>export class ListComponent {
+  items = signal&lt;Item[]&gt;([]);
+  loading = signal(true);
+  
+  constructor() {
+    // Load data immediately
+    this.loadData();
+  }
+  
+  async loadData() {
+    this.loading.set(true);
+    const items = await this.api.getItems();
+    this.items.set(items);
+    this.loading.set(false);
+  }
+}</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Refactor an existing component to use signals. Identify:<br>
+        1. Which properties should be signals?<br>
+        2. Which values can be computed?<br>
+        3. What effects do you need?
+    </div>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered lifecycle hooks and signals. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Add lifecycle hooks to existing components</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/guide/signals/overview">Signals in Depth</a> for advanced patterns</li>
+            <li><strong>Explore:</strong> <a href="https://angular.dev/guide/di">Dependency Injection</a> to understand service injection</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about lifecycle timing, signal optimization, or when to use observables vs signals!
+        </div>
+        
+        <p><a href="0004-dependency-injection-and-services.html">Next Lesson: Dependency Injection & Services →</a></p>
+    </div>
+    
+    <script>
+        // Interactive lifecycle diagram
+        document.addEventListener('DOMContentLoaded', function() {
+            const interactive = document.createElement('div');
+            interactive.innerHTML = `
+                <div class="practice">
+                    <h3>Interactive: Lifecycle Order</h3>
+                    <p>Drag these hooks into the correct order:</p>
+                    <div id="lifecycle-order" style="margin: 1rem 0;">
+                        <div class="draggable" draggable="true" style="padding: 0.5rem; background: white; margin: 0.25rem; border-radius: 3px; cursor: move;">ngOnDestroy</div>
+                        <div class="draggable" draggable="true" style="padding: 0.5rem; background: white; margin: 0.25rem; border-radius: 3px; cursor: move;">constructor</div>
+                        <div class="draggable" draggable="true" style="padding: 0.5rem; background: white; margin: 0.25rem; border-radius: 3px; cursor: move;">ngAfterViewInit</div>
+                        <div class="draggable" draggable="true" style="padding: 0.5rem; background: white; margin: 0.25rem; border-radius: 3px; cursor: move;">ngOnInit</div>
+                    </div>
+                    <button onclick="checkOrder()">Check Order</button>
+                    <div id="result" style="margin-top: 1rem;"></div>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(interactive);
+            
+            // Simple drag and drop
+            let draggedElement = null;
+            document.querySelectorAll('.draggable').forEach(el => {
+                el.addEventListener('dragstart', e => {
+                    draggedElement = el;
+                    setTimeout(() => el.style.opacity = '0.5', 0);
+                });
+                el.addEventListener('dragend', e => {
+                    el.style.opacity = '1';
+                });
+                el.addEventListener('dragover', e => e.preventDefault());
+                el.addEventListener('drop', e => {
+                    e.preventDefault();
+                    if (draggedElement !== el) {
+                        const list = el.parentNode;
+                        const items = [...list.children];
+                        const draggedIndex = items.indexOf(draggedElement);
+                        const droppedIndex = items.indexOf(el);
+                        
+                        if (draggedIndex < droppedIndex) {
+                            list.insertBefore(draggedElement, el.nextSibling);
+                        } else {
+                            list.insertBefore(draggedElement, el);
+                        }
+                    }
+                });
+            });
+            
+            window.checkOrder = function() {
+                const order = [...document.querySelectorAll('.draggable')].map(el => el.textContent);
+                const correct = ['constructor', 'ngOnInit', 'ngAfterViewInit', 'ngOnDestroy'];
+                const result = document.getElementById('result');
+                
+                if (JSON.stringify(order) === JSON.stringify(correct)) {
+                    result.innerHTML = '<span style="color: green;">✓ Correct! Constructor → OnInit → AfterViewInit → OnDestroy</span>';
+                } else {
+                    result.innerHTML = '<span style="color: red;">✗ Not quite. Remember: Create → Initialize → View Ready → Cleanup</span>';
+                }
+            };
+        });
+    </script>
+</body>
+</html>

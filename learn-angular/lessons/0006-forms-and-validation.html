@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 6: Forms & Validation</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 6 of ∞</strong> • Angular Forms & Validation • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0005-routing-and-navigation.html">← Lesson 5</a>
+    </div>
+    
+    <h1>Forms & Validation</h1>
+    
+    <p>You can navigate between views. Now let's learn how to collect and validate user input with Angular's powerful forms system.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> Angular provides two approaches to forms: Template-driven (simpler, less code) and Reactive (more powerful, testable). Understanding when to use each is crucial.
+    </div>
+    
+    <h2>Template-driven Forms</h2>
+    
+    <p>Good for simple forms with minimal logic:</p>
+    
+    <pre><code>// Import FormsModule
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  imports: [FormsModule],
+  template: `
+    &lt;form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)"&gt;
+      &lt;div&gt;
+        &lt;label for="email"&gt;Email&lt;/label&gt;
+        &lt;input 
+          type="email" 
+          id="email"
+          name="email"
+          ngModel
+          required
+          email
+          #email="ngModel"
+        &gt;
+        @if (email.invalid && email.touched) {
+          &lt;div class="error"&gt;
+            @if (email.errors?.['required']) {
+              Email is required
+            }
+            @if (email.errors?.['email']) {
+              Please enter a valid email
+            }
+          &lt;/div&gt;
+        }
+      &lt;/div&gt;
+      
+      &lt;div&gt;
+        &lt;label for="password"&gt;Password&lt;/label&gt;
+        &lt;input 
+          type="password" 
+          id="password"
+          name="password"
+          ngModel
+          required
+          minlength="8"
+          #password="ngModel"
+        &gt;
+        @if (password.invalid && password.touched) {
+          &lt;div class="error"&gt;Password must be at least 8 characters&lt;/div&gt;
+        }
+      &lt;/div&gt;
+      
+      &lt;button type="submit" [disabled]="loginForm.invalid"&gt;
+        Login
+      &lt;/button&gt;
+    &lt;/form&gt;
+  `
+})
+export class LoginComponent {
+  onSubmit(form: NgForm) {
+    if (form.valid) {
+      console.log('Form submitted:', form.value);
+    }
+  }
+}</code></pre>
+    
+    <div class="warning">
+        <strong>ngModel caveat:</strong> Each form control needs a unique <code>name</code> attribute. Angular uses it to register the control.
+    </div>
+    
+    <h2>Reactive Forms</h2>
+    
+    <p>Better for complex forms, dynamic controls, and testability:</p>
+    
+    <pre><code>// Import ReactiveFormsModule
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+
+@Component({
+  imports: [ReactiveFormsModule],
+  template: `
+    &lt;form [formGroup]="profileForm" (ngSubmit)="onSubmit()"&gt;
+      &lt;div formGroupName="personalInfo"&gt;
+        &lt;div&gt;
+          &lt;label for="firstName"&gt;First Name&lt;/label&gt;
+          &lt;input id="firstName" formControlName="firstName"&gt;
+          @if (profileForm.get('personalInfo.firstName')?.invalid && 
+               profileForm.get('personalInfo.firstName')?.touched) {
+            &lt;div class="error"&gt;First name is required&lt;/div&gt;
+          }
+        &lt;/div&gt;
+        
+        &lt;div&gt;
+          &lt;label for="lastName"&gt;Last Name&lt;/label&gt;
+          &lt;input id="lastName" formControlName="lastName"&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      
+      &lt;div formGroupName="address"&gt;
+        &lt;div&gt;
+          &lt;label for="street"&gt;Street&lt;/label&gt;
+          &lt;input id="street" formControlName="street"&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+          &lt;label for="city"&gt;City&lt;/label&gt;
+          &lt;input id="city" formControlName="city"&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      
+      &lt;button type="submit" [disabled]="profileForm.invalid"&gt;
+        Update Profile
+      &lt;/button&gt;
+    &lt;/form&gt;
+  `
+})
+export class ProfileComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  
+  profileForm = this.fb.group({
+    personalInfo: this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required]
+    }),
+    address: this.fb.group({
+      street: [''],
+      city: ['']
+    })
+  });
+  
+  ngOnInit() {
+    // Patch entire form
+    this.profileForm.patchValue({
+      personalInfo: {
+        firstName: 'John',
+        lastName: 'Doe'
+      }
+    });
+  }
+  
+  onSubmit() {
+    if (this.profileForm.valid) {
+      console.log('Form value:', this.profileForm.value);
+    }
+  }
+}</code></pre>
+    
+    <div class="key-concept">
+        <strong>FormBuilder:</strong> The <code>FormBuilder</code> service reduces boilerplate. It's syntactic sugar for creating form groups and controls.
+    </div>
+    
+    <h2>Validation</h2>
+    
+    <h3>Built-in Validators</h3>
+    <pre><code>import { Validators } from '@angular/forms';
+
+const form = this.fb.group({
+  // Required field
+  name: ['', Validators.required],
+  
+  // Email validation
+  email: ['', [Validators.required, Validators.email]],
+  
+  // String length
+  password: ['', [
+    Validators.required,
+    Validators.minLength(8),
+    Validators.maxLength(50)
+  ]],
+  
+  // Pattern (regex)
+  phone: ['', Validators.pattern(/^\d{10}$/)],
+  
+  // Numeric
+  age: ['', [Validators.required, Validators.min(18), Validators.max(120)]]
+});</code></pre>
+    
+    <h3>Custom Validators</h3>
+    <pre><code>// Custom validator function
+export function passwordStrengthValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    if (!value) return null;
+    
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
+    const hasNumeric = /[0-9]/.test(value);
+    
+    const passwordValid = hasUpperCase && hasLowerCase && hasNumeric;
+    
+    return passwordValid ? null : {
+      passwordStrength: {
+        hasUpperCase,
+        hasLowerCase,
+        hasNumeric
+      }
+    };
+  };
+}
+
+// Async validator (e.g., check username availability)
+export function uniqueUsernameValidator(
+  userService: UserService
+): AsyncValidatorFn {
+  return (control: AbstractControl) => {
+    return timer(500).pipe(
+      switchMap(() => userService.checkUsername(control.value)),
+      map(isAvailable => isAvailable ? null : { usernameTaken: true }),
+      take(1)
+    );
+  };
+}
+
+// Usage
+const form = this.fb.group({
+  username: ['', 
+    [Validators.required], 
+    [uniqueUsernameValidator(this.userService)]
+  ],
+  password: ['', [Validators.required, passwordStrengthValidator()]]
+});</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Create a registration form with:<br>
+        1. Email (required, valid format)<br>
+        2. Password (required, min 8 chars, custom strength validator)<br>
+        3. Confirm password (must match password)<br>
+        4. Username (required, async validator for uniqueness)
+    </div>
+    
+    <h2>Dynamic Forms</h2>
+    
+    <p>Add or remove controls dynamically:</p>
+    
+    <pre><code>@Component({
+  template: `
+    &lt;form [formGroup]="form"&gt;
+      &lt;div formArrayName="aliases"&gt;
+        @for (alias of aliases.controls; track $index; let i = $index) {
+          &lt;div&gt;
+            &lt;input [formControlName]="i" placeholder="Alias"&gt;
+            &lt;button type="button" (click)="removeAlias(i)"&gt;Remove&lt;/button&gt;
+          &lt;/div&gt;
+        }
+      &lt;/div&gt;
+      
+      &lt;button type="button" (click)="addAlias()"&gt;Add Alias&lt;/button&gt;
+    &lt;/form&gt;
+  `
+})
+export class DynamicFormComponent {
+  private fb = inject(FormBuilder);
+  
+  form = this.fb.group({
+    aliases: this.fb.array([])
+  });
+  
+  get aliases() {
+    return this.form.get('aliases') as FormArray;
+  }
+  
+  addAlias() {
+    this.aliases.push(this.fb.control(''));
+  }
+  
+  removeAlias(index: number) {
+    this.aliases.removeAt(index);
+  }
+}</code></pre>
+    
+    <h2>Form State</h2>
+    
+    <pre><code>// Check form state
+console.log(this.form.valid);        // true if all controls valid
+console.log(this.form.invalid);      // true if any control invalid
+console.log(this.form.pristine);     // true if user hasn't interacted
+console.log(this.form.dirty);        // true if user has interacted
+console.log(this.form.touched);      // true if any control touched
+console.log(this.form.untouched);    // true if no control touched
+
+// Get specific control state
+const emailControl = this.form.get('email');
+console.log(emailControl?.valid);
+console.log(emailControl?.errors);    // { required: true, email: true }
+
+// Disable/enable controls
+emailControl?.disable();
+emailControl?.enable();
+
+// Reset form
+this.form.reset();
+this.form.reset({ email: '', password: '' }); // With initial values</code></pre>
+    
+    <h2>Template-driven vs Reactive</h2>
+    
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Aspect</th>
+                <th>Template-driven</th>
+                <th>Reactive</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Setup</strong></td>
+                <td>Less code, simpler</td>
+                <td>More code, explicit</td>
+            </tr>
+            <tr>
+                <td><strong>Validation</strong></td>
+                <td>Template-based</td>
+                <td>Code-based</td>
+            </tr>
+            <tr>
+                <td><strong>Testing</strong></td>
+                <td>Harder to test</td>
+                <td>Easier to test</td>
+            </tr>
+            <tr>
+                <td><strong>Dynamic controls</strong></td>
+                <td>Limited</td>
+                <td>Full support</td>
+            </tr>
+            <tr>
+                <td><strong>Complexity</strong></td>
+                <td>Simple forms</td>
+                <td>Complex forms</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/forms">Angular Forms Guide</a><br>
+        Focus on: "Template-driven forms", "Reactive forms", "Validation", "Dynamic forms".
+    </div>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered Angular forms. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Build a multi-step form wizard with validation</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/guide/forms/reactive-forms">Reactive Forms Deep Dive</a> for advanced patterns</li>
+            <li><strong>Explore:</strong> <a href="https://angular.dev/guide/http">HTTP Client</a> to submit forms to APIs</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about custom validators, dynamic forms, or form optimization strategies!
+        </div>
+        
+        <p><a href="0007-http-client-and-apis.html">Next Lesson: HTTP Client & APIs →</a></p>
+    </div>
+    
+    <script>
+        // Interactive form comparison
+        document.addEventListener('DOMContentLoaded', function() {
+            const quiz = document.createElement('div');
+            quiz.innerHTML = `
+                <div class="practice">
+                    <h3>Quick Quiz: Which Form Type?</h3>
+                    <p>For each scenario, which form approach would you use?</p>
+                    <ol>
+                        <li>A simple contact form with 3 fields</li>
+                        <li>A complex registration form with async validation</li>
+                        <li>A form with dynamically added fields</li>
+                        <li>A form that needs extensive unit testing</li>
+                    </ol>
+                    <details>
+                        <summary>Click for answers</summary>
+                        <ol>
+                            <li><strong>Template-driven</strong> - Simple, less code</li>
+                            <li><strong>Reactive</strong> - Better validation support</li>
+                            <li><strong>Reactive</strong> - FormArray for dynamic controls</li>
+                            <li><strong>Reactive</strong> - Easier to test in isolation</li>
+                        </ol>
+                    </details>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(quiz);
+        });
+    </script>
+</body>
+</html>

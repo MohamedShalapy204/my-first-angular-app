@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 10: Angular Animations</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+        
+        .demo-box {
+            width: 100px;
+            height: 100px;
+            background: var(--accent-color);
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 10 of ∞</strong> • Angular Animations • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0009-advanced-component-patterns.html">← Lesson 9</a>
+    </div>
+    
+    <h1>Angular Animations</h1>
+    
+    <p>You can build powerful components. Now let's learn how to add smooth, performant animations that enhance user experience without compromising performance.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> Angular's animation system is built on CSS Web Animations API. It provides a declarative, framework-integrated way to create complex animations that work across browsers.
+    </div>
+    
+    <h2>Setting Up Animations</h2>
+    
+    <pre><code>// app.config.ts
+import { provideAnimations } from '@angular/platform-browser/animations';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideAnimations(),
+    // ... other providers
+  ]
+};</code></pre>
+    
+    <h2>Basic Animation</h2>
+    
+    <pre><code>import { trigger, state, style, animate, transition } from '@angular/animations';
+
+@Component({
+  selector: 'app-simple-animation',
+  template: `
+    &lt;div [@openClose]="isOpen ? 'open' : 'closed'" class="box"&gt;
+      {{ isOpen ? 'Open' : 'Closed' }}
+    &lt;/div&gt;
+    
+    &lt;button (click)="isOpen = !isOpen"&gt;Toggle&lt;/button&gt;
+  `,
+  animations: [
+    trigger('openClose', [
+      state('open', style({
+        height: '200px',
+        opacity: 1,
+        backgroundColor: 'green'
+      })),
+      state('closed', style({
+        height: '100px',
+        opacity: 0.5,
+        backgroundColor: 'red'
+      })),
+      transition('open => closed', animate('300ms ease-out')),
+      transition('closed => open', animate('300ms ease-in'))
+    ])
+  ]
+})
+export class SimpleAnimationComponent {
+  isOpen = true;
+}</code></pre>
+    
+    <div class="key-concept">
+        <strong>Animation triggers:</strong> The <code>[@triggerName]</code> syntax binds an animation trigger to a component property.
+    </div>
+    
+    <h2>Animation Concepts</h2>
+    
+    <h3>States</h3>
+    <pre><code>// Named states
+state('active', style({ transform: 'scale(1.1)' }))
+state('inactive', style({ transform: 'scale(1)' }))
+
+// Wildcard state (matches any state)
+state('*', style({ opacity: 1 }))
+
+// Void state (element entering/leaving DOM)
+state('void', style({ opacity: 0 }))</code></pre>
+    
+    <h3>Transitions</h3>
+    <pre><code>// Specific transitions
+transition('inactive => active', animate('200ms'))
+
+// Any state change
+transition('* => *', animate('500ms'))
+
+// Entering/leaving DOM
+transition(':enter', animate('300ms'))  // void => *
+transition(':leave', animate('300ms'))  // * => void
+
+// Multiple transitions
+transition(':enter, :leave', animate('300ms'))</code></pre>
+    
+    <h3>Styles</h3>
+    <pre><code>// Static styles
+style({ backgroundColor: 'red', transform: 'translateX(0)' })
+
+// Styles with parameters
+style({ transform: 'translateX({ distance }})', backgroundColor: '{{ color }}' })
+
+// Using function (for dynamic values)
+style(({ toState }) => ({
+  backgroundColor: toState === 'error' ? 'red' : 'green'
+}))</code></pre>
+    
+    <div class="warning">
+        <strong>Performance:</strong> Angular only animates properties that are animatable (transform, opacity, etc.). Avoid animating layout properties like width/height.
+    </div>
+    
+    <h2>Complex Animations</h2>
+    
+    <pre><code>animations: [
+  trigger('slideInOut', [
+    // Slide in from right
+    transition(':enter', [
+      style({ transform: 'translateX(100%)', opacity: 0 }),
+      animate('300ms ease-out', style({ transform: 'translateX(0)', opacity: 1 }))
+    ]),
+    
+    // Slide out to left
+    transition(':leave', [
+      animate('300ms ease-in', style({ transform: 'translateX(-100%)', opacity: 0 }))
+    ])
+  ]),
+  
+  trigger('fadeInOut', [
+    transition(':enter', [
+      style({ opacity: 0 }),
+      animate('200ms', style({ opacity: 1 }))
+    ]),
+    transition(':leave', [
+      animate('200ms', style({ opacity: 0 }))
+    ])
+  ])
+]</code></pre>
+    
+    <h2>Keyframe Animations</h2>
+    
+    <pre><code>import { keyframes } from '@angular/animations';
+
+animations: [
+  trigger('bounce', [
+    transition(':enter', [
+      animate('1s', keyframes([
+        style({ transform: 'translateY(-100%)', offset: 0 }),
+        style({ transform: 'translateY(0)', offset: 0.5 }),
+        style({ transform: 'translateY(-30px)', offset: 0.7 }),
+        style({ transform: 'translateY(0)', offset: 1.0 })
+      ]))
+    ])
+  ]),
+  
+  trigger('shake', [
+    transition('* => error', [
+      animate('0.5s', keyframes([
+        style({ transform: 'translateX(0)', offset: 0 }),
+        style({ transform: 'translateX(-10px)', offset: 0.2 }),
+        style({ transform: 'translateX(10px)', offset: 0.4 }),
+        style({ transform: 'translateX(-10px)', offset: 0.6 }),
+        style({ transform: 'translateX(10px)', offset: 0.8 }),
+        style({ transform: 'translateX(0)', offset: 1.0 })
+      ]))
+    ])
+  ])
+]</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Create a notification component with:<br>
+        1. Slide-in animation when appearing<br>
+        2. Fade-out animation when dismissed<br>
+        3. Bounce effect on error<br>
+        4. Progress bar animation
+    </div>
+    
+    <h2>Route Animations</h2>
+    
+    <pre><code>// app.component.ts
+@Component({
+  template: `
+    &lt;div [@routeAnimation]="getRouteAnimationData()"&gt;
+      &lt;router-outlet&gt;&lt;/router-outlet&gt;
+    &lt;/div&gt;
+  `,
+  animations: [
+    trigger('routeAnimation', [
+      transition('* <=> *', [
+        style({ position: 'relative' }),
+        query(':enter, :leave', [
+          style({ position: 'absolute', width: '100%' })
+        ], { optional: true }),
+        query(':enter', [
+          style({ opacity: 0, transform: 'translateX(100%)' })
+        ], { optional: true }),
+        group([
+          query(':leave', [
+            animate('300ms ease-out', style({ opacity: 0, transform: 'translateX(-100%)' }))
+          ], { optional: true }),
+          query(':enter', [
+            animate('300ms ease-out', style({ opacity: 1, transform: 'translateX(0)' }))
+          ], { optional: true })
+        ])
+      ])
+    ])
+  ]
+})
+export class AppComponent {
+  getRouteAnimationData() {
+    return this.activatedRoute.snapshot.firstChild?.routeConfig?.path;
+  }
+}</code></pre>
+    
+    <h2>Animation Callbacks</h2>
+    
+    <pre><code>@Component({
+  template: `
+    &lt;div 
+      [@fadeAnimation]="animationState"
+      (@fadeAnimation.start)="onAnimationStart($event)"
+      (@fadeAnimation.done)="onAnimationDone($event)"
+    &gt;
+      Animated content
+    &lt;/div&gt;
+  `
+})
+export class AnimationCallbackComponent {
+  animationState = 'visible';
+  
+  onAnimationStart(event: AnimationEvent) {
+    console.log('Animation started:', event);
+  }
+  
+  onAnimationDone(event: AnimationEvent) {
+    console.log('Animation completed:', event);
+    // Access final state
+    console.log('To state:', event.toState);
+  }
+}</code></pre>
+    
+    <h2>Reusable Animations</h2>
+    
+    <pre><code>// animations/fade.animations.ts
+import { trigger, transition, style, animate } from '@angular/animations';
+
+export const fadeInOut = trigger('fadeInOut', [
+  transition(':enter', [
+    style({ opacity: 0 }),
+    animate('200ms', style({ opacity: 1 }))
+  ]),
+  transition(':leave', [
+    animate('200ms', style({ opacity: 0 }))
+  ])
+]);
+
+export const slideInRight = trigger('slideInRight', [
+  transition(':enter', [
+    style({ transform: 'translateX(100%)', opacity: 0 }),
+    animate('300ms ease-out', style({ transform: 'translateX(0)', opacity: 1 }))
+  ]),
+  transition(':leave', [
+    animate('300ms ease-in', style({ transform: 'translateX(100%)', opacity: 0 }))
+  ])
+]);
+
+// Use in component
+import { fadeInOut, slideInRight } from '../animations/fade.animations';
+
+@Component({
+  animations: [fadeInOut, slideInRight],
+  template: `
+    &lt;div [@fadeInOut]="show" [@slideInRight]="show"&gt;
+      Reusable animation
+    &lt;/div&gt;
+  `
+})</code></pre>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/animations">Angular Animations Guide</a><br>
+        Focus on: "Basics", "Advanced concepts", "Route animations", "Reusable animations".
+    </div>
+    
+    <h2>Best Practices</h2>
+    
+    <ul>
+        <li><strong>Keep animations short</strong> - 200-500ms is ideal for UI feedback</li>
+        <li><strong>Use hardware acceleration</strong> - Animate transform and opacity</li>
+        <li><strong>Respect user preferences</strong> - Check for reduced motion preference</li>
+        <li><strong>Test performance</strong> - Avoid animations on many elements</li>
+        <li><strong>Use state machines</strong> - Define clear states and transitions</li>
+    </ul>
+    
+    <pre><code>// Respect reduced motion preference
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+// Or in Angular
+animations: [
+  trigger('fadeIn', [
+    transition(':enter', [
+      style({ opacity: 0 }),
+      animate('{{ duration }}ms', style({ opacity: 1 }))
+    ], { params: { duration: 200 } })
+  ])
+]</code></pre>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered Angular animations. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Add animations to existing components</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/guide/animations/advanced">Advanced Animations</a> for complex patterns</li>
+            <li><strong>Explore:</strong> <a href="https://angular.dev/guide/animations/route-animations">Route Animations</a> for page transitions</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about animation performance, complex keyframes, or integrating with CSS libraries!
+        </div>
+        
+        <p><a href="0011-performance-optimization.html">Next Lesson: Performance Optimization →</a></p>
+    </div>
+    
+    <script>
+        // Interactive animation demo
+        document.addEventListener('DOMContentLoaded', function() {
+            const demo = document.createElement('div');
+            demo.innerHTML = `
+                <div class="practice">
+                    <h3>Interactive: Animation Timing</h3>
+                    <p>Click the box to see different easing functions:</p>
+                    <div style="display: flex; gap: 1rem; margin: 1rem 0;">
+                        <div>
+                            <button onclick="animateBox('ease')" style="margin-bottom: 0.5rem;">ease</button>
+                            <div class="demo-box" id="box-ease" style="transition: transform 500ms ease;">Box</div>
+                        </div>
+                        <div>
+                            <button onclick="animateBox('linear')" style="margin-bottom: 0.5rem;">linear</button>
+                            <div class="demo-box" id="box-linear" style="transition: transform 500ms linear;">Box</div>
+                        </div>
+                        <div>
+                            <button onclick="animateBox('cubic')" style="margin-bottom: 0.5rem;">cubic-bezier</button>
+                            <div class="demo-box" id="box-cubic" style="transition: transform 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);">Box</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(demo);
+            
+            window.animateBox = function(type) {
+                const box = document.getElementById('box-' + type);
+                box.style.transform = box.style.transform === 'translateX(100px)' ? 'translateX(0)' : 'translateX(100px)';
+            };
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 4: Dependency Injection & Services</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 4 of ∞</strong> • Angular Dependency Injection • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0003-component-lifecycle-and-signals.html">← Lesson 3</a>
+    </div>
+    
+    <h1>Dependency Injection & Services</h1>
+    
+    <p>You've built components and managed state with signals. Now let's learn how Angular's dependency injection (DI) system helps you share code and maintain separation of concerns.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> Dependency Injection is Angular's way of providing dependencies (services) to components and other services. It promotes modularity, testability, and reusability.
+    </div>
+    
+    <h2>What is Dependency Injection?</h2>
+    
+    <p>Instead of creating dependencies yourself, Angular provides them for you:</p>
+    
+    <pre><code>// ❌ Without DI - tight coupling
+export class UserService {
+  private http = new HttpClient(); // Creates its own dependency
+}
+
+// ✅ With DI - loose coupling
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  constructor(private http: HttpClient) {} // Angular provides HttpClient
+}</code></pre>
+    
+    <h2>Creating Services</h2>
+    
+    <p>Services are classes that provide shared functionality:</p>
+    
+    <pre><code>// Generate with Angular CLI: ng generate service services/user
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User } from '../models/user.model';
+
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  private apiUrl = 'https://api.example.com/users';
+  
+  constructor(private http: HttpClient) {}
+  
+  getUsers(): Observable&lt;User[]&gt; {
+    return this.http.get&lt;User[]&gt;(this.apiUrl);
+  }
+  
+  getUser(id: number): Observable&lt;User&gt; {
+    return this.http.get&lt;User&gt;(`${this.apiUrl}/${id}`);
+  }
+  
+  createUser(user: User): Observable&lt;User&gt; {
+    return this.http.post&lt;User&gt;(this.apiUrl, user);
+  }
+}</code></pre>
+    
+    <h3>The @Injectable Decorator</h3>
+    <pre><code>@Injectable({ providedIn: 'root' })  // Singleton service available app-wide
+export class LoggerService {
+  log(message: string) {
+    console.log(`[LOG] ${message}`);
+  }
+}</code></pre>
+    
+    <div class="key-concept">
+        <strong>providedIn: 'root'</strong> makes the service a singleton available throughout the app. Angular tree-shakes unused services automatically.
+    </div>
+    
+    <h2>Using Services in Components</h2>
+    
+    <pre><code>@Component({
+  selector: 'app-user-list',
+  template: `
+    @if (loading()) {
+      &lt;p&gt;Loading users...&lt;/p&gt;
+    } @else {
+      &lt;ul&gt;
+        @for (user of users(); track user.id) {
+          &lt;li&gt;{{ user.name }}&lt;/li&gt;
+        }
+      &lt;/ul&gt;
+    }
+  `
+})
+export class UserListComponent implements OnInit {
+  users = signal&lt;User[]&gt;([]);
+  loading = signal(true);
+  
+  // Inject service via constructor
+  constructor(private userService: UserService) {}
+  
+  ngOnInit() {
+    this.userService.getUsers().subscribe({
+      next: (users) => {
+        this.users.set(users);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        console.error('Failed to load users:', err);
+        this.loading.set(false);
+      }
+    });
+  }
+}</code></pre>
+    
+    <div class="warning">
+        <strong>Modern Angular:</strong> With Angular 14+, you can use the <code>inject()</code> function instead of constructor injection:
+        <pre><code>export class UserListComponent {
+  private userService = inject(UserService);
+  // ...
+}</code></pre>
+    </div>
+    
+    <h2>Injection Tokens</h2>
+    
+    <p>Sometimes you need to inject something that isn't a class (like configuration values):</p>
+    
+    <pre><code>// Define a token
+import { InjectionToken } from '@angular/core';
+
+export const API_URL = new InjectionToken&lt;string&gt;('API_URL');
+
+// Provide the value
+@NgModule({
+  providers: [
+    { provide: API_URL, useValue: 'https://api.example.com' }
+  ]
+})
+export class AppModule {}
+
+// Use the token
+@Injectable()
+export class ApiService {
+  constructor(@Inject(API_URL) private apiUrl: string) {}
+}</code></pre>
+    
+    <h2>Service Hierarchies</h2>
+    
+    <p>Services can have different scopes:</p>
+    
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Scope</th>
+                <th>providedIn</th>
+                <th>Behavior</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Root</strong></td>
+                <td><code>'root'</code></td>
+                <td>Singleton app-wide</td>
+            </tr>
+            <tr>
+                <td><strong>Component</strong></td>
+                <td><code>Component</code></td>
+                <td>New instance per component</td>
+            </tr>
+            <tr>
+                <td><strong>Module</strong></td>
+                <td><code>NgModule</code></td>
+                <td>Singleton within module</td>
+            </tr>
+            <tr>
+                <td><strong>Environment</strong></td>
+                <td><code>'platform'</code></td>
+                <td>Singleton across lazy modules</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <pre><code>// Component-scoped service (new instance per component)
+@Injectable()
+export class FormService {
+  formData = signal({});
+}
+
+@Component({
+  providers: [FormService] // Each component gets its own instance
+})
+export class FormComponent {
+  constructor(private formService: FormService) {}
+}</code></pre>
+    
+    <div class="question">
+        <strong>Think About It:</strong> When would you want a component-scoped service instead of a root singleton? What are the trade-offs?
+    </div>
+    
+    <h2>Provider Configuration</h2>
+    
+    <pre><code>// Different ways to provide services
+@NgModule({
+  providers: [
+    // Basic
+    UserService,
+    
+    // With value
+    { provide: API_URL, useValue: 'https://api.example.com' },
+    
+    // With class
+    { provide: LoggerService, useClass: ConsoleLoggerService },
+    
+    // With factory
+    { 
+      provide: UserService,
+      useFactory: (http: HttpClient) => new UserService(http),
+      deps: [HttpClient]
+    },
+    
+    // Alias
+    { provide: 'AliasedService', useExisting: UserService }
+  ]
+})
+export class AppModule {}</code></pre>
+    
+    <h2>Real-World Patterns</h2>
+    
+    <h3>1. API Service Pattern</h3>
+    <pre><code>@Injectable({ providedIn: 'root' })
+export class ApiService {
+  private http = inject(HttpClient);
+  
+  get&lt;T&gt;(endpoint: string): Observable&lt;T&gt; {
+    return this.http.get&lt;T&gt;(`${environment.apiUrl}/${endpoint}`);
+  }
+  
+  post&lt;T&gt;(endpoint: string, data: any): Observable&lt;T&gt; {
+    return this.http.post&lt;T&gt;(`${environment.apiUrl}/${endpoint}`, data);
+  }
+}
+
+// Usage
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  private api = inject(ApiService);
+  
+  getUsers() {
+    return this.api.get&lt;User[]&gt;('users');
+  }
+}</code></pre>
+    
+    <h3>2. State Management Service</h3>
+    <pre><code>@Injectable({ providedIn: 'root' })
+export class AppStateService {
+  private userSubject = new BehaviorSubject&lt;User | null&gt;(null);
+  user$ = this.userSubject.asObservable();
+  
+  // Signals version
+  user = signal&lt;User | null&gt;(null);
+  
+  setUser(user: User) {
+    this.userSubject.next(user);
+    this.user.set(user);
+  }
+}</code></pre>
+    
+    <h3>3. Authentication Service</h3>
+    <pre><code>@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private router = inject(Router);
+  private tokenKey = 'auth_token';
+  
+  isAuthenticated = signal(false);
+  
+  login(credentials: LoginRequest): Observable&lt;AuthResponse&gt; {
+    return this.http.post&lt;AuthResponse&gt;('/auth/login', credentials)
+      .pipe(
+        tap(response => {
+          localStorage.setItem(this.tokenKey, response.token);
+          this.isAuthenticated.set(true);
+          this.router.navigate(['/dashboard']);
+        })
+      );
+  }
+  
+  logout() {
+    localStorage.removeItem(this.tokenKey);
+    this.isAuthenticated.set(false);
+    this.router.navigate(['/login']);
+  }
+}</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Create a logging service that:<br>
+        1. Has different log levels (info, warn, error)<br>
+        2. Stores logs in a signal<br>
+        3. Provides a method to get recent logs<br>
+        4. Can be used in any component
+    </div>
+    
+    <h2>Testing with Dependency Injection</h2>
+    
+    <p>DI makes testing easier by allowing you to mock dependencies:</p>
+    
+    <pre><code>// Real service
+@Injectable({ providedIn: 'root' })
+export class UserService {
+  getUsers() { return this.http.get('/users'); }
+}
+
+// Test with mock
+describe('UserComponent', () => {
+  let component: UserComponent;
+  let mockUserService: jasmine.SpyObj&lt;UserService&gt;;
+  
+  beforeEach(() => {
+    mockUserService = jasmine.createSpyObj('UserService', ['getUsers']);
+    mockUserService.getUsers.and.returnValue(of([{ id: 1, name: 'Test' }]));
+    
+    TestBed.configureTestingModule({
+      declarations: [UserComponent],
+      providers: [
+        { provide: UserService, useValue: mockUserService }
+      ]
+    });
+    
+    component = TestBed.inject(UserComponent);
+  });
+});</code></pre>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/di">Dependency Injection Guide</a><br>
+        Focus on: "What is DI", "Creating services", "Injection scopes", "Hierarchical injectors".
+    </div>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered dependency injection. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Extract shared logic from components into services</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/guide/di/dependency-injection-context">Injection Context</a> for advanced patterns</li>
+            <li><strong>Explore:</strong> <a href="https://angular.dev/guide/routing">Routing</a> to learn how services work with navigation</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about DI hierarchies, provider configurations, or testing patterns with mocks!
+        </div>
+        
+        <p><a href="0005-routing-and-navigation.html">Next Lesson: Routing & Navigation →</a></p>
+    </div>
+    
+    <script>
+        // Interactive DI quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            const quiz = document.createElement('div');
+            quiz.innerHTML = `
+                <div class="practice">
+                    <h3>Quick Quiz: DI Scenarios</h3>
+                    <p>For each scenario, which DI scope would you use?</p>
+                    <ol>
+                        <li>A logging service used throughout the app</li>
+                        <li>A form service for a specific form component</li>
+                        <li>A configuration service for a feature module</li>
+                        <li>An HTTP interceptor for all API calls</li>
+                    </ol>
+                    <details>
+                        <summary>Click for answers</summary>
+                        <ol>
+                            <li><strong>Root singleton</strong> - <code>providedIn: 'root'</code></li>
+                            <li><strong>Component-scoped</strong> - <code>providers: [FormService]</code> in component</li>
+                            <li><strong>Module-scoped</strong> - <code>providedIn: FeatureModule</code></li>
+                            <li><strong>Root singleton</strong> - <code>providedIn: 'root'</code> with HTTP_INTERCEPTORS</li>
+                        </ol>
+                    </details>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(quiz);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 9: Advanced Component Patterns</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 9 of ∞</strong> • Advanced Angular Components • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0008-testing-angular-applications.html">← Lesson 8</a>
+    </div>
+    
+    <h1>Advanced Component Patterns</h1>
+    
+    <p>You can build and test components. Now let's explore advanced patterns that make your components more flexible, reusable, and powerful.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> Advanced patterns like content projection, dynamic components, and host elements let you build truly reusable UI libraries and complex component architectures.
+    </div>
+    
+    <h2>Content Projection</h2>
+    
+    <p>Let parent components project content into your component:</p>
+    
+    <pre><code>// Card component that projects content
+@Component({
+  selector: 'app-card',
+  template: `
+    &lt;div class="card"&gt;
+      @if (title) {
+        &lt;div class="card-header"&gt;
+          &lt;h3&gt;{{ title }}&lt;/h3&gt;
+        &lt;/div&gt;
+      }
+      
+      &lt;div class="card-body"&gt;
+        &lt;ng-content&gt;&lt;/ng-content&gt;
+      &lt;/div&gt;
+      
+      @if (footer) {
+        &lt;div class="card-footer"&gt;
+          &lt;ng-content select="[card-footer]"&gt;&lt;/ng-content&gt;
+        &lt;/div&gt;
+      }
+    &lt;/div&gt;
+  `
+})
+export class CardComponent {
+  title = input&lt;string&gt;();
+  footer = input(false);
+}
+
+// Usage
+&lt;app-card [title]="'User Info'" [footer]="true"&gt;
+  &lt;p&gt;This is the main content&lt;/p&gt;
+  
+  &lt;div card-footer&gt;
+    &lt;button&gt;Save&lt;/button&gt;
+    &lt;button&gt;Cancel&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/app-card&gt;</code></pre>
+    
+    <h3>Multiple Content Slots</h3>
+    <pre><code>&lt;!-- Template with multiple projection points --&gt;
+&lt;ng-template #header&gt;
+  &lt;ng-content select="[header]"&gt;&lt;/ng-content&gt;
+&lt;/ng-template&gt;
+
+&lt;ng-template #footer&gt;
+  &lt;ng-content select="[footer]"&gt;&lt;/ng-content&gt;
+&lt;/ng-template&gt;
+
+&lt;!-- Default content when nothing projected --&gt;
+&lt;ng-content select="[header]"&gt;Default Header&lt;/ng-content&gt;</code></pre>
+    
+    <div class="key-concept">
+        <strong>select attribute:</strong> Use CSS selectors to target specific projected content. <code>ng-content select=".my-class"</code> only projects elements with that class.
+    </div>
+    
+    <h2>Dynamic Components</h2>
+    
+    <p>Load components dynamically at runtime:</p>
+    
+    <pre><code>// Create a component registry
+const componentRegistry: Record&lt;string, Type&lt;any&gt;&gt; = {
+  'user-card': UserCardComponent,
+  'product-card': ProductCardComponent,
+  'alert-box': AlertBoxComponent
+};
+
+@Component({
+  template: `
+    &lt;div #container&gt;&lt;/div&gt;
+  `
+})
+export class DynamicHostComponent implements AfterViewInit {
+  @ViewChild('container', { read: ViewContainerRef }) 
+  container!: ViewContainerRef;
+  
+  loadComponent(componentType: string) {
+    this.container.clear();
+    
+    const component = componentRegistry[componentType];
+    if (component) {
+      const ref = this.container.createComponent(component);
+      
+      // Set inputs
+      ref.setInput('data', { id: 1, name: 'Example' });
+      
+      // Listen to outputs
+      ref.instance.action.subscribe((event: any) => {
+        console.log('Component action:', event);
+      });
+    }
+  }
+}</code></pre>
+    
+    <h3>Using ngComponentOutlet (Simpler)</h3>
+    <pre><code>@Component({
+  template: `
+    &lt;ng-container 
+      *ngComponentOutlet="currentComponent"
+      [ngComponentOutletInputs]="componentInputs"
+      (ngComponentOutletOutput)="handleOutput($event)"
+    &gt;&lt;/ng-container&gt;
+  `
+})
+export class DynamicHostComponent {
+  currentComponent = signal&lt;Type&lt;any&gt;&gt;(UserCardComponent);
+  componentInputs = signal({ data: { id: 1 } });
+  
+  handleOutput(event: any) {
+    console.log('Output:', event);
+  }
+}</code></pre>
+    
+    <div class="warning">
+        <strong>Lazy Loading:</strong> Dynamic components work well with lazy loading. Only load components when needed.
+    </div>
+    
+    <h2>Host Elements</h2>
+    
+    <p>Access the host element (where component is placed):</p>
+    
+    <pre><code>@Component({
+  selector: '[appHighlight]',
+  host: {
+    'class': 'highlighted',
+    '[class.active]': 'isActive',
+    '(click)': 'onClick()',
+    'role': 'button',
+    'tabindex': '0'
+  },
+  template: `...`
+})
+export class HighlightDirective {
+  isActive = signal(false);
+  
+  @HostBinding('class.highlighted')
+  isHighlighted = true;
+  
+  @HostListener('mouseenter')
+  onMouseEnter() {
+    this.isActive.set(true);
+  }
+  
+  @HostListener('mouseleave')
+  onMouseLeave() {
+    this.isActive.set(false);
+  }
+}</code></pre>
+    
+    <h2>Component Inheritance</h2>
+    
+    <pre><code>// Base component
+@Component({
+  template: `
+    &lt;div class="base-layout"&gt;
+      &lt;header&gt;
+        &lt;ng-content select="[header]"&gt;&lt;/ng-content&gt;
+      &lt;/header&gt;
+      
+      &lt;main&gt;
+        &lt;ng-content&gt;&lt;/ng-content&gt;
+      &lt;/main&gt;
+      
+      &lt;footer&gt;
+        &lt;ng-content select="[footer]"&gt;&lt;/ng-content&gt;
+      &lt;/footer&gt;
+    &lt;/div&gt;
+  `
+})
+export class BaseLayoutComponent {
+  title = input&lt;string&gt;();
+}
+
+// Extended component
+@Component({
+  selector: 'app-admin-layout',
+  template: `
+    &lt;div class="admin-wrapper"&gt;
+      &lt;app-sidebar /&gt;
+      &lt;div class="main-content"&gt;
+        &lt;ng-content /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  `
+})
+export class AdminLayoutComponent extends BaseLayoutComponent {
+  // Inherits title input
+  sidebarCollapsed = signal(false);
+}</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Create a reusable modal component that:<br>
+        1. Uses content projection for body and footer<br>
+        2. Has a close button that emits an event<br>
+        3. Can be opened/closed dynamically<br>
+        4. Supports custom headers
+    </div>
+    
+    <h2>Component Communication Patterns</h2>
+    
+    <h3>1. Bidirectional Binding with Signals</h3>
+    <pre><code>// Child component
+@Component({...})
+export class SearchInputComponent {
+  value = model&lt;string&gt;(''); // Two-way bindable signal
+  
+  onInput(event: Event) {
+    this.value.set((event.target as HTMLInputElement).value);
+  }
+}
+
+// Parent component
+@Component({
+  template: `
+    &lt;app-search-input [(value)]="searchQuery" /&gt;
+    &lt;p&gt;Searching for: {{ searchQuery() }}&lt;/p&gt;
+  `
+})
+export class ParentComponent {
+  searchQuery = signal('');
+}</code></pre>
+    
+    <h3>2. Component State Machine</h3>
+    <pre><code>type ComponentState = 'idle' | 'loading' | 'success' | 'error';
+
+@Component({...})
+export class AsyncComponent {
+  state = signal&lt;ComponentState&gt;('idle');
+  data = signal&lt;any&gt;(null);
+  error = signal&lt;string | null&gt;(null);
+  
+  async loadData() {
+    this.state.set('loading');
+    
+    try {
+      this.data.set(await this.api.getData());
+      this.state.set('success');
+    } catch (err) {
+      this.error.set(err.message);
+      this.state.set('error');
+    }
+  }
+  
+  retry() {
+    this.state.set('idle');
+    this.loadData();
+  }
+}</code></pre>
+    
+    <h2>Lazy Component Loading</h3>
+    
+    <pre><code>// Lazy load heavy components
+@Component({
+  template: `
+    @if (showChart()) {
+      &lt;app-heavy-chart [data]="chartData()" /&gt;
+    } @else {
+      &lt;button (click)="showChart.set(true)"&gt;
+        Load Chart
+      &lt;/button&gt;
+    }
+  `
+})
+export class DashboardComponent {
+  showChart = signal(false);
+  chartData = signal([]);
+}
+
+// Or with dynamic imports
+const routes: Routes = [
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./dashboard.component')
+      .then(m => m.DashboardComponent)
+  }
+];</code></pre>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/components">Angular Components Guide</a><br>
+        Focus on: "Content projection", "Dynamic components", "Host elements", "Component interaction patterns".
+    </div>
+    
+    <h2>Best Practices</h2>
+    
+    <ul>
+        <li><strong>Keep components focused</strong> - One responsibility per component</li>
+        <li><strong>Use content projection for composition</strong> - Let parents control content</li>
+        <li><strong>Prefer signals over decorators</strong> - More reactive, less boilerplate</li>
+        <li><strong>Use model() for two-way binding</strong> - Cleaner than @Output for simple cases</li>
+        <li><strong>Consider lazy loading</strong> - Load components only when needed</li>
+    </ul>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered advanced component patterns. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Build a reusable UI component library</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/guide/components/advanced-usage">Advanced Component Usage</a></li>
+            <li><strong>Explore:</strong> <a href="https://angular.dev/guide/components/content-projection">Content Projection</a> for complex layouts</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about component architecture, dynamic loading strategies, or building UI libraries!
+        </div>
+        
+        <p><a href="0010-angular-animations.html">Next Lesson: Angular Animations →</a></p>
+    </div>
+    
+    <script>
+        // Interactive component patterns quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            const quiz = document.createElement('div');
+            quiz.innerHTML = `
+                <div class="practice">
+                    <h3>Quick Quiz: Pattern Selection</h3>
+                    <p>For each scenario, which pattern would you use?</p>
+                    <ol>
+                        <li>A card that can contain any content</li>
+                        <li>A tab panel that loads different content based on selection</li>
+                        <li>A form input that supports two-way binding</li>
+                        <li>A component that needs to access its host element</li>
+                    </ol>
+                    <details>
+                        <summary>Click for answers</summary>
+                        <ol>
+                            <li><strong>Content projection</strong> - <code>&lt;ng-content&gt;</code></li>
+                            <li><strong>Dynamic components</strong> - <code>ViewContainerRef</code> or <code>ngComponentOutlet</code></li>
+                            <li><strong>model() signal</strong> - Two-way bindable signal</li>
+                            <li><strong>Host element</strong> - <code>host</code> property or <code>@HostBinding</code></li>
+                        </ol>
+                    </details>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(quiz);
+        });
+    </script>
+</body>
+</html>

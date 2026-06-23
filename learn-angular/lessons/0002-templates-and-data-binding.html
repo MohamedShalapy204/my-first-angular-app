@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 2: Templates and Data Binding Deep Dive</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 2 of ∞</strong> • Angular Templates & Data Binding • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0001-understanding-angular-component-architecture.html">← Lesson 1</a>
+    </div>
+    
+    <h1>Templates and Data Binding Deep Dive</h1>
+    
+    <p>You learned that components have templates. Now let's master how Angular templates work — the syntax that makes your components dynamic and interactive.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> Angular templates aren't just HTML with mustaches. They're a powerful DSL (Domain Specific Language) that extends HTML with data binding, structural directives, and template expressions.
+    </div>
+    
+    <h2>The Three Binding Types</h2>
+    
+    <p>Angular offers three primary data binding mechanisms. Understanding when to use each is crucial:</p>
+    
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Binding Type</th>
+                <th>Syntax</th>
+                <th>Direction</th>
+                <th>Use Case</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Interpolation</strong></td>
+                <td><code>{{ expression }}</code></td>
+                <td>Component → Template</td>
+                <td>Displaying values in HTML</td>
+            </tr>
+            <tr>
+                <td><strong>Property Binding</strong></td>
+                <td><code>[property]="expression"</code></td>
+                <td>Component → Template</td>
+                <td>Setting DOM properties</td>
+            </tr>
+            <tr>
+                <td><strong>Event Binding</strong></td>
+                <td><code>(event)="handler"</code></td>
+                <td>Template → Component</td>
+                <td>Responding to user actions</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Interpolation: More Than You Think</h2>
+    
+    <pre><code>&lt;!-- Basic interpolation --&gt;
+&lt;h1&gt;{{ product.name }}&lt;/h1&gt;
+
+&lt;!-- With expressions --&gt;
+&lt;p&gt;Price: {{ product.price | currency }}&lt;/p&gt;
+&lt;p&gt;{{ 'Hello, ' + user.name + '!' }}&lt;/p&gt;
+
+&lt;!-- With method calls (use sparingly!) --&gt;
+&lt;p&gt;{{ getDiscountedPrice(product) }}&lt;/p&gt;</code></pre>
+    
+    <div class="warning">
+        <strong>Performance Warning:</strong> Angular runs change detection to update interpolations. Avoid expensive calculations in templates — compute them in the component class instead.
+    </div>
+    
+    <div class="question">
+        <strong>Think About It:</strong> Why might <code>{{ calculateComplexValue() }}</code> in a template cause performance issues? What's the alternative?
+    </div>
+    
+    <h2>Property Binding Deep Dive</h2>
+    
+    <p>Property binding sets DOM element properties, not attributes. This distinction matters:</p>
+    
+    <pre><code>&lt;!-- Setting the disabled property (boolean) --&gt;
+&lt;button [disabled]="isSubmitting"&gt;Submit&lt;/button&gt;
+
+&lt;!-- Setting the src property --&gt;
+&lt;img [src]="product.imageUrl" [alt]="product.name"&gt;
+
+&lt;!-- Setting a custom component property --&gt;
+&lt;app-user-card [user]="currentUser" [isAdmin]="true"&gt;&lt;/app-user-card&gt;
+
+&lt;!-- Binding to attribute (when no DOM property exists) --&gt;
+&lt;div [attr.role]="'button'"&gt;Click me&lt;/div&gt;</code></pre>
+    
+    <h3>Attribute vs Property</h3>
+    <ul>
+        <li><strong>Property:</strong> DOM element property (JavaScript object property)</li>
+        <li><strong>Attribute:</strong> HTML attribute (initial value, doesn't update)</li>
+    </ul>
+    
+    <pre><code>&lt;!-- This sets the HTML attribute, not the DOM property --&gt;
+&lt;input value="Initial"&gt;
+
+&lt;!-- This sets the DOM property, which updates dynamically --&gt;
+&lt;input [value]="currentValue"&gt;</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Create a component with a text input. Use property binding to set its value from a signal. What happens when you type in the input? How would you make it two-way bound?
+    </div>
+    
+    <h2>Event Binding: Handling User Actions</h2>
+    
+    <pre><code>&lt;!-- Basic click event --&gt;
+&lt;button (click)="addToCart()"&gt;Add to Cart&lt;/button&gt;
+
+&lt;!-- With event object --&gt;
+&lt;button (click)="handleClick($event)"&gt;Click&lt;/button&gt;
+
+&lt;!-- Other events --&gt;
+&lt;input (input)="search($event)"&gt;
+&lt;input (keydown.enter)="submitSearch()"&gt;
+&lt;div (mouseleave)="hideTooltip()"&gt;&lt;/div&gt;
+
+&lt;!-- Filtering events --&gt;
+&lt;input (keyup.enter)="submit()"&gt;</code></pre>
+    
+    <h3>Event Object Access</h3>
+    <pre><code>handleClick(event: MouseEvent) {
+  console.log('Clicked at:', event.clientX, event.clientY);
+  console.log('Target:', event.target);
+}</code></pre>
+    
+    <div class="key-concept">
+        <strong>$event:</strong> Angular provides the native DOM event object as <code>$event</code> in event bindings. For component events (Output), it's the value you emitted.
+    </div>
+    
+    <h2>Two-Way Binding: The Sugar Syntax</h2>
+    
+    <p>Two-way binding combines property and event binding:</p>
+    
+    <pre><code>&lt;!-- Two-way binding with ngModel --&gt;
+&lt;input [(ngModel)]="username"&gt;
+
+&lt;!-- What it's actually doing: --&gt;
+&lt;input [value]="username" (input)="username = $event.target.value"&gt;</code></pre>
+    
+    <div class="warning">
+        <strong>Modern Angular:</strong> With signals, two-way binding is evolving. The <code>[(ngModel)]</code> still works, but signals provide a more reactive approach.
+    </div>
+    
+    <h2>Template Expressions</h2>
+    
+    <p>Angular evaluates expressions in a limited context for security:</p>
+    
+    <pre><code>&lt;!-- Allowed: --&gt;
+{{ product.name }}
+{{ items.length }}
+{{ isLoggedIn ? 'Welcome' : 'Please login' }}
+{{ getFullName(user) }}
+
+&lt;!-- NOT allowed (for security): --&gt;
+{{ constructor() }}        &lt;!-- No new operators --&gt;
+{{ window.location }}      &lt;!-- No global objects --&gt;
+{{ something.click() }}    &lt;!-- No assignment expressions --&gt;</code></pre>
+    
+    <h3>Expression Context</h3>
+    <ul>
+        <li><strong>Can access:</strong> Component properties, template variables, imported modules</li>
+        <li><strong>Cannot access:</strong> Global JavaScript objects, assignment statements, <code>new</code> operator</li>
+    </ul>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Try these in a template. Which ones work? Which ones fail? Why?<br>
+        1. <code>{{ Math.PI }}</code><br>
+        2. <code>{{ items.push('new') }}</code><br>
+        3. <code>{{ user.getName() }}</code><br>
+        4. <code>{{ value = 5 }}</code>
+    </div>
+    
+    <h2>Template Variables</h2>
+    
+    <p>Angular templates can have local variables:</p>
+    
+    <pre><code>&lt;!-- Using *ngFor with template variable --&gt;
+&lt;ul&gt;
+  &lt;li *ngFor="let item of items; let i = index; let odd = odd"&gt;
+    {{ i }}. {{ item }} {{ odd ? '(odd)' : '' }}
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Using @for (modern syntax) --&gt;
+&lt;ul&gt;
+  @for (item of items; track item.id; let i = $index; let odd = $odd) {
+    &lt;li&gt;{{ i }}. {{ item.name }} {{ odd ? '(odd)' : '' }}&lt;/li&gt;
+  }
+&lt;/ul&gt;</code></pre>
+    
+    <h2>Template Reference Variables</h2>
+    
+    <p>Get direct references to DOM elements or components:</p>
+    
+    <pre><code>&lt;!-- Reference an input element --&gt;
+&lt;input #emailInput type="email"&gt;
+&lt;button (click)="validateEmail(emailInput.value)"&gt;Validate&lt;/button&gt;
+
+&lt;!-- Reference a component --&gt;
+&lt;app-child #childComponent&gt;&lt;/app-child&gt;
+&lt;button (click)="childComponent.doSomething()"&gt;Call Child&lt;/button&gt;
+
+&lt;!-- Using with ViewChild decorator --&gt;
+@Component({...})
+export class ParentComponent {
+  @ViewChild('emailInput') emailInput!: ElementRef&lt;HTMLInputElement&gt;;
+  
+  focusEmail() {
+    this.emailInput.nativeElement.focus();
+  }
+}</code></pre>
+    
+    <div class="key-concept">
+        <strong>#variable:</strong> Creates a reference available only within the template. Use <code>@ViewChild</code> in the class to access it programmatically.
+    </div>
+    
+    <h2>Your Documentation Deep Dive</h2>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/templates">Angular Templates Guide</a><br>
+        Focus on: "Template syntax" section, "Binding syntax" table, and "Expression context" subsection.
+    </div>
+    
+    <h3>What to Look For:</h3>
+    <ol>
+        <li><strong>Binding syntax table</strong> — Memorize the three binding types</li>
+        <li><strong>Template statements</strong> — How event handlers work</li>
+        <li><strong>Template variables</strong> — All the built-in variables ($index, $even, etc.)</li>
+    </ol>
+    
+    <div class="practice">
+        <strong>Documentation Practice:</strong> Open the <a href="https://angular.dev/guide/templates">Templates guide</a>. Find the "Microsyntax" section. How does Angular convert <code>*ngFor="let item of items"</code> into <code>&lt;ng-template ngFor let-item [ngForOf]="items"&gt;</code>?
+    </div>
+    
+    <h2>Common Pitfalls</h2>
+    
+    <h3>1. Forgetting Change Detection</h3>
+    <pre><code>// ❌ This might not update
+@Component({...})
+export class CounterComponent {
+  count = 0;
+  
+  increment() {
+    this.count++; // Works with OnPush only if signal or manual detection
+  }
+}
+
+// ✅ Better with signals
+@Component({...})
+export class CounterComponent {
+  count = signal(0);
+  
+  increment() {
+    this.count.update(n => n + 1); // Always triggers update
+  }
+}</code></pre>
+    
+    <h3>2. Mutating Arrays/Objects</h3>
+    <pre><code>// ❌ This won't trigger update
+this.items.push(newItem);
+
+// ✅ Create new reference
+this.items = [...this.items, newItem];</code></pre>
+    
+    <div class="warning">
+        <strong>With Signals:</strong> Signals handle immutability differently. You can mutate and still get updates, but immutability is still recommended for predictability.
+    </div>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered Angular's template syntax. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Refactor a component to use proper binding patterns</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/guide/templates/structural-directives">Structural Directives</a> to understand <code>@if</code>, <code>@for</code>, <code>@switch</code></li>
+            <li><strong>Explore:</strong> <a href="https://angular.dev/guide/templates/pipes">Template Pipes</a> for data transformation</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about any template concept! I can explain binding nuances, show examples, or help debug template issues.
+        </div>
+        
+        <p><a href="0003-component-lifecycle-and-signals.html">Next Lesson: Component Lifecycle & Signals →</a></p>
+    </div>
+    
+    <script>
+        // Interactive quiz at bottom
+        document.addEventListener('DOMContentLoaded', function() {
+            const quiz = document.createElement('div');
+            quiz.innerHTML = `
+                <div class="practice">
+                    <h3>Quick Quiz</h3>
+                    <p>Which binding type would you use for each?</p>
+                    <ol>
+                        <li>Display a user's name in an heading</li>
+                        <li>Disable a button while loading</li>
+                        <li>Handle form submission</li>
+                        <li>Set an image source dynamically</li>
+                    </ol>
+                    <details>
+                        <summary>Click for answers</summary>
+                        <ol>
+                            <li>Interpolation: <code>{{ user.name }}</code></li>
+                            <li>Property binding: <code>[disabled]="isLoading"</code></li>
+                            <li>Event binding: <code>(submit)="handleSubmit()"</code></li>
+                            <li>Property binding: <code>[src]="imageUrl"</code></li>
+                        </ol>
+                    </details>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(quiz);
+        });
+    </script>
+</body>
+</html>
