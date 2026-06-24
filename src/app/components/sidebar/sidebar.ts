@@ -47,9 +47,9 @@ export class Sidebar {
     const side = rtl ? 'right' : 'left';
     return {
       position: 'fixed' as const,
-      top: 0,
+      top: '5rem',
+      bottom: '4rem',
       [side]: 0,
-      height: '100%',
       width: '20rem',
       maxWidth: '85vw',
       transform: translate,
@@ -68,6 +68,13 @@ export class Sidebar {
         }
       }
     });
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    if (this.isOpen()) {
+      this.close();
+    }
   }
 
   @HostListener('document:keydown.escape')

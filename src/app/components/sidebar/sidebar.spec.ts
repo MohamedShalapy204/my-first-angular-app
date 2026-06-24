@@ -57,12 +57,6 @@ describe('Sidebar', () => {
   });
 
   describe('template', () => {
-    it('should have close button', () => {
-      const compiled = fixture.nativeElement as HTMLElement;
-      const button = compiled.querySelector('button[aria-label="Close menu"]');
-      expect(button).toBeTruthy();
-    });
-
     it('should have shop link', () => {
       const compiled = fixture.nativeElement as HTMLElement;
       const link = compiled.querySelector('a[routerLink="/products"]');

@@ -1,37 +1,11 @@
-<!-- Backdrop -->
-@if (isOpen()) {
-  <div
-    class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity"
-    (click)="close()"
-  ></div>
-}
-
 <!-- Sidebar Panel -->
 <aside
   [style]="sidebarStyle()"
-  class="z-50 bg-surface shadow-xl"
+  class="z-40 bg-surface shadow-xl overflow-y-auto"
   role="navigation"
   aria-label="Main navigation"
 >
   <div class="flex flex-col h-full">
-    <!-- Header -->
-    <div class="flex items-center justify-between p-4 border-b border-outline/10">
-      <a
-        class="font-display text-h4 font-medium tracking-tighter text-on-surface"
-        routerLink="/"
-        (click)="close()"
-      >
-        STUDIO
-      </a>
-      <button
-        (click)="close()"
-        class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high transition-colors"
-        aria-label="Close menu"
-      >
-        <span class="material-symbols-outlined text-on-surface">close</span>
-      </button>
-    </div>
-
     <!-- Navigation Links -->
     <nav class="flex-1 p-4">
       <ul class="space-y-2" role="menu">

@@ -16,7 +16,7 @@ import { SearchPanel } from './search-panel/search-panel';
   imports: [RouterLink, BottomTabs, SearchPanel],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'block w-full',
+    class: 'sticky top-0 block w-full z-50',
   },
 })
 export class Navbar {
