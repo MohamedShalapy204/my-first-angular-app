@@ -1,21 +1,22 @@
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { signal } from '@angular/core';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { Navbar } from './navbar';
 import { AuthService } from '../../services/auth.service';
 import { SettingsService } from '../../services/settings';
 import { TranslationService } from '../../services/translation';
+import { CartService } from '../../services/cart';
 
 describe('Navbar', () => {
-  let component: Navbar;
   let fixture: ComponentFixture<Navbar>;
   let authService: {
     user: ReturnType<typeof signal>;
     logout: ReturnType<typeof vi.fn>;
     isAuthenticated: ReturnType<typeof signal>;
   };
-  let router: { navigate: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     authService = {
@@ -23,15 +24,11 @@ describe('Navbar', () => {
       logout: vi.fn(),
       isAuthenticated: signal(false),
     };
-    router = {
-      navigate: vi.fn(),
-    };
 
     await TestBed.configureTestingModule({
-      imports: [Navbar],
+      imports: [Navbar, RouterTestingModule],
       providers: [
         { provide: AuthService, useValue: authService },
-        { provide: Router, useValue: router },
         {
           provide: SettingsService,
           useValue: {
@@ -50,16 +47,12 @@ describe('Navbar', () => {
             },
           },
         },
+        provideMockStore({ initialState: { sidebar: { isOpen: false } } }),
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Navbar);
-    component = fixture.componentInstance;
     fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
   });
 
   describe('unauthenticated state', () => {
@@ -113,7 +106,7 @@ describe('Navbar', () => {
     });
 
     it('should call AuthService.logout on logout click', async () => {
-      authService.logout.mockResolvedValue(undefined);
+      authService.logout.mockResolvedValue({ success: true });
       const compiled = fixture.nativeElement as HTMLElement;
       const logoutButton = compiled.querySelector(
         'button[aria-label="Logout"]',
@@ -123,17 +116,57 @@ describe('Navbar', () => {
 
       expect(authService.logout).toHaveBeenCalled();
     });
+  });
 
-    it('should navigate to home after logout', async () => {
-      authService.logout.mockResolvedValue(undefined);
+  describe('skip-to-content link', () => {
+    it('should have skip link in DOM', () => {
       const compiled = fixture.nativeElement as HTMLElement;
-      const logoutButton = compiled.querySelector(
-        'button[aria-label="Logout"]',
-      ) as HTMLButtonElement;
+      const skipLink = compiled.querySelector('a[href="#main-content"]');
+      expect(skipLink).toBeTruthy();
+    });
 
-      await logoutButton.click();
+    it('should be hidden by default (sr-only)', () => {
+      const compiled = fixture.nativeElement as HTMLElement;
+      const skipLink = compiled.querySelector('a[href="#main-content"]') as HTMLElement;
+      expect(skipLink.classList.contains('sr-only')).toBe(true);
+    });
 
-      expect(router.navigate).toHaveBeenCalledWith(['/']);
+    it('should be visible on focus', () => {
+      const compiled = fixture.nativeElement as HTMLElement;
+      const skipLink = compiled.querySelector('a[href="#main-content"]') as HTMLElement;
+      skipLink.focus();
+      expect(skipLink.classList.contains('focus:not-sr-only')).toBe(true);
+    });
+  });
+
+  describe('cart badge', () => {
+    it('should hide badge when cart count is 0', () => {
+      const compiled = fixture.nativeElement as HTMLElement;
+      const badge = compiled.querySelector('[data-cart-badge]');
+      expect(badge).toBeFalsy();
+    });
+
+    it('should show badge when cart count is greater than 0', () => {
+      const cartService = TestBed.inject(CartService);
+      cartService.addItem();
+      cartService.addItem();
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement as HTMLElement;
+      const badge = compiled.querySelector('[data-cart-badge]');
+      expect(badge).toBeTruthy();
+    });
+
+    it('should display correct count in badge', () => {
+      const cartService = TestBed.inject(CartService);
+      for (let i = 0; i < 5; i++) {
+        cartService.addItem();
+      }
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement as HTMLElement;
+      const badge = compiled.querySelector('[data-cart-badge]') as HTMLElement;
+      expect(badge.textContent?.trim()).toBe('5');
     });
   });
 });

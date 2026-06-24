@@ -1,0 +1,144 @@
+<!-- Backdrop -->
+@if (isOpen()) {
+  <div
+    class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity"
+    (click)="close()"
+  ></div>
+}
+
+<!-- Sidebar Panel -->
+<aside
+  [style]="sidebarStyle()"
+  class="z-50 bg-surface shadow-xl"
+  role="navigation"
+  aria-label="Main navigation"
+>
+  <div class="flex flex-col h-full">
+    <!-- Header -->
+    <div class="flex items-center justify-between p-4 border-b border-outline/10">
+      <a
+        class="font-display text-h4 font-medium tracking-tighter text-on-surface"
+        routerLink="/"
+        (click)="close()"
+      >
+        STUDIO
+      </a>
+      <button
+        (click)="close()"
+        class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high transition-colors"
+        aria-label="Close menu"
+      >
+        <span class="material-symbols-outlined text-on-surface">close</span>
+      </button>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="flex-1 p-4">
+      <ul class="space-y-2" role="menu">
+        <li role="menuitem">
+          <a
+            routerLink="/products"
+            routerLinkActive="bg-surface-container-high"
+            (click)="close()"
+            class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface"
+          >
+            <span class="material-symbols-outlined text-primary">storefront</span>
+            <span class="font-medium">{{ translate('nav.shop') }}</span>
+          </a>
+        </li>
+        <li role="menuitem">
+          <a
+            routerLink="/products"
+            routerLinkActive="bg-surface-container-high"
+            (click)="close()"
+            class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface"
+          >
+            <span class="material-symbols-outlined text-primary">auto_stories</span>
+            <span class="font-medium">{{ translate('nav.story') }}</span>
+          </a>
+        </li>
+        <li role="menuitem">
+          <a
+            routerLink="/cart"
+            routerLinkActive="bg-surface-container-high"
+            (click)="close()"
+            class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface"
+          >
+            <span class="material-symbols-outlined text-primary">shopping_bag</span>
+            <span class="font-medium">Cart</span>
+            @if (cartCount() > 0) {
+              <span
+                class="ms-auto bg-tertiary text-on-tertiary text-xs font-bold rounded-full min-w-[1.25rem] h-5 flex items-center justify-center px-1"
+              >
+                {{ cartCount() }}
+              </span>
+            }
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Auth Actions -->
+    <div class="p-4 border-t border-outline/10">
+      @if (isAuthenticated()) {
+        <a
+          routerLink="/profile"
+          routerLinkActive="bg-surface-container-high"
+          (click)="close()"
+          class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface mb-2"
+        >
+          <span class="material-symbols-outlined text-primary">person</span>
+          <span class="font-medium">Profile</span>
+        </a>
+        <button
+          (click)="logout()"
+          class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface w-full"
+        >
+          <span class="material-symbols-outlined text-primary">logout</span>
+          <span class="font-medium">Logout</span>
+        </button>
+      } @else {
+        <a
+          routerLink="/login"
+          routerLinkActive="bg-surface-container-high"
+          (click)="close()"
+          class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface mb-2"
+        >
+          <span class="material-symbols-outlined text-primary">login</span>
+          <span class="font-medium">Login</span>
+        </a>
+        <a
+          routerLink="/register"
+          routerLinkActive="bg-surface-container-high"
+          (click)="close()"
+          class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface"
+        >
+          <span class="material-symbols-outlined text-primary">person_add</span>
+          <span class="font-medium">Register</span>
+        </a>
+      }
+    </div>
+
+    <!-- Settings -->
+    <div class="p-4 border-t border-outline/10">
+      <div class="flex items-center gap-3">
+        <button
+          (click)="toggleTheme()"
+          class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high transition-colors"
+          [attr.aria-label]="theme() === 'light' ? 'Switch to dark mode' : 'Switch to light mode'"
+        >
+          <span class="material-symbols-outlined text-primary">
+            {{ theme() === 'light' ? 'dark_mode' : 'light_mode' }}
+          </span>
+        </button>
+        <button
+          (click)="toggleLang()"
+          class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high transition-colors"
+          [attr.aria-label]="lang() === 'en' ? 'Switch to Arabic' : 'Switch to English'"
+        >
+          <span class="material-symbols-outlined text-primary">translate</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</aside>

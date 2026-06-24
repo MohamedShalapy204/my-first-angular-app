@@ -1,0 +1,37 @@
+<nav class="flex justify-around items-center h-16" aria-label="Main navigation">
+  <a
+    routerLink="/"
+    routerLinkActive="text-primary"
+    [routerLinkActiveOptions]="{ exact: true }"
+    class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors"
+    aria-label="Home"
+  >
+    <span class="material-symbols-outlined">home</span>
+    <span class="text-xs">Home</span>
+  </a>
+  <a
+    routerLink="/products"
+    routerLinkActive="text-primary"
+    class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors"
+    aria-label="Shop"
+  >
+    <span class="material-symbols-outlined">storefront</span>
+    <span class="text-xs">Shop</span>
+  </a>
+  <a
+    routerLink="/cart"
+    routerLinkActive="text-primary"
+    class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors relative"
+    aria-label="Cart"
+  >
+    <span class="material-symbols-outlined">shopping_bag</span>
+    @if (cartCount() > 0) {
+      <span
+        class="absolute -top-1 -end-1 bg-tertiary text-on-tertiary text-xs font-bold rounded-full min-w-[1.25rem] h-5 flex items-center justify-center px-1"
+      >
+        {{ cartCount() }}
+      </span>
+    }
+    <span class="text-xs">Cart</span>
+  </a>
+</nav>

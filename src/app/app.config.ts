@@ -7,6 +7,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { authInterceptor } from './interceptors/auth-interceptor';
 import { provideStore } from '@ngrx/store';
 import { counterReducer } from './store/counter/counter.reducer';
+import { sidebarReducer } from './store/sidebar/sidebar.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideStore({
       counter: counterReducer,
+      sidebar: sidebarReducer,
     }),
   ],
 };

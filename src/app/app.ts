@@ -3,13 +3,12 @@ import { RouterOutlet } from '@angular/router';
 import { NotificationContainer } from './components/notification-container/notification-container';
 import { Navbar } from './components/navbar/navbar';
 import { Footer } from './components/footer/footer';
+import { Sidebar } from './components/sidebar/sidebar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NotificationContainer, Navbar, Footer],
+  imports: [RouterOutlet, NotificationContainer, Navbar, Footer, Sidebar],
   templateUrl: './app.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App {
-
-}
+export class App {}
