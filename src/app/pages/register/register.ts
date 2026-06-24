@@ -1,47 +1,54 @@
 import { Component, inject, signal } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { form, FormField, FormRoot, required, email, minLength } from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification';
 import { LoadingSpinner } from '../../shared/components/loading-spinner';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, LoadingSpinner],
+  imports: [FormField, FormRoot, RouterLink, LoadingSpinner],
   templateUrl: './register.html',
 })
 export class RegisterPage {
-  private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
-  private router = inject(Router);
+  private _authService = inject(AuthService);
+  private _router = inject(Router);
+  private _notification = inject(NotificationService);
 
-  readonly registerForm = this.fb.nonNullable.group({
-    name: ['', [Validators.required]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+  readonly registerModel = signal({
+    name: '',
+    email: '',
+    password: '',
   });
 
-  readonly loading = signal(false);
   readonly errorMessage = signal<string | null>(null);
 
-  async onSubmit(): Promise<void> {
-    if (this.registerForm.invalid) {
-      this.registerForm.markAllAsTouched();
-      return;
-    }
+  readonly registerForm = form(
+    this.registerModel,
+    (schemaPath) => {
+      required(schemaPath.name, { message: 'Name is required' });
+      required(schemaPath.email, { message: 'Email is required' });
+      email(schemaPath.email, { message: 'Please enter a valid email' });
+      required(schemaPath.password, { message: 'Password is required' });
+      minLength(schemaPath.password, 6, { message: 'Password must be at least 6 characters' });
+    },
+    {
+      submission: {
+        action: async () => {
+          this.errorMessage.set(null);
+          const { name, email, password } = this.registerModel();
+          const result = await this._authService.register(email, password, name);
 
-    this.loading.set(true);
-    this.errorMessage.set(null);
+          if (!result.success) {
+            this.errorMessage.set(result.error || 'Registration failed');
+            return;
+          }
 
-    const { name, email, password } = this.registerForm.getRawValue();
-
-    try {
-      await this.authService.register(email, password, name);
-      this.router.navigate(['/login']);
-    } catch (error) {
-      this.errorMessage.set(error instanceof Error ? error.message : 'Registration failed');
-    } finally {
-      this.loading.set(false);
-    }
-  }
+          this._notification.show('Registration successful! Please check your email.', 'success');
+          this._router.navigate(['/login']);
+        },
+      },
+    },
+  );
 }

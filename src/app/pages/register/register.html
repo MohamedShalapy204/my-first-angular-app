@@ -60,7 +60,7 @@
           </p>
         </div>
 
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-10">
+        <form [formRoot]="registerForm" class="space-y-10">
           <!-- Name Field -->
           <div class="space-y-1">
             <label
@@ -72,15 +72,13 @@
             <input
               class="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-outline-variant/40 py-3 font-body-md text-body-md focus:outline-none focus:border-primary transition-colors duration-300 placeholder:text-outline-variant/60"
               id="name"
-              formControlName="name"
+              [formField]="registerForm.name"
               placeholder="Evelyn Thorne"
               type="text"
             />
-            @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+            @if (registerForm.name().touched() && registerForm.name().errors().length) {
               <p class="text-error text-sm mt-1">
-                @if (registerForm.get('name')?.errors?.['required']) {
-                  Name is required
-                }
+                {{ registerForm.name().errors()[0].message }}
               </p>
             }
           </div>
@@ -96,17 +94,13 @@
             <input
               class="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-outline-variant/40 py-3 font-body-md text-body-md focus:outline-none focus:border-primary transition-colors duration-300 placeholder:text-outline-variant/60"
               id="email"
-              formControlName="email"
+              [formField]="registerForm.email"
               placeholder="evelyn@studio.com"
               type="email"
             />
-            @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+            @if (registerForm.email().touched() && registerForm.email().errors().length) {
               <p class="text-error text-sm mt-1">
-                @if (registerForm.get('email')?.errors?.['required']) {
-                  Email is required
-                } @else if (registerForm.get('email')?.errors?.['email']) {
-                  Please enter a valid email
-                }
+                {{ registerForm.email().errors()[0].message }}
               </p>
             }
           </div>
@@ -122,17 +116,13 @@
             <input
               class="w-full bg-transparent border-t-0 border-l-0 border-r-0 border-b border-outline-variant/40 py-3 font-body-md text-body-md focus:outline-none focus:border-primary transition-colors duration-300 placeholder:text-outline-variant/60"
               id="password"
-              formControlName="password"
+              [formField]="registerForm.password"
               placeholder="••••••••"
               type="password"
             />
-            @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+            @if (registerForm.password().touched() && registerForm.password().errors().length) {
               <p class="text-error text-sm mt-1">
-                @if (registerForm.get('password')?.errors?.['required']) {
-                  Password is required
-                } @else if (registerForm.get('password')?.errors?.['minlength']) {
-                  Password must be at least 6 characters
-                }
+                {{ registerForm.password().errors()[0].message }}
               </p>
             }
           </div>
@@ -149,9 +139,9 @@
             <button
               class="w-full bg-primary text-white py-5 rounded-full font-label-md text-label-md hover:bg-primary/90 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
               type="submit"
-              [disabled]="loading()"
+              [disabled]="registerForm().invalid() || registerForm().submitting()"
             >
-              @if (loading()) {
+              @if (registerForm().submitting()) {
                 <app-loading-spinner message="Creating Account..." />
               } @else {
                 Register

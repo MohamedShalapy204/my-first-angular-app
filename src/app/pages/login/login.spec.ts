@@ -1,5 +1,5 @@
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormField, FormRoot } from '@angular/forms/signals';
 import { Router, ActivatedRoute } from '@angular/router';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { LoginPage } from './login';
@@ -9,14 +9,17 @@ import { NotificationService } from '../../services/notification';
 describe('LoginPage', () => {
   let component: LoginPage;
   let fixture: ComponentFixture<LoginPage>;
-  let authService: { login: ReturnType<typeof vi.fn>; isAuthenticated: ReturnType<typeof vi.fn> };
+  let authService: {
+    login: ReturnType<typeof vi.fn>;
+    isAuthenticated: ReturnType<typeof vi.fn>;
+  };
   let router: { navigate: ReturnType<typeof vi.fn> };
   let notificationSpy: { show: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
     authService = {
       login: vi.fn(),
-      isAuthenticated: vi.fn(),
+      isAuthenticated: vi.fn().mockReturnValue(false),
     };
     router = {
       navigate: vi.fn(),
@@ -26,7 +29,7 @@ describe('LoginPage', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [LoginPage, ReactiveFormsModule],
+      imports: [LoginPage, FormField, FormRoot],
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: Router, useValue: router },
@@ -51,128 +54,129 @@ describe('LoginPage', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have email and password form controls', () => {
-    expect(component.loginForm.get('email')).toBeTruthy();
-    expect(component.loginForm.get('password')).toBeTruthy();
+  it('should have email and password fields in model', () => {
+    expect(component.loginModel().email).toBeDefined();
+    expect(component.loginModel().password).toBeDefined();
   });
 
   it('should require email', () => {
-    const emailControl = component.loginForm.get('email');
-    emailControl?.setValue('');
-    expect(emailControl?.valid).toBe(false);
-    expect(emailControl?.errors?.['required']).toBeTruthy();
+    component.loginModel.update((m) => ({ ...m, email: '' }));
+    fixture.detectChanges();
+    const emailState = component.loginForm.email();
+    expect(emailState.valid()).toBe(false);
+    expect(emailState.errors().some((e) => e.kind === 'required')).toBe(true);
   });
 
   it('should require valid email format', () => {
-    const emailControl = component.loginForm.get('email');
-    emailControl?.setValue('invalid-email');
-    expect(emailControl?.valid).toBe(false);
-    expect(emailControl?.errors?.['email']).toBeTruthy();
+    component.loginModel.update((m) => ({ ...m, email: 'invalid-email' }));
+    fixture.detectChanges();
+    const emailState = component.loginForm.email();
+    expect(emailState.valid()).toBe(false);
+    expect(emailState.errors().some((e) => e.kind === 'email')).toBe(true);
   });
 
   it('should accept valid email', () => {
-    const emailControl = component.loginForm.get('email');
-    emailControl?.setValue('test@example.com');
-    expect(emailControl?.valid).toBe(true);
+    component.loginModel.update((m) => ({ ...m, email: 'test@example.com' }));
+    fixture.detectChanges();
+    const emailState = component.loginForm.email();
+    expect(emailState.valid()).toBe(true);
   });
 
   it('should require password', () => {
-    const passwordControl = component.loginForm.get('password');
-    passwordControl?.setValue('');
-    expect(passwordControl?.valid).toBe(false);
-    expect(passwordControl?.errors?.['required']).toBeTruthy();
+    component.loginModel.update((m) => ({ ...m, password: '' }));
+    fixture.detectChanges();
+    const passwordState = component.loginForm.password();
+    expect(passwordState.valid()).toBe(false);
+    expect(passwordState.errors().some((e) => e.kind === 'required')).toBe(true);
   });
 
-  it('should require minimum password length', () => {
-    const passwordControl = component.loginForm.get('password');
-    passwordControl?.setValue('12345');
-    expect(passwordControl?.valid).toBe(false);
-    expect(passwordControl?.errors?.['minlength']).toBeTruthy();
+  it('should require min password length', () => {
+    component.loginModel.update((m) => ({ ...m, password: '12345' }));
+    fixture.detectChanges();
+    const passwordState = component.loginForm.password();
+    expect(passwordState.valid()).toBe(false);
+    expect(passwordState.errors().some((e) => e.kind === 'minLength')).toBe(true);
   });
 
   it('should accept valid password', () => {
-    const passwordControl = component.loginForm.get('password');
-    passwordControl?.setValue('password123');
-    expect(passwordControl?.valid).toBe(true);
+    component.loginModel.update((m) => ({ ...m, password: 'password123' }));
+    fixture.detectChanges();
+    const passwordState = component.loginForm.password();
+    expect(passwordState.valid()).toBe(true);
   });
 
   it('should call AuthService.login on form submit', async () => {
-    authService.login.mockResolvedValue(undefined);
-
-    component.loginForm.setValue({
+    authService.login.mockResolvedValue({ success: true });
+    component.loginModel.set({
       email: 'test@example.com',
       password: 'password123',
     });
 
-    await component.onSubmit();
+    const form = fixture.nativeElement.querySelector('form');
+    form.dispatchEvent(new Event('submit'));
 
+    await fixture.whenStable();
     expect(authService.login).toHaveBeenCalledWith('test@example.com', 'password123');
   });
 
   it('should redirect to home on successful login without returnURL', async () => {
-    authService.login.mockResolvedValue(undefined);
-
-    component.loginForm.setValue({
+    authService.login.mockResolvedValue({ success: true });
+    component.loginModel.set({
       email: 'test@example.com',
       password: 'password123',
     });
 
-    await component.onSubmit();
+    const form = fixture.nativeElement.querySelector('form');
+    form.dispatchEvent(new Event('submit'));
 
+    await fixture.whenStable();
     expect(router.navigate).toHaveBeenCalledWith(['/']);
   });
 
   it('should redirect to returnURL on successful login', async () => {
-    // Setup with returnURL
     const route = TestBed.inject(ActivatedRoute);
     (route.snapshot as { queryParams: Record<string, string> }).queryParams = {
       return: '/profile',
     };
-
-    authService.login.mockResolvedValue(undefined);
-
-    component.loginForm.setValue({
+    authService.login.mockResolvedValue({ success: true });
+    component.loginModel.set({
       email: 'test@example.com',
       password: 'password123',
     });
 
-    await component.onSubmit();
+    const form = fixture.nativeElement.querySelector('form');
+    form.dispatchEvent(new Event('submit'));
 
+    await fixture.whenStable();
     expect(router.navigate).toHaveBeenCalledWith(['/profile']);
   });
 
   it('should show error message on failed login', async () => {
-    authService.login.mockRejectedValue(new Error('Invalid credentials'));
-
-    component.loginForm.setValue({
+    authService.login.mockResolvedValue({ success: false, error: 'Invalid email or password' });
+    component.loginModel.set({
       email: 'test@example.com',
       password: 'wrongpassword',
     });
 
-    await component.onSubmit();
+    const form = fixture.nativeElement.querySelector('form');
+    form.dispatchEvent(new Event('submit'));
 
-    expect(component.errorMessage()).toBe('Invalid credentials');
+    await fixture.whenStable();
+    expect(component.errorMessage()).toBe('Invalid email or password');
   });
 
-  it('should set loading state during login', async () => {
-    let resolveLogin: () => void;
-    const loginPromise = new Promise<void>((resolve) => {
-      resolveLogin = resolve;
-    });
-    authService.login.mockReturnValue(loginPromise);
-
-    component.loginForm.setValue({
+  it('should not navigate on failed login', async () => {
+    authService.login.mockResolvedValue({ success: false, error: 'Invalid email or password' });
+    component.loginModel.set({
       email: 'test@example.com',
-      password: 'password123',
+      password: 'wrongpassword',
     });
 
-    const onSubmitPromise = component.onSubmit();
-    expect(component.loading()).toBe(true);
+    const form = fixture.nativeElement.querySelector('form');
+    form.dispatchEvent(new Event('submit'));
 
-    resolveLogin!();
-    await onSubmitPromise;
-
-    expect(component.loading()).toBe(false);
+    await fixture.whenStable();
+    expect(router.navigate).not.toHaveBeenCalled();
   });
 
   it('should render email input', () => {

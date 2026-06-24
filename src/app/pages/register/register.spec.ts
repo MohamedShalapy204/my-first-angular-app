@@ -1,5 +1,5 @@
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormField, FormRoot } from '@angular/forms/signals';
 import { Router, ActivatedRoute } from '@angular/router';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { RegisterPage } from './register';
@@ -9,7 +9,9 @@ import { NotificationService } from '../../services/notification';
 describe('RegisterPage', () => {
   let component: RegisterPage;
   let fixture: ComponentFixture<RegisterPage>;
-  let authService: { register: ReturnType<typeof vi.fn> };
+  let authService: {
+    register: ReturnType<typeof vi.fn>;
+  };
   let router: { navigate: ReturnType<typeof vi.fn> };
   let notificationSpy: { show: ReturnType<typeof vi.fn> };
 
@@ -25,7 +27,7 @@ describe('RegisterPage', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [RegisterPage, ReactiveFormsModule],
+      imports: [RegisterPage, FormField, FormRoot],
       providers: [
         { provide: AuthService, useValue: authService },
         { provide: Router, useValue: router },
@@ -50,70 +52,78 @@ describe('RegisterPage', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have name, email, and password form controls', () => {
-    expect(component.registerForm.get('name')).toBeTruthy();
-    expect(component.registerForm.get('email')).toBeTruthy();
-    expect(component.registerForm.get('password')).toBeTruthy();
+  it('should have name, email, and password fields in model', () => {
+    expect(component.registerModel().name).toBeDefined();
+    expect(component.registerModel().email).toBeDefined();
+    expect(component.registerModel().password).toBeDefined();
   });
 
   it('should require name', () => {
-    const nameControl = component.registerForm.get('name');
-    nameControl?.setValue('');
-    expect(nameControl?.valid).toBe(false);
-    expect(nameControl?.errors?.['required']).toBeTruthy();
+    component.registerModel.update((m) => ({ ...m, name: '' }));
+    fixture.detectChanges();
+    const nameState = component.registerForm.name();
+    expect(nameState.valid()).toBe(false);
+    expect(nameState.errors().some((e) => e.kind === 'required')).toBe(true);
   });
 
   it('should require email', () => {
-    const emailControl = component.registerForm.get('email');
-    emailControl?.setValue('');
-    expect(emailControl?.valid).toBe(false);
-    expect(emailControl?.errors?.['required']).toBeTruthy();
+    component.registerModel.update((m) => ({ ...m, email: '' }));
+    fixture.detectChanges();
+    const emailState = component.registerForm.email();
+    expect(emailState.valid()).toBe(false);
+    expect(emailState.errors().some((e) => e.kind === 'required')).toBe(true);
   });
 
   it('should require valid email format', () => {
-    const emailControl = component.registerForm.get('email');
-    emailControl?.setValue('invalid-email');
-    expect(emailControl?.valid).toBe(false);
-    expect(emailControl?.errors?.['email']).toBeTruthy();
+    component.registerModel.update((m) => ({ ...m, email: 'invalid-email' }));
+    fixture.detectChanges();
+    const emailState = component.registerForm.email();
+    expect(emailState.valid()).toBe(false);
+    expect(emailState.errors().some((e) => e.kind === 'email')).toBe(true);
   });
 
   it('should accept valid email', () => {
-    const emailControl = component.registerForm.get('email');
-    emailControl?.setValue('test@example.com');
-    expect(emailControl?.valid).toBe(true);
+    component.registerModel.update((m) => ({ ...m, email: 'test@example.com' }));
+    fixture.detectChanges();
+    const emailState = component.registerForm.email();
+    expect(emailState.valid()).toBe(true);
   });
 
   it('should require password', () => {
-    const passwordControl = component.registerForm.get('password');
-    passwordControl?.setValue('');
-    expect(passwordControl?.valid).toBe(false);
-    expect(passwordControl?.errors?.['required']).toBeTruthy();
+    component.registerModel.update((m) => ({ ...m, password: '' }));
+    fixture.detectChanges();
+    const passwordState = component.registerForm.password();
+    expect(passwordState.valid()).toBe(false);
+    expect(passwordState.errors().some((e) => e.kind === 'required')).toBe(true);
   });
 
-  it('should require minimum password length', () => {
-    const passwordControl = component.registerForm.get('password');
-    passwordControl?.setValue('12345');
-    expect(passwordControl?.valid).toBe(false);
-    expect(passwordControl?.errors?.['minlength']).toBeTruthy();
+  it('should require min password length', () => {
+    component.registerModel.update((m) => ({ ...m, password: '12345' }));
+    fixture.detectChanges();
+    const passwordState = component.registerForm.password();
+    expect(passwordState.valid()).toBe(false);
+    expect(passwordState.errors().some((e) => e.kind === 'minLength')).toBe(true);
   });
 
   it('should accept valid password', () => {
-    const passwordControl = component.registerForm.get('password');
-    passwordControl?.setValue('password123');
-    expect(passwordControl?.valid).toBe(true);
+    component.registerModel.update((m) => ({ ...m, password: 'password123' }));
+    fixture.detectChanges();
+    const passwordState = component.registerForm.password();
+    expect(passwordState.valid()).toBe(true);
   });
 
   it('should call AuthService.register on form submit', async () => {
-    authService.register.mockResolvedValue(undefined);
-
-    component.registerForm.setValue({
+    authService.register.mockResolvedValue({ success: true });
+    component.registerModel.set({
       name: 'Test User',
       email: 'test@example.com',
       password: 'password123',
     });
 
-    await component.onSubmit();
+    const form = fixture.nativeElement.querySelector('form');
+    form.dispatchEvent(new Event('submit'));
 
+    await fixture.whenStable();
     expect(authService.register).toHaveBeenCalledWith(
       'test@example.com',
       'password123',
@@ -122,58 +132,59 @@ describe('RegisterPage', () => {
   });
 
   it('should redirect to login on successful registration', async () => {
-    authService.register.mockResolvedValue(undefined);
-
-    component.registerForm.setValue({
+    authService.register.mockResolvedValue({ success: true });
+    component.registerModel.set({
       name: 'Test User',
       email: 'test@example.com',
       password: 'password123',
     });
 
-    await component.onSubmit();
+    const form = fixture.nativeElement.querySelector('form');
+    form.dispatchEvent(new Event('submit'));
 
+    await fixture.whenStable();
     expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
 
   it('should show error message on failed registration', async () => {
-    authService.register.mockRejectedValue(new Error('Email already registered'));
-
-    component.registerForm.setValue({
+    authService.register.mockResolvedValue({
+      success: false,
+      error: 'An account with this email already exists',
+    });
+    component.registerModel.set({
       name: 'Test User',
       email: 'test@example.com',
       password: 'password123',
     });
 
-    await component.onSubmit();
+    const form = fixture.nativeElement.querySelector('form');
+    form.dispatchEvent(new Event('submit'));
 
-    expect(component.errorMessage()).toBe('Email already registered');
+    await fixture.whenStable();
+    expect(component.errorMessage()).toBe('An account with this email already exists');
   });
 
-  it('should set loading state during registration', async () => {
-    let resolveRegister: () => void;
-    const registerPromise = new Promise<void>((resolve) => {
-      resolveRegister = resolve;
+  it('should not navigate on failed registration', async () => {
+    authService.register.mockResolvedValue({
+      success: false,
+      error: 'An account with this email already exists',
     });
-    authService.register.mockReturnValue(registerPromise);
-
-    component.registerForm.setValue({
+    component.registerModel.set({
       name: 'Test User',
       email: 'test@example.com',
       password: 'password123',
     });
 
-    const onSubmitPromise = component.onSubmit();
-    expect(component.loading()).toBe(true);
+    const form = fixture.nativeElement.querySelector('form');
+    form.dispatchEvent(new Event('submit'));
 
-    resolveRegister!();
-    await onSubmitPromise;
-
-    expect(component.loading()).toBe(false);
+    await fixture.whenStable();
+    expect(router.navigate).not.toHaveBeenCalled();
   });
 
   it('should render name input', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('input[formControlName="name"]')).toBeTruthy();
+    expect(compiled.querySelector('input[type="text"]')).toBeTruthy();
   });
 
   it('should render email input', () => {
