@@ -48,7 +48,7 @@
         </li>
         <li role="menuitem">
           <a
-            routerLink="/products"
+            routerLink="/about"
             routerLinkActive="bg-surface-container-high"
             (click)="close()"
             class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface"
@@ -65,7 +65,7 @@
             class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-high transition-colors text-on-surface"
           >
             <span class="material-symbols-outlined text-primary">shopping_bag</span>
-            <span class="font-medium">Cart</span>
+            <span class="font-medium">{{ translate('nav.cart') }}</span>
             @if (cartCount() > 0) {
               <span
                 class="ms-auto bg-tertiary text-on-tertiary text-xs font-bold rounded-full min-w-[1.25rem] h-5 flex items-center justify-center px-1"

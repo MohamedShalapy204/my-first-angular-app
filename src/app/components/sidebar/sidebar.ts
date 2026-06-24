@@ -1,4 +1,12 @@
-import { Component, ChangeDetectionStrategy, inject, computed } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  inject,
+  computed,
+  HostListener,
+  effect,
+  ElementRef,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -23,6 +31,7 @@ export class Sidebar {
   private readonly _t = inject(TranslationService);
   private readonly _authService = inject(AuthService);
   private readonly _notification = inject(NotificationService);
+  private readonly _elementRef = inject(ElementRef);
 
   readonly isOpen = toSignal(this._store.select(selectSidebarIsOpen), { initialValue: false });
   readonly lang = this._settings.lang;
@@ -47,6 +56,64 @@ export class Sidebar {
       transition: 'transform 300ms ease-out',
     };
   });
+
+  constructor() {
+    // Trap focus when sidebar is open
+    effect(() => {
+      const open = this.isOpen();
+      if (open) {
+        const aside = this._elementRef.nativeElement.querySelector('aside');
+        if (aside) {
+          aside.focus();
+        }
+      }
+    });
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
+    if (this.isOpen()) {
+      this.close();
+    }
+  }
+
+  @HostListener('keydown', ['$event'])
+  onKeydown(event: KeyboardEvent): void {
+    if (!this.isOpen()) {
+      return;
+    }
+
+    if (event.key === 'Tab') {
+      this.trapFocus(event);
+    }
+  }
+
+  private trapFocus(event: KeyboardEvent): void {
+    const aside = this._elementRef.nativeElement.querySelector('aside');
+    if (!aside) {
+      return;
+    }
+
+    const focusableElements = aside.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ) as NodeListOf<HTMLElement>;
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (event.shiftKey) {
+      // Shift + Tab: go backwards
+      if (document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement?.focus();
+      }
+    } else {
+      // Tab: go forwards
+      if (document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement?.focus();
+      }
+    }
+  }
 
   close(): void {
     this._store.dispatch(closeSidebar());

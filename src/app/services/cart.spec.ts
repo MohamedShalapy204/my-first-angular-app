@@ -8,6 +8,7 @@ describe('CartService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(CartService);
+    service.reset();
   });
 
   describe('addItem', () => {

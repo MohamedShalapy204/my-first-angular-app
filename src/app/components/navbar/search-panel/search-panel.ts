@@ -51,7 +51,7 @@ export class SearchPanel {
   }
 
   onBackdropClick(event: MouseEvent): void {
-    if ((event.target as HTMLElement).hasAttribute('data-backdrop')) {
+    if (event.target === event.currentTarget) {
       this.close();
     }
   }

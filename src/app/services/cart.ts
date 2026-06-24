@@ -13,4 +13,8 @@ export class CartService {
   removeItem(): void {
     this.cartCount.update((count) => Math.max(0, count - 1));
   }
+
+  reset(): void {
+    this.cartCount.set(0);
+  }
 }
