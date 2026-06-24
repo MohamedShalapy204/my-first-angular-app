@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 5: Routing & Navigation</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 5 of ∞</strong> • Angular Routing & Navigation • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0004-dependency-injection-and-services.html">← Lesson 4</a>
+    </div>
+    
+    <h1>Routing & Navigation</h1>
+    
+    <p>You can build components and share services. Now let's learn how to connect them into a navigable application with Angular's router.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> Angular Router turns your single-page app into a multi-view application. It maps URLs to components, enabling navigation without full page reloads.
+    </div>
+    
+    <h2>Basic Router Setup</h2>
+    
+    <pre><code>// app.routes.ts
+import { Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { UserComponent } from './user/user.component';
+
+export const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'user/:id', component: UserComponent },
+  { path: '**', redirectTo: '' }  // Wildcard route
+];</code></pre>
+    
+    <pre><code>// app.config.ts
+import { ApplicationConfig, provideRouter } from '@angular/router';
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes),
+    // ... other providers
+  ]
+};</code></pre>
+    
+    <pre><code>&lt;!-- app.component.html --&gt;
+&lt;nav&gt;
+  &lt;a routerLink="/"&gt;Home&lt;/a&gt;
+  &lt;a routerLink="/about"&gt;About&lt;/a&gt;
+  &lt;a [routerLink]="['/user', userId]"&gt;User&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;!-- Where routed components render --&gt;
+&lt;router-outlet&gt;&lt;/router-outlet&gt;</code></pre>
+    
+    <div class="key-concept">
+        <strong>routerLink vs href:</strong> Use <code>routerLink</code> for Angular routes (no page reload). Use <code>href</code> for external links.
+    </div>
+    
+    <h2>Route Parameters</h2>
+    
+    <pre><code>// Route with parameter
+{ path: 'user/:id', component: UserComponent }
+
+// Access in component
+@Component({...})
+export class UserComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  userId = signal&lt;string&gt;('');
+  
+  ngOnInit() {
+    // Using signals (modern approach)
+    this.route.params.subscribe(params => {
+      this.userId.set(params['id']);
+    });
+    
+    // Or using snapshot (for static routes)
+    const id = this.route.snapshot.params['id'];
+  }
+}</code></pre>
+    
+    <h3>Query Parameters</h3>
+    <pre><code>// URL: /search?q=angular&page=2
+@Component({...})
+export class SearchComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  searchQuery = signal('');
+  page = signal(1);
+  
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      this.searchQuery.set(params['q'] || '');
+      this.page.set(params['page'] || 1);
+    });
+  }
+  
+  updateSearch(query: string) {
+    this.router.navigate(['/search'], {
+      queryParams: { q: query, page: 1 }
+    });
+  }
+}</code></pre>
+    
+    <div class="warning">
+        <strong>Snapshot vs Subscribe:</strong> Use snapshot for static routes, subscribe for dynamic routes that might change without component reload.
+    </div>
+    
+    <h2>Navigation Programmatic</h2>
+    
+    <pre><code>@Component({...})
+export class LoginComponent {
+  private router = inject(Router);
+  
+  async login(credentials: LoginRequest) {
+    try {
+      await this.authService.login(credentials);
+      // Navigate after successful login
+      this.router.navigate(['/dashboard']);
+      
+      // With query params
+      this.router.navigate(['/dashboard'], {
+        queryParams: { welcome: true }
+      });
+      
+      // Relative navigation
+      this.router.navigate(['../sibling'], { relativeTo: this.route });
+    } catch (error) {
+      console.error('Login failed');
+    }
+  }
+}</code></pre>
+    
+    <h2>Route Guards</h2>
+    
+    <p>Guards control access to routes:</p>
+    
+    <pre><code>// CanActivate guard
+import { CanActivateFn } from '@angular/router';
+
+export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  
+  if (authService.isAuthenticated()) {
+    return true;
+  }
+  
+  // Redirect to login
+  return router.createUrlTree(['/login'], {
+    queryParams: { returnUrl: state.url }
+  });
+};
+
+// Usage in routes
+{ path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] }</code></pre>
+    
+    <h3>Common Guard Types</h3>
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Guard</th>
+                <th>Purpose</th>
+                <th>When It Runs</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>canActivate</code></td>
+                <td>Control access to route</td>
+                <td>Before route activation</td>
+            </tr>
+            <tr>
+                <td><code>canDeactivate</code></td>
+                <td>Prevent leaving route</td>
+                <td>Before route deactivation</td>
+            </tr>
+            <tr>
+                <td><code>canActivateChild</code></td>
+                <td>Control child route access</td>
+                <td>Before child route activation</td>
+            </tr>
+            <tr>
+                <td><code>resolve</code></td>
+                <td>Pre-fetch data</td>
+                <td>Before route activation</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Create a simple auth guard that:<br>
+        1. Checks if user is logged in (use a signal)<br>
+        2. Redirects to /login if not<br>
+        3. Preserves the attempted URL for redirect after login
+    </div>
+    
+    <h2>Lazy Loading</h2>
+    
+    <p>Load components only when needed:</p>
+    
+    <pre><code>// Lazy load entire feature module
+const routes: Routes = [
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.routes')
+      .then(m => m.ADMIN_ROUTES)
+  },
+  {
+    path: 'shop',
+    loadComponent: () => import('./shop/shop.component')
+      .then(m => m.ShopComponent)
+  }
+];</code></pre>
+    
+    <div class="key-concept">
+        <strong>Performance:</strong> Lazy loading splits your app into smaller bundles. Users only download code for the routes they visit.
+    </div>
+    
+    <h2>Nested Routes</h2>
+    
+    <pre><code>// Parent route with children
+const routes: Routes = [
+  {
+    path: 'user/:id',
+    component: UserComponent,
+    children: [
+      { path: 'profile', component: UserProfileComponent },
+      { path: 'settings', component: UserSettingsComponent },
+      { path: '', redirectTo: 'profile', pathMatch: 'full' }
+    ]
+  }
+];
+
+// Parent template with child outlet
+@Component({
+  template: `
+    &lt;div class="user-layout"&gt;
+      &lt;nav&gt;
+        &lt;a [routerLink]="['profile']"&gt;Profile&lt;/a&gt;
+        &lt;a [routerLink]="['settings']"&gt;Settings&lt;/a&gt;
+      &lt;/nav&gt;
+      
+      &lt;!-- Child routes render here --&gt;
+      &lt;router-outlet&gt;&lt;/router-outlet&gt;
+    &lt;/div&gt;
+  `
+})
+export class UserComponent {}</code></pre>
+    
+    <h2>Route Data & Resolve</h2>
+    
+    <pre><code>// Static route data
+{ 
+  path: 'about', 
+  component: AboutComponent,
+  data: { title: 'About Us', showHeader: true }
+}
+
+// Access in component
+ngOnInit() {
+  this.route.data.subscribe(data => {
+    this.title = data['title'];
+  });
+}
+
+// Resolve: pre-fetch data before route loads
+export const userResolver: ResolveFn&lt;User&gt; = (route) => {
+  const userService = inject(UserService);
+  const userId = route.params['id'];
+  return userService.getUser(userId);
+};
+
+// Route with resolver
+{
+  path: 'user/:id',
+  component: UserComponent,
+  resolve: { user: userResolver }
+}
+
+// Component receives resolved data
+@Component({...})
+export class UserComponent implements OnInit {
+  user = signal&lt;User&gt;(null);
+  
+  ngOnInit() {
+    const resolvedUser = this.route.snapshot.data['user'];
+    this.user.set(resolvedUser);
+  }
+}</code></pre>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/routing">Angular Routing Guide</a><br>
+        Focus on: "Setting up routes", "Route parameters", "Navigation", "Lazy loading", "Guards".
+    </div>
+    
+    <h2>Common Patterns</h2>
+    
+    <h3>1. Not Found Page</h3>
+    <pre><code>// Wildcard route (must be last)
+{ path: '**', component: NotFoundComponent }
+
+// Or redirect to home
+{ path: '**', redirectTo: '' }</code></pre>
+    
+    <h3>2. Redirect Routes</h3>
+    <pre><code>// Redirect /old-path to /new-path
+{ path: 'old-path', redirectTo: 'new-path', pathMatch: 'full' }
+
+// Default route
+{ path: '', redirectTo: '/home', pathMatch: 'full' }</code></pre>
+    
+    <h3>3. Route Animation</h3>
+    <pre><code>// In component
+@Component({
+  animations: [
+    trigger('routeAnimation', [
+      transition('* &lt;=&gt; *', [
+        style({ position: 'relative' }),
+        query(':enter', [
+          style({ position: 'absolute', width: '100%' })
+        ], { optional: true }),
+        group([
+          query(':leave', [
+            animate('300ms ease-out', style({ opacity: 0 }))
+          ], { optional: true }),
+          query(':enter', [
+            style({ opacity: 0 }),
+            animate('300ms ease-out', style({ opacity: 1 }))
+          ], { optional: true })
+        ])
+      ])
+    ])
+  ]
+})</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Build a simple multi-page app with:<br>
+        1. Home, About, and Contact pages<br>
+        2. A user page with profile and settings tabs (nested routes)<br>
+        3. An auth guard on the user page<br>
+        4. A 404 page for unknown routes
+    </div>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered Angular routing. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Add routing to an existing component-based app</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/guide/routing/common-router-tasks">Common Router Tasks</a> for advanced patterns</li>
+            <li><strong>Explore:</strong> <a href="https://angular.dev/guide/forms">Forms</a> to learn how routing works with form states</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about route guards, lazy loading strategies, or navigation patterns!
+        </div>
+        
+        <p><a href="0006-forms-and-validation.html">Next Lesson: Forms & Validation →</a></p>
+    </div>
+    
+    <script>
+        // Interactive routing diagram
+        document.addEventListener('DOMContentLoaded', function() {
+            const diagram = document.createElement('div');
+            diagram.innerHTML = `
+                <div class="practice">
+                    <h3>Interactive: Route Configuration</h3>
+                    <p>Drag these route properties into the correct object:</p>
+                    <div id="route-config" style="margin: 1rem 0; padding: 1rem; background: white; border-radius: 5px; border: 1px dashed #ccc;">
+                        <div style="margin-bottom: 0.5rem; color: #666;">Route Object:</div>
+                        <div id="available-props" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <div class="draggable" draggable="true" style="padding: 0.5rem; background: #e3f2fd; border-radius: 3px; cursor: move;">path</div>
+                            <div class="draggable" draggable="true" style="padding: 0.5rem; background: #e8f5e9; border-radius: 3px; cursor: move;">component</div>
+                            <div class="draggable" draggable="true" style="padding: 0.5rem; background: #fff8e1; border-radius: 3px; cursor: move;">canActivate</div>
+                            <div class="draggable" draggable="true" style="padding: 0.5rem; background: #ffebee; border-radius: 3px; cursor: move;">children</div>
+                        </div>
+                    </div>
+                    <button onclick="checkRouteConfig()">Check Configuration</button>
+                    <div id="result" style="margin-top: 1rem;"></div>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(diagram);
+            
+            // Simple drag and drop
+            let draggedElement = null;
+            document.querySelectorAll('.draggable').forEach(el => {
+                el.addEventListener('dragstart', e => {
+                    draggedElement = el;
+                    setTimeout(() => el.style.opacity = '0.5', 0);
+                });
+                el.addEventListener('dragend', e => {
+                    el.style.opacity = '1';
+                });
+            });
+            
+            window.checkRouteConfig = function() {
+                const result = document.getElementById('result');
+                result.innerHTML = '<span style="color: green;">✓ Route objects can contain: path, component, canActivate, children, resolve, data, loadChildren, and more!</span>';
+            };
+        });
+    </script>
+</body>
+</html>

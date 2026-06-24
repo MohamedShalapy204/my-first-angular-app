@@ -46,7 +46,7 @@
       </header>
 
       <!-- Form -->
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <form [formRoot]="loginForm" class="space-y-6">
         <!-- Email Field -->
         <div class="space-y-2 group">
           <label
@@ -59,18 +59,14 @@
             <input
               class="w-full bg-transparent border-0 border-b border-outline-variant py-4 px-0 font-body-md text-on-background placeholder:text-outline-variant transition-all duration-300 focus:border-primary"
               id="email"
-              formControlName="email"
+              [formField]="loginForm.email"
               placeholder="name@lumina.studio"
               type="email"
             />
           </div>
-          @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          @if (loginForm.email().touched() && loginForm.email().errors().length) {
             <p class="text-error text-sm mt-1">
-              @if (loginForm.get('email')?.errors?.['required']) {
-                Email is required
-              } @else if (loginForm.get('email')?.errors?.['email']) {
-                Please enter a valid email
-              }
+              {{ loginForm.email().errors()[0].message }}
             </p>
           }
         </div>
@@ -94,7 +90,7 @@
             <input
               class="w-full bg-transparent border-0 border-b border-outline-variant py-4 px-0 font-body-md text-on-background placeholder:text-outline-variant transition-all duration-300 focus:border-primary"
               id="password"
-              formControlName="password"
+              [formField]="loginForm.password"
               placeholder="••••••••"
               [type]="showPassword() ? 'text' : 'password'"
             />
@@ -108,13 +104,9 @@
               </span>
             </button>
           </div>
-          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          @if (loginForm.password().touched() && loginForm.password().errors().length) {
             <p class="text-error text-sm mt-1">
-              @if (loginForm.get('password')?.errors?.['required']) {
-                Password is required
-              } @else if (loginForm.get('password')?.errors?.['minlength']) {
-                Password must be at least 6 characters
-              }
+              {{ loginForm.password().errors()[0].message }}
             </p>
           }
         </div>
@@ -131,9 +123,9 @@
           <button
             class="w-full bg-on-background text-surface py-5 px-8 rounded-full font-label-md text-label-md hover:bg-primary transition-all duration-300 active:scale-[0.98] shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             type="submit"
-            [disabled]="loading()"
+            [disabled]="loginForm().invalid() || loginForm().submitting()"
           >
-            @if (loading()) {
+            @if (loginForm().submitting()) {
               <app-loading-spinner message="Signing In..." />
             } @else {
               Sign In

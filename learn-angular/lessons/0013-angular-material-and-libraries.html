@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 13: Angular Material & Libraries</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 13 of ∞</strong> • Angular Material & Libraries • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0012-state-management-patterns.html">← Lesson 12</a>
+    </div>
+    
+    <h1>Angular Material & Component Libraries</h1>
+    
+    <p>You can build complete applications. Now let's learn how to use Angular Material and other component libraries to create professional-looking UIs quickly.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> Angular Material provides accessible, customizable UI components following Material Design. It's not just about looks—it's about building accessible, maintainable interfaces.
+    </div>
+    
+    <h2>Setting Up Angular Material</h2>
+    
+    <pre><code># Install Angular Material
+ng add @angular/material
+
+# Or manually
+npm install @angular/material @angular/cdk @angular/animations</code></pre>
+    
+    <pre><code>// app.config.ts
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideAnimationsAsync(),
+    // ... other providers
+  ]
+};</code></pre>
+    
+    <h2>Using Components</h2>
+    
+    <pre><code>// Import specific components
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+
+@Component({
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    MatInputModule,
+    MatIconModule
+  ],
+  template: `
+    &lt;mat-card&gt;
+      &lt;mat-card-header&gt;
+        &lt;mat-card-title&gt;User Profile&lt;/mat-card-title&gt;
+      &lt;/mat-card-header&gt;
+      
+      &lt;mat-card-content&gt;
+        &lt;mat-form-field&gt;
+          &lt;mat-label&gt;Name&lt;/mat-label&gt;
+          &lt;input matInput [formControl]="nameControl"&gt;
+        &lt;/mat-form-field&gt;
+      &lt;/mat-card-content&gt;
+      
+      &lt;mat-card-actions&gt;
+        &lt;button mat-raised-button color="primary" (click)="save()"&gt;
+          Save
+        &lt;/button&gt;
+        &lt;button mat-button&gt;Cancel&lt;/button&gt;
+      &lt;/mat-card-actions&gt;
+    &lt;/mat-card&gt;
+  `
+})
+export class UserProfileComponent {
+  nameControl = new FormControl('');
+}</code></pre>
+    
+    <h3>Common Components</h3>
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Component</th>
+                <th>Module</th>
+                <th>Use Case</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Buttons</strong></td>
+                <td>MatButtonModule</td>
+                <td>Actions, navigation</td>
+            </tr>
+            <tr>
+                <td><strong>Cards</strong></td>
+                <td>MatCardModule</td>
+                <td>Content containers</td>
+            </tr>
+            <tr>
+                <td><strong>Forms</strong></td>
+                <td>MatInputModule</td>
+                <td>Text inputs, selects</td>
+            </tr>
+            <tr>
+                <td><strong>Tables</strong></td>
+                <td>MatTableModule</td>
+                <td>Data display</td>
+            </tr>
+            <tr>
+                <td><strong>Dialogs</strong></td>
+                <td>MatDialogModule</td>
+                <td>Modal windows</td>
+            </tr>
+            <tr>
+                <td><strong>Snackbar</strong></td>
+                <td>MatSnackBarModule</td>
+                <td>Notifications</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Theming</h2>
+    
+    <pre><code>// styles.scss
+@use '@angular/material' as mat;
+
+$primary: mat.m2-define-palette(mat.$m2-indigo-palette);
+$accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
+$warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+$theme: mat.m2-define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+  ),
+  typography: mat.m2-define-typography-config(),
+));
+
+@include mat.core();
+@include mat.all-component-themes($theme);
+
+// Custom theme
+$custom-theme: mat.m2-define-light-theme((
+  color: (
+    primary: mat.m2-define-palette(mat.$m2-blue-grey-palette),
+    accent: mat.m2-define-palette(mat.$m2-amber-palette),
+  )
+));
+
+// Apply to specific component
+.custom-card {
+  @include mat.card-theme($custom-theme);
+}</code></pre>
+    
+    <div class="key-concept">
+        <strong>Theming:</strong> Angular Material uses SASS for theming. Create custom palettes or use built-in ones. Apply themes globally or per-component.
+    </div>
+    
+    <h2>Dialogs</h2>
+    
+    <pre><code>// Dialog component
+@Component({
+  template: `
+    &lt;h2 mat-dialog-title&gt;{{ data.title }}&lt;/h2&gt;
+    &lt;mat-dialog-content&gt;
+      &lt;p&gt;{{ data.message }}&lt;/p&gt;
+    &lt;/mat-dialog-content&gt;
+    &lt;mat-dialog-actions&gt;
+      &lt;button mat-button [mat-dialog-close]="false"&gt;Cancel&lt;/button&gt;
+      &lt;button mat-raised-button color="primary" [mat-dialog-close]="true"&gt;
+        Confirm
+      &lt;/button&gt;
+    &lt;/mat-dialog-actions&gt;
+  `
+})
+export class ConfirmDialogComponent {
+  static inject = [MAT_DIALOG_DATA];
+  
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
+}
+
+// Opening dialog
+@Component({...})
+export class AppComponent {
+  private dialog = inject(MatDialog);
+  
+  openConfirmDialog() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: { title: 'Confirm Action', message: 'Are you sure?' }
+    });
+    
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // User confirmed
+        this.performAction();
+      }
+    });
+  }
+}</code></pre>
+    
+    <h2>Snackbar Notifications</h2>
+    
+    <pre><code>@Component({...})
+export class AppComponent {
+  private snackBar = inject(MatSnackBar);
+  
+  showSuccess(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: ['success-snackbar']
+    });
+  }
+  
+  showError(message: string) {
+    this.snackBar.open(message, 'Retry', {
+      duration: 5000,
+      panelClass: ['error-snackbar']
+    }).onAction().subscribe(() => {
+      this.retryOperation();
+    });
+  }
+}</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Create a user management dashboard with:<br>
+        1. Material table with sorting and pagination<br>
+        2. Dialog for adding/editing users<br>
+        3. Snackbar for success/error notifications<br>
+        4. Custom theme matching your brand
+    </div>
+    
+    <h2>Other Component Libraries</h2>
+    
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Library</th>
+                <th>Style</th>
+                <th>Best For</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Angular Material</strong></td>
+                <td>Material Design</td>
+                <td>Google-style apps, enterprise</td>
+            </tr>
+            <tr>
+                <td><strong>PrimeNG</strong></td>
+                <td>Various</td>
+                <td>Rich component set, data tables</td>
+            </tr>
+            <tr>
+                <td><strong>NgBootstrap</strong></td>
+                <td>Bootstrap</td>
+                <td>Bootstrap users, no jQuery</td>
+            </tr>
+            <tr>
+                <td><strong>Tailwind CSS</strong></td>
+                <td>Utility-first</td>
+                <td>Custom designs, minimal overhead</td>
+            </tr>
+            <tr>
+                <td><strong>Clarity</strong></td>
+                <td>VMware Design</td>
+                <td>Enterprise, data-heavy apps</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>CDK (Component Dev Kit)</h2>
+    
+    <pre><code>// Angular CDK provides low-level utilities
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+
+@Component({
+  template: `
+    &lt;div cdkDropList (cdkDropListDropped)="drop($event)"&gt;
+      @for (item of items; track item.id) {
+        &lt;div cdkDrag&gt;{{ item.name }}&lt;/div&gt;
+      }
+    &lt;/div&gt;
+  `
+})
+export class DragDropComponent {
+  items = [
+    { id: 1, name: 'Item 1' },
+    { id: 2, name: 'Item 2' },
+    { id: 3, name: 'Item 3' }
+  ];
+  
+  drop(event: CdkDragDrop&lt;Item[]&gt;) {
+    moveItemInArray(this.items, event.previousIndex, event.currentIndex);
+  }
+}
+
+// Responsive layout
+@Component({...})
+export class ResponsiveComponent {
+  isMobile = signal(false);
+  
+  constructor() {
+    inject(BreakpointObserver)
+      .observe([Breakpoints.Handset])
+      .subscribe(result => {
+        this.isMobile.set(result.matches);
+      });
+  }
+}</code></pre>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://material.angular.io">Angular Material Documentation</a><br>
+        Focus on: "Components", "Theming", "CDK", "Getting started".
+    </div>
+    
+    <h2>Best Practices</h2>
+    
+    <ul>
+        <li><strong>Import only what you need</strong> - Tree-shake unused components</li>
+        <li><strong>Use CDK for custom components</strong> - Don't reinvent drag-drop, modals, etc.</li>
+        <li><strong>Customize themes</strong> - Don't use default Material look</li>
+        <li><strong>Accessibility first</strong> - Material components are accessible by default</li>
+        <li><strong>Consider bundle size</strong> - Some libraries are heavy</li>
+    </ul>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered Angular Material and component libraries. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Build a dashboard using Material components</li>
+            <li><strong>Read:</strong> <a href="https://material.angular.io">Angular Material Documentation</a></li>
+            <li><strong>Explore:</strong> <a href="https://material.angular.io/cdk/categories">CDK Utilities</a> for custom components</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about Material theming, component customization, or choosing the right library!
+        </div>
+        
+        <p><a href="0014-deployment-and-cicd.html">Next Lesson: Deployment & CI/CD →</a></p>
+    </div>
+    
+    <script>
+        // Interactive Material components quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            const quiz = document.createElement('div');
+            quiz.innerHTML = `
+                <div class="practice">
+                    <h3>Quick Quiz: Component Selection</h3>
+                    <p>For each UI need, which Material component would you use?</p>
+                    <ol>
+                        <li>A form with text input and label</li>
+                        <li>Displaying user data in rows and columns</li>
+                        <li>A popup asking for user confirmation</li>
+                        <li>A temporary notification at top of screen</li>
+                    </ol>
+                    <details>
+                        <summary>Click for answers</summary>
+                        <ol>
+                            <li><strong>MatFormField + MatInput</strong> - Styled form controls</li>
+                            <li><strong>MatTable</strong> - Data table with sorting/pagination</li>
+                            <li><strong>MatDialog</strong> - Modal dialog component</li>
+                            <li><strong>MatSnackBar</strong> - Toast notifications</li>
+                        </ol>
+                    </details>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(quiz);
+        });
+    </script>
+</body>
+</html>

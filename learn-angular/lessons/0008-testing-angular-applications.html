@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 8: Testing Angular Applications</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 8 of ∞</strong> • Angular Testing • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0007-http-client-and-apis.html">← Lesson 7</a>
+    </div>
+    
+    <h1>Testing Angular Applications</h1>
+    
+    <p>You can build complete applications. Now let's learn how to test them to ensure they work correctly and maintain quality over time.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> Testing isn't just about finding bugs—it's about designing better code, enabling safe refactoring, and documenting behavior. Angular's testing utilities make this practical.
+    </div>
+    
+    <h2>Testing Pyramid</h2>
+    
+    <p>Angular applications benefit from multiple test types:</p>
+    
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Test Type</th>
+                <th>Purpose</th>
+                <th>Speed</th>
+                <th>Confidence</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Unit Tests</strong></td>
+                <td>Test individual components/services</td>
+                <td>Fast</td>
+                <td>Low-Medium</td>
+            </tr>
+            <tr>
+                <td><strong>Integration Tests</strong></td>
+                <td>Test component interactions</td>
+                <td>Medium</td>
+                <td>Medium-High</td>
+            </tr>
+            <tr>
+                <td><strong>E2E Tests</strong></td>
+                <td>Test complete user flows</td>
+                <td>Slow</td>
+                <td>High</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Unit Testing Components</h2>
+    
+    <pre><code>import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { UserCardComponent } from './user-card.component';
+
+describe('UserCardComponent', () => {
+  let component: UserCardComponent;
+  let fixture: ComponentFixture&lt;UserCardComponent&gt;;
+  
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [UserCardComponent]  // Standalone component
+    }).compileComponents();
+    
+    fixture = TestBed.createComponent(UserCardComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges(); // Trigger initial data binding
+  });
+  
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+  
+  it('should display user name', () => {
+    component.user.set({ id: 1, name: 'John Doe', email: 'john@example.com' });
+    fixture.detectChanges();
+    
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('.user-name')?.textContent).toContain('John Doe');
+  });
+  
+  it('should emit edit event when button clicked', () => {
+    spyOn(component.edit, 'emit');
+    
+    component.user.set({ id: 1, name: 'John', email: 'john@example.com' });
+    fixture.detectChanges();
+    
+    const button = fixture.nativeElement.querySelector('button');
+    button.click();
+    
+    expect(component.edit.emit).toHaveBeenCalledWith(1);
+  });
+});</code></pre>
+    
+    <div class="warning">
+        <strong>detectChanges():</strong> Always call <code>fixture.detectChanges()</code> after setting input values to trigger Angular's change detection.
+    </div>
+    
+    <h2>Testing Services</h2>
+    
+    <pre><code>import { TestBed } from '@angular/core/testing';
+import { UserService } from './user.service';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+
+describe('UserService', () => {
+  let service: UserService;
+  let httpMock: HttpTestingController;
+  
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [UserService]
+    });
+    
+    service = TestBed.inject(UserService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+  
+  afterEach(() => {
+    httpMock.verify(); // Ensure no unmatched requests
+  });
+  
+  it('should fetch users', () => {
+    const mockUsers = [
+      { id: 1, name: 'John' },
+      { id: 2, name: 'Jane' }
+    ];
+    
+    service.getUsers().subscribe(users => {
+      expect(users.length).toBe(2);
+      expect(users[0].name).toBe('John');
+    });
+    
+    const req = httpMock.expectOne('/api/users');
+    expect(req.request.method).toBe('GET');
+    req.flush(mockUsers);
+  });
+  
+  it('should handle error', () => {
+    service.getUsers().subscribe({
+      error: (error) => {
+        expect(error.message).toContain('Failed');
+      }
+    });
+    
+    const req = httpMock.expectOne('/api/users');
+    req.flush('Error', { status: 500, statusText: 'Server Error' });
+  });
+});</code></pre>
+    
+    <h2>Testing with Mocks</h2>
+    
+    <pre><code>// Create mock service
+const mockUserService = {
+  getUsers: jasmine.createSpy('getUsers').and.returnValue(of([
+    { id: 1, name: 'Mock User' }
+  ])),
+  getUser: jasmine.createSpy('getUser')
+};
+
+// Use in TestBed
+TestBed.configureTestingModule({
+  imports: [UserListComponent],
+  providers: [
+    { provide: UserService, useValue: mockUserService }
+  ]
+});
+
+// Test with mock
+it('should display mocked users', () => {
+  fixture.detectChanges();
+  
+  const compiled = fixture.nativeElement as HTMLElement;
+  expect(compiled.textContent).toContain('Mock User');
+  expect(mockUserService.getUsers).toHaveBeenCalled();
+});</code></pre>
+    
+    <div class="key-concept">
+        <strong>Mock vs Spy:</strong> Mocks replace dependencies with fake implementations. Spies track calls to real methods. Use mocks for external dependencies, spies for verifying interactions.
+    </div>
+    
+    <h2>Testing Signals</h2>
+    
+    <pre><code>describe('CounterComponent', () => {
+  let component: CounterComponent;
+  
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [CounterComponent]
+    });
+    component = TestBed.createComponent(CounterComponent).componentInstance;
+  });
+  
+  it('should increment count', () => {
+    expect(component.count()).toBe(0);
+    
+    component.increment();
+    
+    expect(component.count()).toBe(1);
+  });
+  
+  it('should compute double count', () => {
+    component.count.set(5);
+    
+    expect(component.doubleCount()).toBe(10);
+  });
+  
+  it('should update template when count changes', () => {
+    component.count.set(42);
+    fixture.detectChanges();
+    
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('.count')?.textContent).toContain('42');
+  });
+});</code></pre>
+    
+    <h2>Testing Async Operations</h2>
+    
+    <pre><code>it('should load data asynchronously', fakeAsync(() => {
+  const mockData = [{ id: 1, name: 'Test' }];
+  
+  component.loadData();
+  
+  // Simulate passage of time
+  tick(1000);
+  fixture.detectChanges();
+  
+  expect(component.data()).toEqual(mockData);
+  expect(component.loading()).toBe(false);
+}));
+
+it('should handle observable timing', waitForAsync(() => {
+  component.getData().subscribe(data => {
+    expect(data).toBeDefined();
+  });
+  
+  const req = httpMock.expectOne('/api/data');
+  req.flush({ id: 1 });
+}));</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Write tests for a todo component that:<br>
+        1. Tests initial state (empty list)<br>
+        2. Tests adding a todo<br>
+        3. Tests toggling todo completion<br>
+        4. Tests deleting a todo<br>
+        5. Tests filtering (all/active/completed)
+    </div>
+    
+    <h2>Test Utilities</h2>
+    
+    <pre><code>// Query for elements
+const button = fixture.debugElement.query(By.css('button'));
+const componentInstance = fixture.debugElement.componentInstance;
+
+// Query by directive
+const userCard = fixture.debugElement.query(By.directive(UserCardComponent));
+
+// Trigger events
+button.triggerEventHandler('click', null);
+input.triggerEventHandler('input', { target: { value: 'test' } });
+
+// Get text content
+const text = fixture.nativeElement.textContent;
+
+// Check attributes
+expect(button.nativeElement.disabled).toBeTrue();
+expect(input.nativeElement.value).toBe('test');</code></pre>
+    
+    <h2>Testing Route Guards</h2>
+    
+    <pre><code>import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { authGuard } from './auth.guard';
+
+describe('authGuard', () => {
+  let mockRouter: jasmine.SpyObj&lt;Router&gt;;
+  let mockAuthService: jasmine.SpyObj&lt;AuthService&gt;;
+  
+  beforeEach(() => {
+    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
+    mockAuthService = jasmine.createSpyObj('AuthService', ['isAuthenticated']);
+    
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: Router, useValue: mockRouter },
+        { provide: AuthService, useValue: mockAuthService }
+      ]
+    });
+  });
+  
+  it('should allow access when authenticated', () => {
+    mockAuthService.isAuthenticated.and.returnValue(true);
+    
+    const result = TestBed.runInInjectionContext(() => 
+      authGuard({} as any, {} as any)
+    );
+    
+    expect(result).toBeTrue();
+  });
+  
+  it('should redirect to login when not authenticated', () => {
+    mockAuthService.isAuthenticated.and.returnValue(false);
+    
+    TestBed.runInInjectionContext(() => 
+      authGuard({} as any, { url: '/protected' } as any)
+    );
+    
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/login']);
+  });
+});</code></pre>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/testing">Angular Testing Guide</a><br>
+        Focus on: "Component testing", "Service testing", "Testing utilities", "Test patterns".
+    </div>
+    
+    <h2>Best Practices</h2>
+    
+    <ul>
+        <li><strong>Test behavior, not implementation</strong> - Test what component does, not how</li>
+        <li><strong>Use real components when possible</strong> - Only mock external dependencies</li>
+        <li><strong>Keep tests independent</strong> - Each test should be able to run alone</li>
+        <li><strong>Test edge cases</strong> - Empty states, error states, loading states</li>
+        <li><strong>Use descriptive test names</strong> - "should display error when API fails"</li>
+    </ul>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered Angular testing. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Add tests to existing components and services</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/guide/testing/overview">Testing Overview</a> for advanced patterns</li>
+            <li><strong>Explore:</strong> <a href="https://angular.dev/guide/testing/components">Component Testing</a> for complex scenarios</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about testing strategies, mocking patterns, or test optimization!
+        </div>
+        
+        <p><a href="0009-advanced-component-patterns.html">Next Lesson: Advanced Component Patterns →</a></p>
+    </div>
+    
+    <script>
+        // Interactive testing quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            const quiz = document.createElement('div');
+            quiz.innerHTML = `
+                <div class="practice">
+                    <h3>Quick Quiz: What to Mock?</h3>
+                    <p>For each scenario, what would you mock?</p>
+                    <ol>
+                        <li>Testing a component that uses UserService</li>
+                        <li>Testing a service that calls HttpClient</li>
+                        <li>Testing a component with child components</li>
+                        <li>Testing a guard that checks authentication</li>
+                    </ol>
+                    <details>
+                        <summary>Click for answers</summary>
+                        <ol>
+                            <li><strong>Mock UserService</strong> - External dependency</li>
+                            <li><strong>Mock HttpClient</strong> - Network calls</li>
+                            <li><strong>Mock child components</strong> - Or use real ones for integration</li>
+                            <li><strong>Mock AuthService</strong> - External state</li>
+                        </ol>
+                    </details>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(quiz);
+        });
+    </script>
+</body>
+</html>

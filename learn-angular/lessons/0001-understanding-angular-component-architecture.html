@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1: Understanding Angular's Component Architecture</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 1 of ∞</strong> • Angular Component Architecture • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a>
+    </div>
+    
+    <h1>Understanding Angular's Component Architecture</h1>
+    
+    <p>You've taken an Angular course and built some components. Now let's understand <em>why</em> Angular's component architecture works the way it does, and how the official documentation explains these concepts.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> Angular components aren't just HTML with JavaScript. They're the fundamental building blocks that combine templates, logic, and data into reusable, testable units.
+    </div>
+    
+    <h2>The Component Triad</h2>
+    
+    <p>Every Angular component consists of three parts working together:</p>
+    
+    <pre><code>@Component({
+  selector: 'app-user-profile',
+  template: `
+    &lt;div class="profile"&gt;
+      &lt;h2&gt;{{ user.name }}&lt;/h2&gt;
+      &lt;p&gt;{{ user.email }}&lt;/p&gt;
+    &lt;/div&gt;
+  `,
+  styles: [`
+    .profile { padding: 1rem; }
+  `]
+})
+export class UserProfileComponent {
+  user = { name: 'Alice', email: 'alice@example.com' };
+}</code></pre>
+    
+    <ul>
+        <li><strong>Template:</strong> The HTML structure (what users see)</li>
+        <li><strong>Class:</strong> The TypeScript logic (data and behavior)</li>
+        <li><strong>Metadata:</strong> The <code>@Component</code> decorator (configuration)</li>
+    </ul>
+    
+    <h2>Why This Matters</h2>
+    
+    <p>The Angular documentation emphasizes that this separation isn't arbitrary. Each part has a specific responsibility:</p>
+    
+    <blockquote>
+        "Components define views. Views are sets of screen elements that Angular can choose among and modify according to your program logic and data." — <a href="https://angular.dev/guide/components">Angular Components Guide</a>
+    </blockquote>
+    
+    <div class="question">
+        <strong>Think About It:</strong> How does separating template from logic help you as a developer? What problems does this solve compared to mixing everything together?
+    </div>
+    
+    <h2>The Component Tree</h2>
+    
+    <p>Components don't exist in isolation. They form a tree structure:</p>
+    
+    <pre><code>AppComponent
+├── HeaderComponent
+├── SidebarComponent
+└── MainContentComponent
+    ├── ProductListComponent
+    │   ├── ProductCardComponent
+    │   └── ProductCardComponent
+    └── ProductDetailComponent</code></pre>
+    
+    <p>This tree structure is crucial for understanding:</p>
+    
+    <ul>
+        <li><strong>Data flow:</strong> Data flows down the tree (parent → child)</li>
+        <li><strong>Event flow:</strong> Events flow up the tree (child → parent)</li>
+        <li><strong>Change detection:</strong> Angular checks components systematically</li>
+    </ul>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Look at your Angular project. Draw the component tree for one of your pages. Identify parent-child relationships. How many levels deep does it go?
+    </div>
+    
+    <h2>Component Communication Patterns</h2>
+    
+    <p>The documentation outlines three primary ways components communicate:</p>
+    
+    <h3>1. Input Properties (Parent → Child)</h3>
+    <pre><code>// Parent component
+&lt;app-user-profile [user]="currentUser"&gt;&lt;/app-user-profile&gt;
+
+// Child component
+@Component({...})
+export class UserProfileComponent {
+  @Input() user!: User;
+}</code></pre>
+    
+    <h3>2. Output Events (Child → Parent)</h3>
+    <pre><code>// Child component
+@Component({...})
+export class ProductCardComponent {
+  @Output() addToCart = new EventEmitter&lt;Product&gt;();
+  
+  onAddToCart() {
+    this.addToCart.emit(this.product);
+  }
+}
+
+// Parent component
+&lt;app-product-card 
+  [product]="item" 
+  (addToCart)="handleAddToCart($event)"&gt;
+&lt;/app-product-card&gt;</code></pre>
+    
+    <h3>3. Service Injection (Shared State)</h3>
+    <pre><code>@Injectable({ providedIn: 'root' })
+export class UserService {
+  private userSubject = new BehaviorSubject&lt;User | null&gt;(null);
+  user$ = this.userSubject.asObservable();
+}</code></pre>
+    
+    <div class="key-concept">
+        <strong>Modern Angular:</strong> With Angular's signal-based reactivity, these patterns are evolving. The <a href="https://angular.dev/guide/signals">Signals guide</a> shows how to use signals for state management.
+    </div>
+    
+    <h2>Your First Documentation Deep Dive</h2>
+    
+    <p>Now that you understand the concepts, let's connect them to the official documentation:</p>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/components">Angular Components Guide</a><br>
+        Read the "What you'll learn" section and the "Creating a component" subsection. Notice how they structure the information.
+    </div>
+    
+    <h3>What to Look For:</h3>
+    <ol>
+        <li><strong>Component metadata options</strong> — What other properties can you pass to <code>@Component</code>?</li>
+        <li><strong>Template syntax</strong> — How does Angular extend HTML?</li>
+        <li><strong>Lifecycle hooks</strong> — When do components get created, updated, destroyed?</li>
+    </ol>
+    
+    <div class="practice">
+        <strong>Documentation Practice:</strong> Open the <a href="https://angular.dev/guide/components">Components guide</a>. Find the section on "Lifecycle". List the lifecycle hooks in order. Which ones have you used in your course?
+    </div>
+    
+    <h2>Common Patterns You'll See</h2>
+    
+    <p>As you read the documentation, you'll notice these patterns repeatedly:</p>
+    
+    <h3>Smart vs. Presentational Components</h3>
+    <ul>
+        <li><strong>Smart components:</strong> Connect to services, handle business logic</li>
+        <li><strong>Presentational components:</strong> Receive data via inputs, emit events via outputs</li>
+    </ul>
+    
+    <h3>Component Composition</h3>
+    <pre><code>// Building complex UIs from simple components
+&lt;app-card&gt;
+  &lt;app-card-header [title]="'User Profile'"&gt;&lt;/app-card-header&gt;
+  &lt;app-card-body&gt;
+    &lt;app-user-profile [user]="user"&gt;&lt;/app-user-profile&gt;
+  &lt;/app-card-body&gt;
+  &lt;app-card-footer&gt;
+    &lt;app-button (click)="save()"&gt;Save&lt;/app-button&gt;
+  &lt;/app-card-footer&gt;
+&lt;/app-card&gt;</code></pre>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've learned the foundational concepts of Angular's component architecture. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Refactor one of your existing components to follow the smart/presentational pattern</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/guide/templates">Templates guide</a> to understand template syntax deeply</li>
+            <li><strong>Explore:</strong> <a href="https://angular.dev/guide/signals">Signals</a> for modern state management</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me anything about component architecture! I can help clarify concepts, suggest exercises, or dive deeper into any area.
+        </div>
+        
+        <p><a href="0002-templates-and-data-binding.html">Next Lesson: Templates and Data Binding →</a></p>
+    </div>
+    
+    <script>
+        // Simple script to highlight active learning
+        document.addEventListener('DOMContentLoaded', function() {
+            const exercises = document.querySelectorAll('.practice, .question');
+            exercises.forEach(exercise => {
+                exercise.addEventListener('click', function() {
+                    this.style.opacity = this.style.opacity === '0.7' ? '1' : '0.7';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

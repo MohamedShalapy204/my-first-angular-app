@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 7: HTTP Client & APIs</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 7 of ∞</strong> • Angular HTTP Client & APIs • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0006-forms-and-validation.html">← Lesson 6</a>
+    </div>
+    
+    <h1>HTTP Client & APIs</h1>
+    
+    <p>You can collect user input with forms. Now let's learn how to send that data to servers and fetch data from APIs with Angular's HTTP client.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> Angular's HttpClient provides a modern, observable-based API for HTTP requests. It handles parsing, error handling, and even interceptors for cross-cutting concerns.
+    </div>
+    
+    <h2>Setting Up HttpClient</h2>
+    
+    <pre><code>// app.config.ts
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './interceptors/auth.interceptor';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    ),
+    // ... other providers
+  ]
+};</code></pre>
+    
+    <h2>Basic HTTP Requests</h2>
+    
+    <pre><code>@Injectable({ providedIn: 'root' })
+export class UserService {
+  private http = inject(HttpClient);
+  private apiUrl = 'https://api.example.com/users';
+  
+  // GET request
+  getUsers(): Observable&lt;User[]&gt; {
+    return this.http.get&lt;User[]&gt;(this.apiUrl);
+  }
+  
+  // GET with params
+  getUser(id: number): Observable&lt;User&gt; {
+    return this.http.get&lt;User&gt;(`${this.apiUrl}/${id}`);
+  }
+  
+  // POST request
+  createUser(user: User): Observable&lt;User&gt; {
+    return this.http.post&lt;User&gt;(this.apiUrl, user);
+  }
+  
+  // PUT request (full update)
+  updateUser(id: number, user: User): Observable&lt;User&gt; {
+    return this.http.put&lt;User&gt;(`${this.apiUrl}/${id}`, user);
+  }
+  
+  // PATCH request (partial update)
+  patchUser(id: number, changes: Partial&lt;User&gt;): Observable&lt;User&gt; {
+    return this.http.patch&lt;User&gt;(`${this.apiUrl}/${id}`, changes);
+  }
+  
+  // DELETE request
+  deleteUser(id: number): Observable&lt;void&gt; {
+    return this.http.delete&lt;void&gt;(`${this.apiUrl}/${id}`);
+  }
+}</code></pre>
+    
+    <div class="key-concept">
+        <strong>Type Safety:</strong> Always specify the response type with generics (<code>get&lt;User[]&gt;</code>). This gives you compile-time type checking.
+    </div>
+    
+    <h2>Request Options</h2>
+    
+    <pre><code>// Headers
+const headers = new HttpHeaders({
+  'Content-Type': 'application/json',
+  'Authorization': `Bearer ${token}`
+});
+
+this.http.get&lt;User[]&gt;(this.apiUrl, { headers });
+
+// Query parameters
+const params = new HttpParams()
+  .set('page', '1')
+  .set('limit', '10')
+  .set('search', 'angular');
+
+this.http.get&lt;User[]&gt;(this.apiUrl, { params });
+
+// Combined options
+this.http.get&lt;User[]&gt;(this.apiUrl, {
+  headers,
+  params,
+  observe: 'response',  // Get full response
+  responseType: 'json'  // Default
+});
+
+// With timeout
+this.http.get&lt;User[]&gt;(this.apiUrl).pipe(
+  timeout(5000)  // 5 second timeout
+);</code></pre>
+    
+    <h2>Error Handling</h2>
+    
+    <pre><code>getUsers(): Observable&lt;User[]&gt; {
+  return this.http.get&lt;User[]&gt;(this.apiUrl).pipe(
+    catchError(this.handleError)
+  );
+}
+
+private handleError(error: HttpErrorResponse): Observable&lt;never&gt; {
+  let errorMessage = 'Unknown error occurred';
+  
+  if (error.error instanceof ErrorEvent) {
+    // Client-side error
+    errorMessage = `Client error: ${error.error.message}`;
+  } else {
+    // Server-side error
+    errorMessage = `Server error: ${error.status} - ${error.message}`;
+  }
+  
+  console.error(errorMessage);
+  return throwError(() => new Error(errorMessage));
+}
+
+// In component
+this.userService.getUsers().subscribe({
+  next: (users) => this.users.set(users),
+  error: (err) => this.error.set(err.message),
+  complete: () => this.loading.set(false)
+});</code></pre>
+    
+    <div class="warning">
+        <strong>Always handle errors:</strong> HTTP requests can fail for many reasons (network, server, timeout). Always provide error handling in your subscriptions.
+    </div>
+    
+    <h2>HTTP Interceptors</h2>
+    
+    <p>Interceptors modify requests/responses globally:</p>
+    
+    <pre><code>// Functional interceptor (Angular 15+)
+import { HttpInterceptorFn } from '@angular/common/http';
+
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const token = localStorage.getItem('auth_token');
+  
+  if (token) {
+    const cloned = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return next(cloned);
+  }
+  
+  return next(req);
+};
+
+// Class-based interceptor (older style)
+@Injectable()
+export class LoggingInterceptor implements HttpInterceptor {
+  intercept(req: HttpRequest&lt;any&gt;, next: HttpHandler): Observable&lt;HttpEvent&lt;any&gt;&gt; {
+    console.log(`HTTP ${req.method} ${req.url}`);
+    
+    return next.handle(req).pipe(
+      tap(event => {
+        if (event instanceof HttpResponse) {
+          console.log(`Response status: ${event.status}`);
+        }
+      })
+    );
+  }
+}</code></pre>
+    
+    <h3>Common Interceptor Patterns</h3>
+    <ul>
+        <li><strong>Authentication:</strong> Add auth tokens to requests</li>
+        <li><strong>Logging:</strong> Log requests and responses</li>
+        <li><strong>Error handling:</strong> Global error processing</li>
+        <li><strong>Retry logic:</strong> Automatically retry failed requests</li>
+        <li><strong>Caching:</strong> Cache GET responses</li>
+    </ul>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Create an interceptor that:<br>
+        1. Adds a loading indicator for all requests<br>
+        2. Retries failed requests up to 3 times<br>
+        3. Logs request duration
+    </div>
+    
+    <h2>Working with Signals</h2>
+    
+    <p>Convert Observables to Signals for reactive UI:</p>
+    
+    <pre><code>@Component({
+  template: `
+    @if (loading()) {
+      &lt;p&gt;Loading...&lt;/p&gt;
+    } @else if (error()) {
+      &lt;p class="error"&gt;{{ error() }}&lt;/p&gt;
+    } @else {
+      &lt;ul&gt;
+        @for (user of users(); track user.id) {
+          &lt;li&gt;{{ user.name }}&lt;/li&gt;
+        }
+      &lt;/ul&gt;
+    }
+  `
+})
+export class UserListComponent {
+  private userService = inject(UserService);
+  
+  // Using toSignal (Angular 16+)
+  users = toSignal(this.userService.getUsers(), { initialValue: [] });
+  loading = signal(true);
+  error = signal&lt;string | null&gt;(null);
+  
+  // Or manual approach
+  constructor() {
+    effect(() => {
+      this.userService.getUsers().subscribe({
+        next: (users) => {
+          this.users.set(users);
+          this.loading.set(false);
+        },
+        error: (err) => {
+          this.error.set(err.message);
+          this.loading.set(false);
+        }
+      });
+    });
+  }
+}</code></pre>
+    
+    <h2>Real-World Patterns</h2>
+    
+    <h3>1. Service with Caching</h3>
+    <pre><code>@Injectable({ providedIn: 'root' })
+export class ProductService {
+  private http = inject(HttpClient);
+  private cache = new Map&lt;string, any&gt;();
+  
+  getProducts(): Observable&lt;Product[]&gt; {
+    const cacheKey = 'products';
+    
+    if (this.cache.has(cacheKey)) {
+      return of(this.cache.get(cacheKey));
+    }
+    
+    return this.http.get&lt;Product[]&gt;('/api/products').pipe(
+      tap(products => this.cache.set(cacheKey, products)),
+      shareReplay(1)
+    );
+  }
+  
+  invalidateCache() {
+    this.cache.clear();
+  }
+}</code></pre>
+    
+    <h3>2. Upload with Progress</h3>
+    <pre><code>uploadFile(file: File): Observable&lt;HttpEvent&lt;any&gt;&gt; {
+  const formData = new FormData();
+  formData.append('file', file);
+  
+  return this.http.post('/api/upload', formData, {
+    reportProgress: true,
+    observe: 'events'
+  });
+}
+
+// In component
+this productService.uploadFile(file).subscribe(event => {
+  if (event.type === HttpEventType.UploadProgress) {
+    const percent = Math.round(100 * event.loaded / event.total!);
+    this.uploadProgress.set(percent);
+  } else if (event.type === HttpEventType.Response) {
+    this.uploadComplete.set(true);
+  }
+});</code></pre>
+    
+    <h3>3. Cancel Previous Requests</h3>
+    <pre><code>private searchSubject = new Subject&lt;string&gt;();
+  
+  searchResults = this.searchSubject.pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+    switchMap(query => this.http.get&lt;Product[]&gt;(`/api/search?q=${query}`))
+  );
+  
+  onSearch(query: string) {
+    this.searchSubject.next(query);
+  }</code></pre>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/http">Angular HTTP Guide</a><br>
+        Focus on: "Making requests", "Error handling", "Interceptors", "Testing HTTP".
+    </div>
+    
+    <h2>Testing HTTP</h2>
+    
+    <pre><code>describe('UserService', () => {
+  let service: UserService;
+  let httpMock: HttpTestingController;
+  
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        UserService,
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
+    });
+    
+    service = TestBed.inject(UserService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+  
+  it('should fetch users', () => {
+    const mockUsers = [{ id: 1, name: 'John' }];
+    
+    service.getUsers().subscribe(users => {
+      expect(users.length).toBe(1);
+      expect(users[0].name).toBe('John');
+    });
+    
+    const req = httpMock.expectOne('/api/users');
+    expect(req.request.method).toBe('GET');
+    req.flush(mockUsers);
+  });
+  
+  afterEach(() => {
+    httpMock.verify(); // Ensure no unmatched requests
+  });
+});</code></pre>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered Angular HTTP client. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Build a CRUD application with a real API</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/guide/http/making-requests">Advanced Request Patterns</a></li>
+            <li><strong>Explore:</strong> <a href="https://angular.dev/guide/http/testing">HTTP Testing</a> for unit tests</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about interceptors, error handling strategies, or optimizing HTTP performance!
+        </div>
+        
+        <p><a href="0008-testing-angular-applications.html">Next Lesson: Testing Angular Applications →</a></p>
+    </div>
+    
+    <script>
+        // Interactive HTTP methods quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            const quiz = document.createElement('div');
+            quiz.innerHTML = `
+                <div class="practice">
+                    <h3>Quick Quiz: HTTP Methods</h3>
+                    <p>For each operation, which HTTP method would you use?</p>
+                    <ol>
+                        <li>Get a list of all products</li>
+                        <li>Create a new user account</li>
+                        <li>Update only the email of an existing user</li>
+                        <li>Remove an item from the database</li>
+                    </ol>
+                    <details>
+                        <summary>Click for answers</summary>
+                        <ol>
+                            <li><strong>GET</strong> - <code>http.get('/products')</code></li>
+                            <li><strong>POST</strong> - <code>http.post('/users', userData)</code></li>
+                            <li><strong>PATCH</strong> - <code>http.patch('/users/123', { email })</code></li>
+                            <li><strong>DELETE</strong> - <code>http.delete('/items/456')</code></li>
+                        </ol>
+                    </details>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(quiz);
+        });
+    </script>
+</body>
+</html>

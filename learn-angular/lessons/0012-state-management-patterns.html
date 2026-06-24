@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 12: State Management Patterns</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 12 of ∞</strong> • Angular State Management • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0011-performance-optimization.html">← Lesson 11</a>
+    </div>
+    
+    <h1>State Management Patterns</h1>
+    
+    <p>You can build performant applications. Now let's learn how to manage complex application state in a predictable, maintainable way.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> State management isn't just about storing data—it's about creating a single source of truth, enabling time-travel debugging, and making state changes predictable and testable.
+    </div>
+    
+    <h2>State Management Spectrum</h2>
+    
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Approach</th>
+                <th>Complexity</th>
+                <th>Use Case</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Component State</strong></td>
+                <td>Low</td>
+                <td>Simple, isolated UI state</td>
+            </tr>
+            <tr>
+                <td><strong>Service with Signals</strong></td>
+                <td>Medium</td>
+                <td>Shared state across components</td>
+            </tr>
+            <tr>
+                <td><strong>NgRx/NGXS</strong></td>
+                <td>High</td>
+                <td>Complex apps, strict patterns</td>
+            </tr>
+            <tr>
+                <td><strong>SignalStore</strong></td>
+                <td>Medium</td>
+                <td>Modern Angular, signal-based</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Service with Signals (Recommended for Most Apps)</h2>
+    
+    <pre><code>@Injectable({ providedIn: 'root' })
+export class TodoStateService {
+  // Private state
+  private todosSignal = signal&lt;Todo[]&gt;([]);
+  private loadingSignal = signal(false);
+  private errorSignal = signal&lt;string | null&gt;(null);
+  
+  // Public read-only signals
+  readonly todos = this.todosSignal.asReadonly();
+  readonly loading = this.loadingSignal.asReadonly();
+  readonly error = this.errorSignal.asReadonly();
+  
+  // Computed state
+  readonly completedCount = computed(() => 
+    this.todosSignal().filter(t => t.completed).length
+  );
+  
+  readonly stats = computed(() => ({
+    total: this.todosSignal().length,
+    completed: this.completedCount(),
+    pending: this.todosSignal().length - this.completedCount()
+  }));
+  
+  // Actions
+  async loadTodos() {
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    
+    try {
+      const todos = await firstValueFrom(this.http.get&lt;Todo[]&gt;('/api/todos'));
+      this.todosSignal.set(todos);
+    } catch (error) {
+      this.errorSignal.set('Failed to load todos');
+    } finally {
+      this.loadingSignal.set(false);
+    }
+  }
+  
+  addTodo(title: string) {
+    const newTodo: Todo = {
+      id: Date.now(),
+      title,
+      completed: false
+    };
+    
+    this.todosSignal.update(todos => [...todos, newTodo]);
+  }
+  
+  toggleTodo(id: number) {
+    this.todosSignal.update(todos => 
+      todos.map(todo => 
+        todo.id === id 
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      )
+    );
+  }
+  
+  removeTodo(id: number) {
+    this.todosSignal.update(todos => 
+      todos.filter(todo => todo.id !== id)
+    );
+  }
+}</code></pre>
+    
+    <h2>Component Usage</h2>
+    
+    <pre><code>@Component({
+  template: `
+    @if (todoState.loading()) {
+      &lt;p&gt;Loading...&lt;/p&gt;
+    } @else if (todoState.error()) {
+      &lt;p class="error"&gt;{{ todoState.error() }}&lt;/p&gt;
+    } @else {
+      &lt;div class="stats"&gt;
+        &lt;p&gt;Total: {{ todoState.stats().total }}&lt;/p&gt;
+        &lt;p&gt;Completed: {{ todoState.stats().completed }}&lt;/p&gt;
+      &lt;/div&gt;
+      
+      @for (todo of todoState.todos(); track todo.id) {
+        &lt;app-todo-item 
+          [todo]="todo" 
+          (toggle)="todoState.toggleTodo($event)"
+          (remove)="todoState.removeTodo($event)"
+        /&gt;
+      }
+    }
+  `
+})
+export class TodoListComponent {
+  todoState = inject(TodoStateService);
+  
+  constructor() {
+    this.todoState.loadTodos();
+  }
+}</code></pre>
+    
+    <div class="key-concept">
+        <strong>Encapsulation:</strong> Keep state private with signals, expose only read-only versions. Components can read but not directly modify state.
+    </div>
+    
+    <h2>NgRx Pattern (Complex Apps)</h2>
+    
+    <pre><code>// State interface
+export interface TodoState {
+  todos: Todo[];
+  loading: boolean;
+  error: string | null;
+}
+
+// Initial state
+const initialState: TodoState = {
+  todos: [],
+  loading: false,
+  error: null
+};
+
+// Actions
+export const loadTodos = createAction('[Todo] Load Todos');
+export const loadTodosSuccess = createAction(
+  '[Todo] Load Todos Success',
+  props&lt;{ todos: Todo[] }&gt;()
+);
+export const addTodo = createAction(
+  '[Todo] Add Todo',
+  props&lt;{ title: string }&gt;()
+);
+
+// Reducer
+export const todoReducer = createReducer(
+  initialState,
+  on(loadTodos, state => ({ ...state, loading: true })),
+  on(loadTodosSuccess, (state, { todos }) => ({
+    ...state,
+    todos,
+    loading: false
+  })),
+  on(addTodo, (state, { title }) => ({
+    ...state,
+    todos: [...state.todos, { id: Date.now(), title, completed: false }]
+  }))
+);
+
+// Selectors
+export const selectTodos = createSelector(
+  (state: { todos: TodoState }) => state.todos.todos
+);
+
+export const selectCompletedCount = createSelector(
+  selectTodos,
+  todos => todos.filter(t => t.completed).length
+);</code></pre>
+    
+    <h2>SignalStore (Modern Angular)</h2>
+    
+    <pre><code>import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
+
+export const TodoStore = signalStore(
+  { providedIn: 'root' },
+  
+  withState({
+    todos: [] as Todo[],
+    loading: false,
+    error: null as string | null
+  }),
+  
+  withMethods((store) => ({
+    async loadTodos() {
+      patchState(store, { loading: true, error: null });
+      
+      try {
+        const todos = await firstValueFrom(
+          inject(HttpClient).get&lt;Todo[]&gt;('/api/todos')
+        );
+        patchState(store, { todos });
+      } catch (error) {
+        patchState(store, { error: 'Failed to load' });
+      } finally {
+        patchState(store, { loading: false });
+      }
+    },
+    
+    addTodo(title: string) {
+      patchState(store, state => ({
+        todos: [...state.todos, { id: Date.now(), title, completed: false }]
+      }));
+    },
+    
+    toggleTodo(id: number) {
+      patchState(store, state => ({
+        todos: state.todos.map(todo =>
+          todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        )
+      }));
+    }
+  }))
+);
+
+// Usage in component
+@Component({...})
+export class TodoComponent {
+  private store = inject(TodoStore);
+  
+  todos = this.store.todos;
+  loading = this.store.loading;
+  
+  constructor() {
+    this.store.loadTodos();
+  }
+}</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Create a shopping cart state management solution that:<br>
+        1. Manages cart items (add, remove, update quantity)<br>
+        2. Computes total price and item count<br>
+        3. Persists to localStorage<br>
+        4. Syncs across multiple components
+    </div>
+    
+    <h2>When to Use Each Pattern</h2>
+    
+    <ul>
+        <li><strong>Component state:</strong> UI-only state (modals, form inputs, hover states)</li>
+        <li><strong>Service with signals:</strong> Most apps, shared state, moderate complexity</li>
+        <li><strong>NgRx:</strong> Large teams, strict patterns, time-travel debugging needed</li>
+        <li><strong>SignalStore:</strong> Modern Angular, signal-based, less boilerplate than NgRx</li>
+    </ul>
+    
+    <div class="warning">
+        <strong>Don't over-engineer:</strong> Start with service + signals. Only add NgRx when you have complex async flows, multiple reducers, or need DevTools integration.
+    </div>
+    
+    <h2>Testing State Management</h2>
+    
+    <pre><code>describe('TodoStateService', () => {
+  let service: TodoStateService;
+  
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [TodoStateService]
+    });
+    service = TestBed.inject(TodoStateService);
+  });
+  
+  it('should add todo', () => {
+    service.addTodo('Test Todo');
+    
+    expect(service.todos().length).toBe(1);
+    expect(service.todos()[0].title).toBe('Test Todo');
+  });
+  
+  it('should toggle todo', () => {
+    service.addTodo('Test Todo');
+    const id = service.todos()[0].id;
+    
+    service.toggleTodo(id);
+    
+    expect(service.todos()[0].completed).toBe(true);
+  });
+  
+  it('should compute stats', () => {
+    service.addTodo('Todo 1');
+    service.addTodo('Todo 2');
+    service.toggleTodo(service.todos()[0].id);
+    
+    expect(service.stats()).toEqual({
+      total: 2,
+      completed: 1,
+      pending: 1
+    });
+  });
+});</code></pre>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/signals">Angular Signals Guide</a> &amp; <a href="https://ngrx.io/guide/store">NgRx Store</a><br>
+        Focus on: "Signal state management", "NgRx patterns", "Testing state".
+    </div>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered state management patterns. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Refactor existing app to use signals for state</li>
+            <li><strong>Read:</strong> <a href="https://ngrx.io/guide/store">NgRx Documentation</a> for complex state patterns</li>
+            <li><strong>Explore:</strong> <a href="https://angular.dev/guide/signals">SignalStore</a> for modern Angular state</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about state management architecture, debugging state, or choosing the right pattern!
+        </div>
+        
+        <p><a href="0013-angular-material-and-libraries.html">Next Lesson: Angular Material & Libraries →</a></p>
+    </div>
+    
+    <script>
+        // Interactive state management quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            const quiz = document.createElement('div');
+            quiz.innerHTML = `
+                <div class="practice">
+                    <h3>Quick Quiz: Pattern Selection</h3>
+                    <p>For each scenario, which state management pattern would you use?</p>
+                    <ol>
+                        <li>A simple todo app with a few shared items</li>
+                        <li>A large e-commerce app with complex order flows</li>
+                        <li>A dashboard with real-time data updates</li>
+                        <li>A form wizard with multiple steps</li>
+                    </ol>
+                    <details>
+                        <summary>Click for answers</summary>
+                        <ol>
+                            <li><strong>Service with signals</strong> - Simple, sufficient for moderate complexity</li>
+                            <li><strong>NgRx</strong> - Complex flows, strict patterns, team coordination</li>
+                            <li><strong>SignalStore</strong> - Modern, signal-based, good for real-time</li>
+                            <li><strong>Component state</strong> - UI-only, isolated to wizard</li>
+                        </ol>
+                    </details>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(quiz);
+        });
+    </script>
+</body>
+</html>

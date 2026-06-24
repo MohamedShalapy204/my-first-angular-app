@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 14: Deployment & CI/CD</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 14 of ∞</strong> • Angular Deployment & CI/CD • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0013-angular-material-and-libraries.html">← Lesson 13</a>
+    </div>
+    
+    <h1>Deployment & CI/CD</h1>
+    
+    <p>You can build complete applications. Now let's learn how to deploy them to production and set up continuous integration/delivery pipelines.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> Deployment isn't just about uploading files—it's about optimizing builds, setting up environments, automating testing, and ensuring reliable releases.
+    </div>
+    
+    <h2>Building for Production</h2>
+    
+    <pre><code># Production build
+ng build --configuration production
+
+# With bundle analysis
+ng build --configuration production --stats-json
+
+# Check bundle sizes
+npx webpack-bundle-analyzer dist/my-app/stats.json</code></pre>
+    
+    <h3>Build Optimizations</h3>
+    <pre><code>// angular.json
+{
+  "projects": {
+    "my-app": {
+      "architect": {
+        "build": {
+          "options": {
+            "optimization": true,
+            "sourceMap": false,
+            "namedChunks": false,
+            "budgets": [
+              {
+                "type": "initial",
+                "maximumWarning": "500kb",
+                "maximumError": "1mb"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}</code></pre>
+    
+    <h2>Environment Configuration</h2>
+    
+    <pre><code>// environments/environment.ts (development)
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000/api',
+  enableDebugTools: true
+};
+
+// environments/environment.prod.ts (production)
+export const environment = {
+  production: true,
+  apiUrl: 'https://api.myapp.com/api',
+  enableDebugTools: false
+};
+
+// Usage
+import { environment } from '../environments/environment';
+
+@Injectable({ providedIn: 'root' })
+export class ApiService {
+  private apiUrl = environment.apiUrl;
+}</code></pre>
+    
+    <pre><code>// Angular CLI environment replacement
+ng build --configuration production
+// Automatically uses environment.prod.ts</code></pre>
+    
+    <h2>Deployment Targets</h2>
+    
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Platform</th>
+                <th>Command</th>
+                <th>Best For</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Netlify</strong></td>
+                <td><code>ng build && netlify deploy --dir=dist/my-app</code></td>
+                <td>Static sites, JAMstack</td>
+            </tr>
+            <tr>
+                <td><strong>Vercel</strong></td>
+                <td><code>vercel --prod</code></td>
+                <td>Next.js-like, serverless</td>
+            </tr>
+            <tr>
+                <td><strong>Firebase</strong></td>
+                <td><code>ng deploy</code></td>
+                <td>Google Cloud integration</td>
+            </tr>
+            <tr>
+                <td><strong>AWS S3</strong></td>
+                <td><code>aws s3 sync dist/my-app s3://bucket</code></td>
+                <td>AWS ecosystem</td>
+            </tr>
+            <tr>
+                <td><strong>Docker</strong></td>
+                <td><code>docker build -t my-app .</code></td>
+                <td>Containers, Kubernetes</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Docker Deployment</h2>
+    
+    <pre><code># Dockerfile
+FROM node:18-alpine as build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN ng build --configuration production
+
+FROM nginx:alpine
+COPY --from=build /app/dist/my-app /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+# nginx.conf
+server {
+    listen 80;
+    root /usr/share/nginx/html;
+    index index.html;
+    
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+    
+    location /api {
+        proxy_pass http://backend:3000;
+    }
+}</code></pre>
+    
+    <div class="warning">
+        <strong>SPA Routing:</strong> Configure your server to redirect all routes to index.html for Angular's client-side routing to work.
+    </div>
+    
+    <h2>CI/CD with GitHub Actions</h2>
+    
+    <pre><code># .github/workflows/ci.yml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm test -- --watch=false --browsers=ChromeHeadless
+      
+      - name: Run linting
+        run: npm run lint
+      
+      - name: Build
+        run: npm run build
+  
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v2
+        with:
+          publish-dir: './dist/my-app'
+          production-deploy: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}</code></pre>
+    
+    <h2>Environment Variables</h2>
+    
+    <pre><code>// Using environment variables in Angular
+// angular.json
+"fileReplacements": [
+  {
+    "replace": "src/environments/environment.ts",
+    "with": "src/environments/environment.prod.ts"
+  }
+]
+
+// Accessing in code
+const apiUrl = environment.apiUrl;
+
+// Runtime configuration (for Docker, etc.)
+// index.html
+&lt;script&gt;
+  window.__ENV__ = {
+    apiUrl: 'https://api.myapp.com'
+  };
+&lt;/script&gt;
+
+// In Angular
+const apiUrl = (window as any).__ENV__.apiUrl;</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Set up a complete CI/CD pipeline that:<br>
+        1. Runs tests on every push<br>
+        2. Builds the application<br>
+        3. Deploys to a hosting platform<br>
+        4. Sends notifications on failure
+    </div>
+    
+    <h2>Monitoring and Rollbacks</h2>
+    
+    <pre><code>// Version tracking
+// package.json
+{
+  "version": "1.2.3"
+}
+
+// In app
+@Component({...})
+export class AppComponent {
+  version = environment.version;
+  
+  constructor() {
+    console.log(`App version: ${this.version}`);
+  }
+}
+
+// Rollback strategy
+// 1. Keep previous version artifacts
+// 2. Use feature flags for new features
+// 3. Implement health checks
+// 4. Use canary deployments</code></pre>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/reference/configs/deployment">Angular Deployment Guide</a><br>
+        Focus on: "Building for production", "Deployment options", "Environment configuration".
+    </div>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered deployment and CI/CD. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Deploy an Angular app to Netlify or Vercel</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/reference/configs/deployment">Deployment Reference</a></li>
+            <li><strong>Explore:</strong> <a href="https://docs.github.com/en/actions">GitHub Actions</a> for CI/CD</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about specific deployment platforms, CI/CD patterns, or production optimization!
+        </div>
+        
+        <p><a href="0015-angular-universal-ssr.html">Next Lesson: Angular Universal & SSR →</a></p>
+    </div>
+    
+    <script>
+        // Interactive deployment quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            const quiz = document.createElement('div');
+            quiz.innerHTML = `
+                <div class="practice">
+                    <h3>Quick Quiz: Deployment Decisions</h3>
+                    <p>For each scenario, which deployment strategy would you use?</p>
+                    <ol>
+                        <li>A static marketing site with no API</li>
+                        <li>A dynamic app needing server-side rendering</li>
+                        <li>An enterprise app requiring Docker containers</li>
+                        <li>A quick prototype for client demo</li>
+                    </ol>
+                    <details>
+                        <summary>Click for answers</summary>
+                        <ol>
+                            <li><strong>Netlify/Vercel</strong> - Static hosting, CDN, easy setup</li>
+                            <li><strong>Angular Universal + Node server</strong> - SSR for SEO/performance</li>
+                            <li><strong>Docker + Kubernetes</strong> - Container orchestration</li>
+                            <li><strong>GitHub Pages</strong> - Free, simple, fast</li>
+                        </ol>
+                    </details>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(quiz);
+        });
+    </script>
+</body>
+</html>

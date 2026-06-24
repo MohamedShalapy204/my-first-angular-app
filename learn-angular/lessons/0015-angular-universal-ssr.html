@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 15: Angular Universal & SSR</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 15 of ∞</strong> • Angular Universal & SSR • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0014-deployment-and-cicd.html">← Lesson 14</a>
+    </div>
+    
+    <h1>Angular Universal & Server-Side Rendering</h1>
+    
+    <p>You can deploy applications. Now let's learn how to use Angular Universal for server-side rendering (SSR) to improve SEO, performance, and user experience.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> SSR renders your Angular app on the server before sending it to the browser. This improves initial load time, SEO, and social media sharing.
+    </div>
+    
+    <h2>Why SSR?</h2>
+    
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Benefit</th>
+                <th>Without SSR</th>
+                <th>With SSR</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>SEO</strong></td>
+                <td>JavaScript required for content</td>
+                <td>Content visible to crawlers</td>
+            </tr>
+            <tr>
+                <td><strong>Initial Load</strong></td>
+                <td>Blank screen until JS loads</td>
+                <td>Content visible immediately</td>
+            </tr>
+            <tr>
+                <td><strong>Social Sharing</strong></td>
+                <td>No metadata for link previews</td>
+                <td>Full metadata available</td>
+            </tr>
+            <tr>
+                <td><strong>Performance</strong></td>
+                <td>Client-side rendering</td>
+                <td>Faster First Contentful Paint</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2>Setting Up Angular Universal</h2>
+    
+    <pre><code># Add SSR to existing project
+ng add @angular/ssr
+
+# Or create new project with SSR
+ng new my-app --ssr</code></pre>
+    
+    <pre><code>// app.config.ts
+import { provideServerRendering } from '@angular/platform-server';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideServerRendering(),
+    // ... other providers
+  ]
+};</code></pre>
+    
+    <h2>Server-Side Rendering Flow</h2>
+    
+    <pre><code>// 1. Browser requests page
+// 2. Server renders Angular app
+// 3. Server sends rendered HTML
+// 4. Browser displays content immediately
+// 5. Angular hydrates (attaches event listeners)
+
+// Hydration happens automatically with:
+// provideClientHydration()</code></pre>
+    
+    <h2>Hydration</h2>
+    
+    <pre><code>// app.config.ts
+import { provideClientHydration } from '@angular/platform-browser';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideServerRendering(),
+    provideClientHydration(),
+    // ... other providers
+  ]
+};</code></pre>
+    
+    <div class="key-concept">
+        <strong>Hydration:</strong> Angular reuses the server-rendered DOM and attaches event listeners. This avoids re-rendering the entire app on the client.
+    </div>
+    
+    <h2>Transfer State</h2>
+    
+    <pre><code>// Avoid duplicate HTTP requests
+import { TransferState, makeStateKey } from '@angular/platform-browser';
+
+const USERS_KEY = makeStateKey&lt;User[]&gt;('users');
+
+@Component({...})
+export class UserListComponent implements OnInit {
+  private transferState = inject(TransferState);
+  private http = inject(HttpClient);
+  
+  users = signal&lt;User[]&gt;([]);
+  
+  ngOnInit() {
+    // Check if data exists in transfer state
+    const cachedUsers = this.transferState.get&lt;User[]&gt;(USERS_KEY, null);
+    
+    if (cachedUsers) {
+      // Use cached data from server
+      this.users.set(cachedUsers);
+    } else {
+      // Fetch fresh data
+      this.http.get&lt;User[]&gt;('/api/users').subscribe(users => {
+        this.users.set(users);
+        
+        // Store in transfer state for client
+        this.transferState.set(USERS_KEY, users);
+      });
+    }
+  }
+}</code></pre>
+    
+    <h2>Server-Side Data Loading</h2>
+    
+    <pre><code>// Using Resolve for SSR
+import { ResolveFn } from '@angular/router';
+import { TransferState, makeStateKey } from '@angular/platform-browser';
+
+export const usersResolver: ResolveFn&lt;User[]&gt; = (route, injector) => {
+  const transferState = injector.get(TransferState);
+  const http = injector.get(HttpClient);
+  
+  const key = makeStateKey&lt;User[]&gt;('users');
+  const cached = transferState.get(key, null);
+  
+  if (cached) {
+    return of(cached);
+  }
+  
+  return http.get&lt;User[]&gt;('/api/users').pipe(
+    tap(users => transferState.set(key, users))
+  );
+};
+
+// Route definition
+{
+  path: 'users',
+  component: UserListComponent,
+  resolve: { users: usersResolver }
+}</code></pre>
+    
+    <h2>Prerendering</h2>
+    
+    <pre><code>// Generate static HTML for specific routes
+// angular.json
+{
+  "projects": {
+    "my-app": {
+      "architect": {
+        "build": {
+          "options": {
+            "prerender": true,
+            "routes": [
+              "/",
+              "/about",
+              "/contact",
+              "/blog"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+
+// Or dynamic prerendering
+// prerender.ts
+export const routes: string[] = [
+  '/',
+  '/about',
+  // Dynamic routes from API
+  ...await fetch('https://api.example.com/posts')
+    .then(res => res.json())
+    .then(posts => posts.map((post: any) => `/blog/${post.slug}`))
+];</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Convert an existing Angular app to use SSR:<br>
+        1. Add Angular Universal<br>
+        2. Configure hydration<br>
+        3. Implement transfer state for API calls<br>
+        4. Test with disabled JavaScript
+    </div>
+    
+    <h2>SSR Considerations</h2>
+    
+    <pre><code>// ❌ These won't work on server
+window.localStorage  // Server has no window
+document.getElementById('app')  // Server has no document
+navigator.geolocation  // Server has no navigator
+
+// ✅ Use PLATFORM_ID to check environment
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+
+@Component({...})
+export class SafeComponent {
+  private platformId = inject(PLATFORM_ID);
+  
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      // Browser-only code
+      localStorage.setItem('key', 'value');
+    }
+  }
+}
+
+// ✅ Use isPlatformBrowser in templates
+@If (isBrowser) {
+  &lt;div&gt;Browser-only content&lt;/div&gt;
+}</code></pre>
+    
+    <div class="warning">
+        <strong>Server limitations:</strong> The server doesn't have access to browser APIs. Always check <code>isPlatformBrowser</code> before using browser-specific code.
+    </div>
+    
+    <h2>Deployment</h2>
+    
+    <pre><code># Build for SSR
+ng build
+
+# The output includes:
+# - dist/my-app/browser/ (client files)
+# - dist/my-app/server/ (server files)
+
+# Run the server
+node dist/my-app/server/server.js
+
+# Or use Angular CLI
+ng serve --ssr</code></pre>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/ssr">Angular SSR Guide</a><br>
+        Focus on: "How SSR works", "Hydration", "Transfer state", "Prerendering".
+    </div>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered Angular Universal and SSR. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Add SSR to an existing Angular project</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/guide/ssr">Angular SSR Guide</a></li>
+            <li><strong>Explore:</strong> <a href="https://angular.dev/guide/ssr/hydration">Hydration</a> for optimal performance</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about SSR optimization, hydration issues, or prerendering strategies!
+        </div>
+        
+        <p><a href="0016-internationalization-i18n.html">Next Lesson: Internationalization (i18n) →</a></p>
+    </div>
+    
+    <script>
+        // Interactive SSR quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            const quiz = document.createElement('div');
+            quiz.innerHTML = `
+                <div class="practice">
+                    <h3>Quick Quiz: SSR Decisions</h3>
+                    <p>For each scenario, would you use SSR?</p>
+                    <ol>
+                        <li>A blog with SEO requirements</li>
+                        <li>A dashboard behind authentication</li>
+                        <li>A marketing landing page</li>
+                        <li>A real-time chat application</li>
+                    </ol>
+                    <details>
+                        <summary>Click for answers</summary>
+                        <ol>
+                            <li><strong>Yes</strong> - SSR for SEO and social sharing</li>
+                            <li><strong>Maybe</strong> - Only if initial load performance matters</li>
+                            <li><strong>Yes</strong> - SSR for fast initial load and SEO</li>
+                            <li><strong>No</strong> - CSR is better for real-time updates</li>
+                        </ol>
+                    </details>
+                </div>
+            `;
+            document.querySelector('.next-steps').appendChild(quiz);
+        });
+    </script>
+</body>
+</html>

@@ -1,9 +1,13 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from './supabase';
-import { NotificationService } from './notification';
 import { getUserRole } from '../models/user.model';
 import type { UserRole } from '../models/user.model';
+
+export interface AuthResult {
+  success: boolean;
+  error?: string;
+}
 
 /**
  * Authentication service using Supabase.
@@ -13,8 +17,6 @@ import type { UserRole } from '../models/user.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private notificationService = inject(NotificationService);
-
   readonly user = signal<User | null>(null);
   readonly loading = signal<boolean>(true);
   readonly error = signal<string | null>(null);
@@ -52,7 +54,7 @@ export class AuthService {
     });
   }
 
-  async login(email: string, password: string): Promise<void> {
+  async login(email: string, password: string): Promise<AuthResult> {
     this.error.set(null);
 
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -63,18 +65,17 @@ export class AuthService {
     if (error) {
       const message = this.sanitizeErrorMessage(error.message);
       this.error.set(message);
-      this.notificationService.show(message, 'error');
-      return;
+      return { success: false, error: message };
     }
 
     this.user.set(data.user);
-    this.notificationService.show('Successfully logged in', 'success');
+    return { success: true };
   }
 
-  async register(email: string, password: string, name?: string): Promise<void> {
+  async register(email: string, password: string, name?: string): Promise<AuthResult> {
     this.error.set(null);
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -85,24 +86,28 @@ export class AuthService {
     if (error) {
       const message = this.sanitizeErrorMessage(error.message);
       this.error.set(message);
-      this.notificationService.show(message, 'error');
-      return;
+      return { success: false, error: message };
     }
 
-    // Note: Supabase may require email confirmation
-    this.notificationService.show('Registration successful! Please check your email.', 'success');
+    // Supabase returns user with empty identities when email already exists (unconfirmed)
+    if (!data.user || (data.user.identities && data.user.identities.length === 0)) {
+      const message = 'An account with this email already exists';
+      this.error.set(message);
+      return { success: false, error: message };
+    }
+
+    return { success: true };
   }
 
-  async logout(): Promise<void> {
+  async logout(): Promise<AuthResult> {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-      this.notificationService.show('Logout failed. Please try again.', 'error');
-      return;
+      return { success: false, error: 'Logout failed. Please try again.' };
     }
 
     this.user.set(null);
-    this.notificationService.show('Successfully logged out', 'success');
+    return { success: true };
   }
 
   // Map Supabase errors to generic messages (prevents email enumeration)
@@ -112,6 +117,9 @@ export class AuthService {
     }
     if (error.includes('already registered')) {
       return 'An account with this email already exists';
+    }
+    if (error.includes('rate limit')) {
+      return 'Too many attempts. Please try again later.';
     }
     return 'An error occurred. Please try again.';
   }

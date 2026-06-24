@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 16: Internationalization (i18n)</title>
+    <style>
+        :root {
+            --text-color: #2c3e50;
+            --heading-color: #1a252f;
+            --link-color: #3498db;
+            --code-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--heading-color);
+            font-weight: normal;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+        }
+        
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--link-color);
+        }
+        
+        a:hover {
+            border-bottom-width: 2px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+            padding: 1rem 1.5rem;
+            background: #f8f9fa;
+            font-style: italic;
+        }
+        
+        .lesson-meta {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        
+        .key-concept {
+            background: #fff8e1;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .practice {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .question {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .warning {
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1.5rem 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .next-steps {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .reference-link {
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--code-bg);
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .comparison-table th {
+            background: var(--code-bg);
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-meta">
+        <strong>Lesson 16 of ∞</strong> • Angular Internationalization • 
+        <a href="../MISSION.md">View Mission</a> • 
+        <a href="../RESOURCES.md">Resources</a> • 
+        <a href="0015-angular-universal-ssr.html">← Lesson 15</a>
+    </div>
+    
+    <h1>Internationalization (i18n)</h1>
+    
+    <p>You can build and deploy applications. Now let's learn how to make them accessible to users worldwide with Angular's internationalization features.</p>
+    
+    <div class="key-concept">
+        <strong>Key Insight:</strong> i18n isn't just about translating text—it's about adapting your app for different languages, currencies, date formats, and cultural conventions.
+    </div>
+    
+    <h2>Angular i18n Setup</h2>
+    
+    <pre><code># Add i18n support
+ng add @angular/localize
+
+# Extract translatable text
+ng extract-i18n</code></pre>
+    
+    <h2>Marking Text for Translation</h2>
+    
+    <pre><code>&lt;!-- In templates --&gt;
+&lt;h1 i18n="@@welcomeHeader"&gt;Welcome to our app&lt;/h1&gt;
+&lt;p i18n="@@introText"&gt;This is a sample application&lt;/p&gt;
+
+&lt;!-- With description for translators --&gt;
+&lt;p i18n="@@userCount|Number of users in the system"&gt;
+  {{ userCount }} users
+&lt;/p&gt;
+
+&lt;!-- Attribute translation --&gt;
+&lt;img [alt]="'Logo'" i18n-alt="@@logoAlt"&gt;
+
+&lt;!-- Placeholder translation --&gt;
+&lt;input placeholder="Enter email" i18n-placeholder="@@emailPlaceholder"&gt;</code></pre>
+    
+    <h2>Translation Files</h2>
+    
+    <pre><code>// messages.xlf (generated by ng extract-i18n)
+&lt;xliff version="1.2"&gt;
+  &lt;file source-language="en" target-language="fr"&gt;
+    &lt;body&gt;
+      &lt;trans-unit id="welcomeHeader"&gt;
+        &lt;source&gt;Welcome to our app&lt;/source&gt;
+        &lt;target&gt;Bienvenue dans notre application&lt;/target&gt;
+      &lt;/trans-unit&gt;
+      &lt;trans-unit id="introText"&gt;
+        &lt;source&gt;This is a sample application&lt;/source&gt;
+        &lt;target&gt;Ceci est une application d'exemple&lt;/target&gt;
+      &lt;/trans-unit&gt;
+    &lt;/body&gt;
+  &lt;/file&gt;
+&lt;/xliff&gt;</code></pre>
+    
+    <h2>Translation Service</h2>
+    
+    <pre><code>import { TranslateService } from '@ngx-translate/core';
+
+@Component({
+  template: `
+    &lt;h1&gt;{{ 'WELCOME' | translate }}&lt;/h1&gt;
+    &lt;p&gt;{{ 'USER_COUNT' | translate: { count: userCount } }}&lt;/p&gt;
+    
+    &lt;select (change)="switchLanguage($event.target.value)"&gt;
+      @for (lang of languages; track lang.code) {
+        &lt;option [value]="lang.code"&gt;{{ lang.name }}&lt;/option&gt;
+      }
+    &lt;/select&gt;
+  `
+})
+export class AppComponent {
+  private translate = inject(TranslateService);
+  
+  languages = [
+    { code: 'en', name: 'English' },
+    { code: 'fr', name: 'Français' },
+    { code: 'es', name: 'Español' },
+    { code: 'de', name: 'Deutsch' }
+  ];
+  
+  userCount = 42;
+  
+  constructor() {
+    // Set default language
+    this.translate.setDefaultLang('en');
+    this.translate.use('en');
+  }
+  
+  switchLanguage(lang: string) {
+    this.translate.use(lang);
+  }
+}</code></pre>
+    
+    <h2>Date and Number Formatting</h2>
+    
+    <pre><code>import { DatePipe, CurrencyPipe, DecimalPipe } from '@angular/common';
+
+@Component({
+  template: `
+    &lt;!-- Date formatting --&gt;
+    &lt;p&gt;{{ today | date:'fullDate' }}&lt;/p&gt;
+    &lt;p&gt;{{ today | date:'short' }}&lt;/p&gt;
+    
+    &lt;!-- Currency formatting --&gt;
+    &lt;p&gt;{{ price | currency:'USD':'symbol':'1.2-2' }}&lt;/p&gt;
+    &lt;p&gt;{{ price | currency:'EUR':'symbol':'1.2-2' }}&lt;/p&gt;
+    
+    &lt;!-- Number formatting --&gt;
+    &lt;p&gt;{{ number | number:'1.0-0' }}&lt;/p&gt;
+  `
+})
+export class FormattingComponent {
+  today = new Date();
+  price = 1234.56;
+  number = 1234567.89;
+}</code></pre>
+    
+    <div class="key-concept">
+        <strong>Locale:</strong> Angular pipes automatically format based on the current locale. Set it with <code>LOCALE_ID</code>.
+    </div>
+    
+    <h2>RTL Support</h2>
+    
+    <pre><code>// Detect and apply RTL
+@Component({
+  template: `
+    &lt;div [dir]="isRtl ? 'rtl' : 'ltr'"&gt;
+      &lt;p&gt;This text will be right-aligned for RTL languages&lt;/p&gt;
+    &lt;/div&gt;
+  `,
+  styles: [`
+    :host {
+      display: block;
+    }
+    
+    [dir="rtl"] {
+      text-align: right;
+    }
+    
+    [dir="rtl"] .sidebar {
+      margin-right: 0;
+      margin-left: auto;
+    }
+  `]
+})
+export class RtlComponent {
+  private translate = inject(TranslateService);
+  
+  isRtl = computed(() => {
+    const lang = this.translate.currentLang;
+    return ['ar', 'he', 'fa'].includes(lang);
+  });
+}</code></pre>
+    
+    <h2>Pluralization</h2>
+    
+    <pre><code>&lt;!-- i18n plural handling --&gt;
+&lt;p i18n="@@itemCount"&gt;
+  {itemCount, plural, 
+    =0 {No items} 
+    one {One item} 
+    other {{itemCount} items}
+  }
+&lt;/p&gt;
+
+&lt;!-- With ngx-translate --&gt;
+&lt;p&gt;{{ 'ITEM_COUNT' | translate:{ count: itemCount } }}&lt;/p&gt;
+
+// messages.fr.xlf
+&lt;trans-unit id="itemCount"&gt;
+  &lt;source&gt;{itemCount, plural, =0 {No items} one {One item} other {{itemCount} items}}&lt;/source&gt;
+  &lt;target&gt;{itemCount, plural, =0 {Aucun élément} one {Un élément} other {{itemCount} éléments}}&lt;/target&gt;
+&lt;/trans-unit&gt;</code></pre>
+    
+    <h2>Translation Extraction Workflow</h2>
+    
+    <pre><code># 1. Extract source text
+ng extract-i18n --output-path src/locale
+
+# 2. Send messages.xlf to translators
+
+# 3. Create translation files
+# src/locale/messages.fr.xlf
+# src/locale/messages.es.xlf
+
+# 4. Build for specific locale
+ng build --localize=fr
+ng build --localize=es
+
+# 5. Deploy separate builds per locale</code></pre>
+    
+    <div class="practice">
+        <strong>Practice Exercise:</strong> Internationalize an Angular app:<br>
+        1. Mark all user-facing text with i18n attributes<br>
+        2. Extract and create French translation file<br>
+        3. Add language switcher<br>
+        4. Format dates and currency for different locales
+    </div>
+    
+    <h2>Lazy-Loaded Translations</h2>
+    
+    <pre><code>// Load translations on demand
+@Injectable({ providedIn: 'root' })
+export class TranslationLoader implements TranslateLoader {
+  private http = inject(HttpClient);
+  
+  getTranslation(lang: string): Observable&lt;any&gt; {
+    return this.http.get(`/assets/i18n/${lang}.json`).pipe(
+      tap(translations => {
+        console.log(`Loaded ${Object.keys(translations).length} translations for ${lang}`);
+      })
+    );
+  }
+}
+
+// Configure with TranslateModule.forRoot
+TranslateModule.forRoot({
+  loader: {
+    provide: TranslateLoader,
+    useClass: TranslationLoader
+  }
+})</code></pre>
+    
+    <div class="reference-link">
+        📚 <strong>Primary Resource:</strong> <a href="https://angular.dev/guide/i18n">Angular i18n Guide</a><br>
+        Focus on: "Marking text", "Translation files", "Locale configuration", "Build for multiple locales".
+    </div>
+    
+    <div class="next-steps">
+        <h2>Next Steps</h2>
+        
+        <p>You've mastered Angular internationalization. Now you can:</p>
+        
+        <ol>
+            <li><strong>Practice:</strong> Add multi-language support to an existing app</li>
+            <li><strong>Read:</strong> <a href="https://angular.dev/guide/i18n">Angular i18n Guide</a></li>
+            <li><strong>Explore:</strong> <a href="https://www NGX-TRANSLATE">ngx-translate</a> for dynamic translations</li>
+        </ol>
+        
+        <div class="question">
+            <strong>Questions?</strong> Ask me about translation workflows, RTL layouts, or locale-specific formatting!
+        </div>
+        
+        <p><strong>🎉 Congratulations!</strong> You've completed the Angular learning curriculum!</p>
+        
+        <div style="background: #e8f5e9; padding: 1.5rem; border-radius: 5px; margin-top: 2rem;">
+            <h3>What You've Learned</h3>
+            <ul>
+                <li>Component architecture and templates</li>
+                <li>Lifecycle hooks and signals</li>
+                <li>Dependency injection and services</li>
+                <li>Routing and navigation</li>
+                <li>Forms and validation</li>
+                <li>HTTP client and APIs</li>
+                <li>Testing applications</li>
+                <li>Advanced component patterns</li>
+                <li>Angular animations</li>
+                <li>Performance optimization</li>
+                <li>State management patterns</li>
+                <li>Angular Material and libraries</li>
+                <li>Deployment and CI/CD</li>
+                <li>Angular Universal and SSR</li>
+                <li>Internationalization (i18n)</li>
+            </ul>
+            
+            <h3>Next Steps for Your Journey</h3>
+            <ol>
+                <li><strong>Build a real project</strong> - Apply what you've learned</li>
+                <li><strong>Join the community</strong> - Angular Discord, Reddit, Stack Overflow</li>
+                <li><strong>Contribute to open source</strong> - Find Angular libraries to contribute to</li>
+                <li><strong>Stay updated</strong> - Follow Angular blog and release notes</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

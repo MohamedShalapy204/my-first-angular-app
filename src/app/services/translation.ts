@@ -5,6 +5,7 @@ export type TranslationKey =
   | 'nav.shop'
   | 'nav.story'
   | 'nav.search'
+  | 'nav.cart'
   | 'footer.brand'
   | 'footer.collections'
   | 'footer.keyboards'
@@ -101,6 +102,7 @@ const translations: Record<Lang, Record<TranslationKey, string>> = {
     'nav.shop': 'Shop',
     'nav.story': 'Story',
     'nav.search': 'Search',
+    'nav.cart': 'Cart',
     'footer.brand': 'Curating premium developer environments and digital sanctuaries since 2024.',
     'footer.collections': 'Collections',
     'footer.keyboards': 'Keyboards',
@@ -209,6 +211,7 @@ const translations: Record<Lang, Record<TranslationKey, string>> = {
     'nav.shop': 'المتجر',
     'nav.story': 'القصة',
     'nav.search': 'بحث',
+    'nav.cart': 'السلة',
     'footer.brand': 'نقدم بيئات مطورة مميزة وملاذات رقمية منذ 2024.',
     'footer.collections': 'المجموعات',
     'footer.keyboards': 'لوحة المفاتيح',
