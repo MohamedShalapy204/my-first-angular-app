@@ -5,29 +5,224 @@
     <p class="text-lg text-on-surface-variant">{{ translate('gallery.description') }}</p>
   </section>
 
-  <div class="flex flex-col lg:flex-row gap-6">
-    <!-- Sidebar Filtering -->
-    <app-sidebar-filter
-      class="w-full lg:w-1/4 mb-6 lg:mb-0"
-      [categories]="categories"
-      (categoryChange)="onCategoryChange($event)"
-      (priceChange)="onPriceChange($event)"
-      (sortChange)="onSortChange($event)"
-    />
+  <!-- Mobile Filter Toggle Button -->
+  <button
+    class="md:hidden fixed bottom-4 right-4 z-50 bg-primary text-on-primary p-4 rounded-full shadow-lg"
+    (click)="toggleFilters()"
+  >
+    <span class="material-symbols-outlined">filter_list</span>
+  </button>
 
-    <!-- Product Grid -->
-    <div class="w-full lg:w-3/4">
-      <!-- Search Bar -->
-      <div class="mb-unit lg:mb-6 w-full relative">
-        <div class="relative flex items-center group">
-          <span class="material-symbols-outlined absolute left-4 text-on-surface-variant/50 group-focus-within:text-primary transition-colors">search</span>
-          <input type="text" placeholder="Search our collection..."
-            class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-0 border-b border-outline-variant focus:border-primary focus:ring-0 text-base transition-all placeholder:text-on-surface-variant/40"
-            (input)="onSearchChange($any($event.target).value)">
+  <div class="flex flex-col md:flex-row gap-6">
+    <!-- Filters Sidebar -->
+    <aside
+      [class]="
+        showFilters()
+          ? 'fixed inset-0 z-40 bg-background p-6 overflow-y-auto md:static md:w-1/4 md:p-0'
+          : 'hidden md:block md:w-1/4'
+      "
+    >
+      <div class="sticky top-24">
+        <!-- Mobile close button -->
+        <div class="flex justify-between items-center mb-6 md:hidden">
+          <h2 class="font-headline-md">Filters</h2>
+          <button (click)="toggleFilters()" class="p-2">
+            <span class="material-symbols-outlined">close</span>
+          </button>
         </div>
-      </div>
 
-      <app-product-grid [products]="filteredProducts()" />
+        <!-- Search -->
+        <div class="mb-6">
+          <label class="font-label-sm text-on-surface-variant mb-2 block">Search</label>
+          <div class="relative">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50"
+            >
+              search
+            </span>
+            <input
+              type="text"
+              [formField]="filterForm.search"
+              placeholder="Search products..."
+              class="w-full pl-10 pr-4 py-3 bg-surface-container-low border-0 border-b border-outline-variant focus:border-primary text-on-background placeholder:text-outline-variant transition-colors"
+            />
+          </div>
+        </div>
+
+        <!-- Category List -->
+        <div class="mb-6">
+          <label class="font-label-sm text-on-surface-variant mb-2 block">Category</label>
+          <ul class="space-y-2">
+            <li>
+              <button
+                (click)="onCategoryClick(null)"
+                [class]="
+                  filterModel().categoryId === null
+                    ? 'font-body-md text-primary font-semibold hover:text-primary transition-colors'
+                    : 'font-body-md text-on-surface-variant hover:text-primary transition-colors'
+                "
+              >
+                All Products
+              </button>
+            </li>
+            @for (cat of categories(); track cat.id) {
+              <li>
+                <button
+                  (click)="onCategoryClick(cat.id)"
+                  [class]="
+                    filterModel().categoryId === cat.id
+                      ? 'font-body-md text-primary font-semibold hover:text-primary transition-colors'
+                      : 'font-body-md text-on-surface-variant hover:text-primary transition-colors'
+                  "
+                >
+                  {{ cat.name }}
+                </button>
+              </li>
+            }
+          </ul>
+          @if (categoriesError()) {
+            <p class="text-error text-sm mt-2">{{ categoriesError() }}</p>
+          }
+        </div>
+
+        <!-- Price Range -->
+        <div class="mb-6">
+          <label class="font-label-sm text-on-surface-variant mb-2 block">Price Range</label>
+          <div class="flex gap-2">
+            <input
+              type="number"
+              placeholder="Min"
+              [value]="filterModel().minPrice"
+              (change)="onMinPriceChange($any($event.target).value)"
+              class="w-1/2 px-3 py-2 bg-surface-container-low border-0 border-b border-outline-variant focus:border-primary text-on-background placeholder:text-outline-variant transition-colors"
+            />
+            <input
+              type="number"
+              placeholder="Max"
+              [value]="filterModel().maxPrice"
+              (change)="onMaxPriceChange($any($event.target).value)"
+              class="w-1/2 px-3 py-2 bg-surface-container-low border-0 border-b border-outline-variant focus:border-primary text-on-background placeholder:text-outline-variant transition-colors"
+            />
+          </div>
+        </div>
+
+        <!-- Rating Filter -->
+        <div class="mb-6">
+          <label class="font-label-sm text-on-surface-variant mb-2 block">Minimum Rating</label>
+          <div class="flex gap-1">
+            @for (star of [1, 2, 3, 4, 5]; track star) {
+              <button
+                (click)="onMinRatingChange(star)"
+                [class]="
+                  (filterModel().minRating ?? 0) >= star
+                    ? 'text-yellow-500 text-2xl'
+                    : 'text-outline-variant text-2xl hover:text-yellow-300'
+                "
+              >
+                ★
+              </button>
+            }
+            @if (filterModel().minRating) {
+              <button
+                (click)="onMinRatingChange(filterModel().minRating!)"
+                class="ml-2 text-sm text-on-surface-variant hover:text-primary"
+              >
+                Clear
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Sort -->
+        <div class="mb-6">
+          <label class="font-label-sm text-on-surface-variant mb-2 block">Sort By</label>
+          <select
+            [value]="filterModel().sort"
+            (change)="onSortChange($any($event.target).value)"
+            class="w-full px-3 py-2 bg-surface-container-low border-0 border-b border-outline-variant focus:border-primary text-on-background transition-colors"
+          >
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating-asc">Rating: Low to High</option>
+            <option value="rating-desc">Rating: High to Low</option>
+          </select>
+        </div>
+
+        <!-- Clear Filters -->
+        <button
+          (click)="clearFilters()"
+          class="w-full py-3 border border-outline rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-sm"
+        >
+          Clear All Filters
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1">
+      @if (loading()) {
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          @for (i of [1,2,3,4,5,6]; track $index) {
+            <app-skeleton variant="product-card" />
+          }
+        </div>
+      } @else if (isEmpty()) {
+        <!-- Empty State -->
+        <div class="flex flex-col items-center justify-center h-64 text-center">
+          <span class="material-symbols-outlined text-6xl text-outline-variant mb-4">
+            search_off
+          </span>
+          <h3 class="font-headline-md text-on-surface mb-2">No products found</h3>
+          <p class="text-on-surface-variant mb-4">Try adjusting your filters or search terms</p>
+          <button
+            (click)="clearFilters()"
+            class="bg-primary text-on-primary px-6 py-3 rounded-full font-label-sm hover:bg-primary/90 transition-colors"
+          >
+            Clear Filters
+          </button>
+        </div>
+      } @else {
+        <!-- Product Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          @for (product of products(); track product.id) {
+            <app-product-card [product]="product" />
+          }
+        </div>
+
+        <!-- Pagination -->
+        @if (totalPages() > 1) {
+          <nav class="flex justify-center items-center gap-4 mt-8">
+            <button
+              (click)="onPageChange(page() - 1)"
+              [disabled]="page() === 1"
+              class="w-10 h-10 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant hover:bg-primary-container hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+            </button>
+            @for (p of pageNumbers(); track p) {
+              <button
+                (click)="onPageChange(p)"
+                [class]="
+                  p === page()
+                    ? 'font-label-md text-label-md text-primary font-bold px-4 h-10 flex items-center border-b-2 border-primary'
+                    : 'font-label-md text-label-md text-on-surface-variant px-4 h-10 flex items-center hover:text-primary transition-colors'
+                "
+              >
+                {{ p }}
+              </button>
+            }
+            <button
+              (click)="onPageChange(page() + 1)"
+              [disabled]="page() === totalPages()"
+              class="w-10 h-10 flex items-center justify-center rounded-full border border-outline-variant text-on-surface-variant hover:bg-primary-container hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+            </button>
+          </nav>
+        }
+      }
     </div>
   </div>
 </main>
