@@ -1,18 +1,48 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, input, signal, effect } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { TranslationService } from '../../services/translation';
+import { ProductService } from '../../services/product.service';
+import type { ProductWithCategory } from '../../models/iproduct';
+import { Skeleton } from '../../shared/skeleton/skeleton';
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [CurrencyPipe, Skeleton, RouterLink],
   host: { class: 'block w-full' },
 })
 export class ProductDetail {
-  private readonly t = inject(TranslationService);
+  readonly id = input.required<string>();
+  
+  private readonly _t = inject(TranslationService);
+  private readonly _productService = inject(ProductService);
+
+  readonly product = signal<ProductWithCategory | null>(null);
+  readonly loading = signal<boolean>(true);
+
+  constructor() {
+    effect(async () => {
+      const productId = Number(this.id());
+      if (isNaN(productId)) {
+        this.product.set(null);
+        this.loading.set(false);
+        return;
+      }
+      
+      this.loading.set(true);
+      try {
+        const productData = await this._productService.getProductById(productId);
+        this.product.set(productData);
+      } finally {
+        this.loading.set(false);
+      }
+    });
+  }
 
   translate(key: Parameters<TranslationService['t']>[0]): string {
-    return this.t.t(key);
+    return this._t.t(key);
   }
 
   readonly specs = [

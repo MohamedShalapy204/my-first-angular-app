@@ -1,0 +1,21 @@
+@if (isProductCard()) {
+  <!-- Product Card Skeleton -->
+  <div class="animate-pulse">
+    <div class="aspect-[4/5] bg-surface-container-high rounded-sm mb-6"></div>
+    <div class="flex justify-between items-start">
+      <div class="flex-1">
+        <div class="h-5 bg-surface-container-high rounded w-3/4 mb-2"></div>
+        <div class="h-4 bg-surface-container-high rounded w-full"></div>
+      </div>
+      <div class="h-4 bg-surface-container-high rounded w-16 ml-4"></div>
+    </div>
+  </div>
+} @else {
+  <div
+    class="animate-pulse bg-surface-container-high"
+    [class.rounded-full]="isCircle()"
+    [style.width]="width()"
+    [style.height]="height()"
+    [style.border-radius]="isCircle() ? '50%' : borderRadius()"
+  ></div>
+}
