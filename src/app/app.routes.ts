@@ -1,6 +1,7 @@
 import type { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 import { auth2Guard } from './guards/auth2-guard';
+import { mergeGuard } from './guards/merge.guard';
 import { Home } from './pages/home/home';
 
 export const routes: Routes = [
@@ -25,6 +26,13 @@ export const routes: Routes = [
     path: 'cart',
     loadComponent: () => import('./pages/shopping-bag/shopping-bag').then((m) => m.ShoppingBag),
     title: 'Shopping Bag',
+  },
+  {
+    path: 'cart-merge',
+    loadComponent: () => import('./pages/cart-merge/cart-merge').then((m) => m.CartMergePage),
+    title: 'Merge Carts',
+    canActivate: [authGuard],
+    canDeactivate: [mergeGuard],
   },
   {
     path: 'login',

@@ -1,56 +1,36 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: '14.5';
   };
   public: {
     Tables: {
-      cart: {
-        Row: {
-          created_at: string;
-          id: number;
-          user_id: string;
-        };
-        Insert: {
-          created_at?: string;
-          id?: never;
-          user_id: string;
-        };
-        Update: {
-          created_at?: string;
-          id?: never;
-          user_id?: string;
-        };
-        Relationships: [];
-      };
       cart_items: {
         Row: {
-          cart_id: number;
+          created_at: string | null;
           id: number;
-          product_id: number;
+          product_id: number | null;
           quantity: number;
+          user_id: string | null;
         };
         Insert: {
-          cart_id: number;
+          created_at?: string | null;
           id?: never;
-          product_id: number;
+          product_id?: number | null;
           quantity?: number;
+          user_id?: string | null;
         };
         Update: {
-          cart_id?: number;
+          created_at?: string | null;
           id?: never;
-          product_id?: number;
+          product_id?: number | null;
           quantity?: number;
+          user_id?: string | null;
         };
         Relationships: [
-          {
-            foreignKeyName: 'cart_items_cart_id_fkey';
-            columns: ['cart_id'];
-            isOneToOne: false;
-            referencedRelation: 'cart';
-            referencedColumns: ['id'];
-          },
           {
             foreignKeyName: 'cart_items_product_id_fkey';
             columns: ['product_id'];
@@ -425,20 +405,20 @@ export type Enums<
     : never;
 
 export type CompositeTypes<
-  PublicCompositeTypeNameOrOptions extends
+  DefaultSchemaCompositeTypeNameOrOptions extends
     | keyof DefaultSchema['CompositeTypes']
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends DefaultSchemaCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals;
   }
-    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
+    ? keyof DatabaseWithoutInternals[DefaultSchemaCompositeTypeNameOrOptions['schema']]['CompositeTypes']
     : never = never,
-> = PublicCompositeTypeNameOrOptions extends {
+> = DefaultSchemaCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals;
 }
-  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes']
-    ? DefaultSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
+  ? DatabaseWithoutInternals[DefaultSchemaCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
+  : DefaultSchemaCompositeTypeNameOrOptions extends keyof DefaultSchema['CompositeTypes']
+    ? DefaultSchema['CompositeTypes'][DefaultSchemaCompositeTypeNameOrOptions]
     : never;
 
 export const Constants = {
