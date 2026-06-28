@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { SettingsService } from '../../services/settings';

@@ -1,74 +1,56 @@
-import { Component, ChangeDetectionStrategy, inject, signal, computed } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, ChangeDetectionStrategy, inject, signal, type OnInit } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
+import { RouterLink, Router } from '@angular/router';
+import { CartService } from '../../services/cart';
+import { AuthService } from '../../services/auth.service';
 import { TranslationService } from '../../services/translation';
-
-interface CartItem {
-  id: number;
-  name: string;
-  variant: string;
-  price: number;
-  image: string;
-  quantity: number;
-}
 
 @Component({
   selector: 'app-shopping-bag',
   templateUrl: './shopping-bag.html',
-  imports: [RouterLink],
+  imports: [RouterLink, CurrencyPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block w-full' },
 })
-export class ShoppingBag {
-  private readonly t = inject(TranslationService);
+export class ShoppingBag implements OnInit {
+  private readonly _cartService = inject(CartService);
+  private readonly _authService = inject(AuthService);
+  private readonly _t = inject(TranslationService);
+  private readonly _router = inject(Router);
+
+  readonly cartItems = this._cartService.cartItems;
+  readonly cartCount = this._cartService.cartCount;
+  readonly subtotal = this._cartService.subtotal;
+  readonly loading = this._cartService.loading;
+
+  readonly isCheckingMerge = signal<boolean>(true);
 
   translate(key: Parameters<TranslationService['t']>[0]): string {
-    return this.t.t(key);
+    return this._t.t(key);
   }
 
-  readonly items = signal<CartItem[]>([
-    {
-      id: 1,
-      name: 'Custom Mechanical Keyboard',
-      variant: 'Walnut Case • Brass Plate',
-      price: 420,
-      image: 'https://lh3.googleusercontent.com/aida/ADBb0ujTTNURJeeCcb-IlbYarQBWZYaP-XWhAY8Q-3vXuoysVAwtzaNBDiEbQ44oFJQgJwDfXpzroEkYEZbY03a2cUeiRJRH-ToesbM35BjuMwB2ey1_P_T8nlVu_GtOrt2BNXkYcKFsBxWQro_NxS0ZeIVwvO3K6sGUnOgoK3xWe5ldpfIBKW5xe8sw1fnoAVHDAnDYoreH70KjSS1kFgoIEIlSfCo4xA1VOHK9wwfGrBIHCWKBO0uBOXiS1ALJ',
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: 'High-Performance GPU',
-      variant: 'Founders Edition • 24GB VRAM',
-      price: 1599,
-      image: 'https://lh3.googleusercontent.com/aida/ADBb0ujfzIbtbA7H7eJR8_x8NvAf3D9eHYulEQ5Y7OQ-gAXCyIQCjAIaRzu7fI-tOC7YTDkew7QDN6Ex4QI1kbaez380mh5g2YeJqnnoAcnk_X57PiTjChfVbSvYX4ZXDBjuShCShL9B3N7t8mKafe_GLnCcfa_f1SADra5qsVbnDZaI58e6hWj4iueiNAGMjHKSk8odeDi3Q-Gqf6w2Id5KSEDXcQlue9J46bLENdxPYNzRGNUShPS8uvs0-59M',
-      quantity: 1,
-    },
-    {
-      id: 3,
-      name: 'Studio Microphone',
-      variant: 'Matte Black • XLR Cardioid',
-      price: 399,
-      image: 'https://lh3.googleusercontent.com/aida/ADBb0ugNr-r4ZF9wXYXRdwNJGA-kLA1q_3weT7wEY-M_RFiaEn6yzgdkyKASearc2bYpYK2qE-wTcPHPCKfs3wGNddDy5rI2MjuFzOKU_qlqJvCiWlEQAg4JgrejeEnJ6ss_YzOQW5vXietH8r-HtEZ27m94JydCBlZahdz1W-ksru8lFNGA1h3u6qVRxfrT89blxcE4CynhFLVe-C9lPU1lKPpTe9kH0W58Qoo70BxSCArUi5feu10iipR8Wjz-',
-      quantity: 1,
-    },
-  ]);
-
-  readonly subtotal = computed(() =>
-    this.items().reduce((sum, item) => sum + item.price * item.quantity, 0)
-  );
-
-  readonly total = computed(() => this.subtotal());
-
-  updateQuantity(id: number, delta: number) {
-    this.items.update((items) =>
-      items.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
+  async ngOnInit(): Promise<void> {
+    const user = this._authService.user();
+    if (user) {
+      const mergeNeeded = await this._cartService.checkMergeNeeded(user.id);
+      if (mergeNeeded) {
+        this._router.navigate(['/cart-merge']);
+        return;
+      }
+      await this._cartService.loadCart(user.id);
+    }
+    this.isCheckingMerge.set(false);
   }
 
-  removeItem(id: number) {
-    this.items.update((items) => items.filter((item) => item.id !== id));
+  async updateQuantity(productId: number, delta: number): Promise<void> {
+    const item = this.cartItems().find((i) => i.product_id === productId);
+    if (item) {
+      const newQuantity = Math.max(1, item.quantity + delta);
+      await this._cartService.updateQuantity(productId, newQuantity);
+    }
+  }
+
+  async removeItem(productId: number): Promise<void> {
+    await this._cartService.removeItem(productId);
   }
 }

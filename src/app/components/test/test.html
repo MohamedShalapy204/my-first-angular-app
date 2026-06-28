@@ -1,0 +1,12 @@
+<h1>signal Form</h1>
+<h3>{{loginModel()|json}}</h3>
+<input type="text" [formField]="loginFormSignal.email" class="border" placeholder="email">
+<input type="password" [formField]="loginFormSignal.password" class="border" placeholder="password">
+<hr>
+<h1>reactive Form</h1>
+<h3>{{favoriteColorControlReactive.value|json}}</h3>
+<input type="text" [formControl]="favoriteColorControlReactive" name="favorite color" class="bg-red-300">
+<hr>
+<h1>template Form</h1>
+<h3>{{favoriteColorControlTemplate()|json}}</h3>
+<input type="text" [(ngModel)]="favoriteColorControlTemplate" name="favorite color template " class="bg-blue-400" id="">

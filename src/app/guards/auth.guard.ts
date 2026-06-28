@@ -6,7 +6,7 @@ import {
   type RouterStateSnapshot,
 } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import type { UserRole } from '../models/user.model';
+import type { UserRole } from '../models/db/user.model';
 
 /**
  * Functional auth guard for route protection.

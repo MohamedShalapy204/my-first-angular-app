@@ -3,7 +3,12 @@
     <!-- Skeleton Hero Section -->
     <section class="pt-16 flex flex-col md:flex-row gap-16 items-center">
       <div class="w-full md:w-7/12">
-        <app-skeleton variant="rectangle" height="600px" width="100%" borderRadius="0.5rem"></app-skeleton>
+        <app-skeleton
+          variant="rectangle"
+          height="600px"
+          width="100%"
+          borderRadius="0.5rem"
+        ></app-skeleton>
       </div>
       <div class="w-full md:w-5/12 flex flex-col gap-8">
         <div class="space-y-4">
@@ -20,8 +25,18 @@
           <app-skeleton variant="text" width="30%" height="2rem"></app-skeleton>
         </div>
         <div class="flex flex-col sm:flex-row gap-4 pt-4">
-          <app-skeleton variant="rectangle" width="100%" height="64px" borderRadius="9999px"></app-skeleton>
-          <app-skeleton variant="rectangle" width="100%" height="64px" borderRadius="9999px"></app-skeleton>
+          <app-skeleton
+            variant="rectangle"
+            width="100%"
+            height="64px"
+            borderRadius="9999px"
+          ></app-skeleton>
+          <app-skeleton
+            variant="rectangle"
+            width="100%"
+            height="64px"
+            borderRadius="9999px"
+          ></app-skeleton>
         </div>
       </div>
     </section>
@@ -38,14 +53,34 @@
             <app-skeleton variant="text" width="90%" height="1rem"></app-skeleton>
           </div>
           <div class="flex flex-wrap gap-3">
-            <app-skeleton variant="rectangle" width="100px" height="32px" borderRadius="9999px"></app-skeleton>
-            <app-skeleton variant="rectangle" width="120px" height="32px" borderRadius="9999px"></app-skeleton>
-            <app-skeleton variant="rectangle" width="140px" height="32px" borderRadius="9999px"></app-skeleton>
+            <app-skeleton
+              variant="rectangle"
+              width="100px"
+              height="32px"
+              borderRadius="9999px"
+            ></app-skeleton>
+            <app-skeleton
+              variant="rectangle"
+              width="120px"
+              height="32px"
+              borderRadius="9999px"
+            ></app-skeleton>
+            <app-skeleton
+              variant="rectangle"
+              width="140px"
+              height="32px"
+              borderRadius="9999px"
+            ></app-skeleton>
           </div>
         </div>
         <div class="md:col-span-7 order-1 md:order-2">
           <div class="aspect-[4/3] rounded-lg overflow-hidden w-full relative">
-            <app-skeleton variant="rectangle" width="100%" height="100%" class="absolute inset-0"></app-skeleton>
+            <app-skeleton
+              variant="rectangle"
+              width="100%"
+              height="100%"
+              class="absolute inset-0"
+            ></app-skeleton>
           </div>
         </div>
       </div>
@@ -59,9 +94,16 @@
           <app-skeleton variant="text" width="400px" height="1rem"></app-skeleton>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          @for (i of [1,2,3,4]; track i) {
-            <div class="p-8 bg-surface rounded-lg border border-outline-variant/20 flex flex-col gap-4">
-              <app-skeleton variant="rectangle" width="36px" height="36px" borderRadius="0.25rem"></app-skeleton>
+          @for (i of [1, 2, 3, 4]; track i) {
+            <div
+              class="p-8 bg-surface rounded-lg border border-outline-variant/20 flex flex-col gap-4"
+            >
+              <app-skeleton
+                variant="rectangle"
+                width="36px"
+                height="36px"
+                borderRadius="0.25rem"
+              ></app-skeleton>
               <app-skeleton variant="text" width="60%" height="1.25rem"></app-skeleton>
               <div class="space-y-2">
                 <app-skeleton variant="text" width="100%" height="1rem"></app-skeleton>
@@ -80,9 +122,20 @@
         <app-skeleton variant="text" width="300px" height="2.5rem"></app-skeleton>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-        @for (i of [1,2,3]; track i; let idx = $index) {
-          <div class="flex flex-col gap-6" [class.border-l]="idx > 0" [class.pl-0]="idx === 0" [class.md:pl-12]="idx > 0" [class.border-outline-variant/30]="idx > 0">
-            <app-skeleton variant="rectangle" width="120px" height="24px" borderRadius="0.25rem"></app-skeleton>
+        @for (i of [1, 2, 3]; track i; let idx = $index) {
+          <div
+            class="flex flex-col gap-6"
+            [class.border-l]="idx > 0"
+            [class.pl-0]="idx === 0"
+            [class.md:pl-12]="idx > 0"
+            [class.border-outline-variant/30]="idx > 0"
+          >
+            <app-skeleton
+              variant="rectangle"
+              width="120px"
+              height="24px"
+              borderRadius="0.25rem"
+            ></app-skeleton>
             <div class="space-y-2">
               <app-skeleton variant="text" width="100%" height="1.25rem"></app-skeleton>
               <app-skeleton variant="text" width="100%" height="1.25rem"></app-skeleton>
@@ -101,36 +154,88 @@
     <section class="pt-16 flex flex-col md:flex-row gap-16 items-center">
       <div class="w-full md:w-7/12">
         <div class="relative overflow-hidden rounded-lg bg-surface-container-low">
-          <img [alt]="prod.name" class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
-            [src]="prod.image_url || 'https://lh3.googleusercontent.com/aida/ADBb0uibbiefEL8a61JpcVswkMdmbIQerdzy72QLOOxLTYj1iUaKFE0UBJ4v_DSAeAkgU9wHJ2m8fPjzikcmeoy8qoE1B4PPI8UJGEsnknT16JprhwboJpSDhPjMSWCwPOI-vKsj3fyzIcfdwYaD1QeseXSTunAli87Od40DVIUjU6b-R8pYUwbuAyS-1sR_a6yIBXB4cvyKlca9ERIpYEOVkbD4xp9FCxjx4pfD3WGAKcdZ5UuhKzsM4hEpOqY'">
+          <img
+            [alt]="prod.name"
+            class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
+            [src]="
+              prod.image_url ||
+              'https://lh3.googleusercontent.com/aida/ADBb0uibbiefEL8a61JpcVswkMdmbIQerdzy72QLOOxLTYj1iUaKFE0UBJ4v_DSAeAkgU9wHJ2m8fPjzikcmeoy8qoE1B4PPI8UJGEsnknT16JprhwboJpSDhPjMSWCwPOI-vKsj3fyzIcfdwYaD1QeseXSTunAli87Od40DVIUjU6b-R8pYUwbuAyS-1sR_a6yIBXB4cvyKlca9ERIpYEOVkbD4xp9FCxjx4pfD3WGAKcdZ5UuhKzsM4hEpOqY'
+            "
+          />
         </div>
       </div>
       <div class="w-full md:w-5/12 flex flex-col gap-8">
         <div class="space-y-4">
-          <span class="text-sm text-primary tracking-widest uppercase">{{ prod.categories?.name || 'Signature Collection' }}</span>
+          <span class="text-sm text-primary tracking-widest uppercase">{{
+            prod.categories?.name || 'Signature Collection'
+          }}</span>
           <h1 class="text-h2 font-display text-on-surface">{{ prod.name }}</h1>
           <p class="text-lg text-secondary max-w-md">
-            {{ prod.description || 'A sanctuary of intentionality. The Focused Workspace combines organic materials with precision engineering to create an environment where clarity of thought and peak productivity coexist.' }}
+            {{
+              prod.description ||
+                'A sanctuary of intentionality. The Focused Workspace combines organic materials with precision engineering to create an environment where clarity of thought and peak productivity coexist.'
+            }}
           </p>
         </div>
         <div class="space-y-2">
           <p class="text-secondary">Price</p>
           <p class="text-h4 text-tertiary font-bold">{{ prod.price | currency }}</p>
         </div>
-        <div class="flex flex-col sm:flex-row gap-4 pt-4">
-          <button class="flex-1 bg-primary text-on-primary py-5 rounded-full hover:bg-primary/90 transition-all active:scale-[0.98]" [disabled]="prod.stock <= 0">
-            {{ prod.stock > 0 ? 'Add to Bag' : 'Out of Stock' }}
-          </button>
-          <button class="flex-1 border border-outline text-on-surface py-5 rounded-full hover:bg-surface-container-low transition-all active:scale-[0.98]">
-            Customize Setup
-          </button>
+        <div class="space-y-4">
+          <div class="flex items-center gap-4">
+            <span class="text-secondary">Quantity:</span>
+            <div
+              class="flex items-center border border-outline/10 rounded-full px-2 py-1 bg-surface-container-lowest"
+            >
+              <button
+                class="p-1 hover:text-primary transition-colors"
+                (click)="updateQuantity(-1)"
+                [disabled]="quantity() <= 1"
+              >
+                <span class="material-symbols-outlined text-[20px]">remove</span>
+              </button>
+              <span class="px-4 text-sm">{{ quantity() }}</span>
+              <button
+                class="p-1 hover:text-primary transition-colors"
+                (click)="updateQuantity(1)"
+                [disabled]="quantity() >= prod.stock"
+              >
+                <span class="material-symbols-outlined text-[20px]">add</span>
+              </button>
+            </div>
+            <span class="text-xs text-on-surface-variant">{{ prod.stock }} available</span>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <button
+              class="flex-1 bg-primary text-on-primary py-5 rounded-full hover:bg-primary/90 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="prod.stock <= 0 || addingToCart()"
+              (click)="addToCart()"
+            >
+              @if (addingToCart()) {
+                <span
+                  class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-on-primary inline-block"
+                ></span>
+              } @else {
+                {{ prod.stock > 0 ? 'Add to Bag' : 'Out of Stock' }}
+              }
+            </button>
+            <button
+              class="flex-1 border border-outline text-on-surface py-5 rounded-full hover:bg-surface-container-low transition-all active:scale-[0.98]"
+            >
+              Customize Setup
+            </button>
+          </div>
         </div>
         <div class="pt-6 border-t border-outline-variant/30">
           <div class="flex items-center gap-4">
             <div class="flex text-tertiary">
-              @for (star of [1,2,3,4,5]; track star) {
-                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;"
-                      [class.opacity-30]="star > prod.rating">star</span>
+              @for (star of [1, 2, 3, 4, 5]; track star) {
+                <span
+                  class="material-symbols-outlined"
+                  style="font-variation-settings: 'FILL' 1"
+                  [class.opacity-30]="star > prod.rating"
+                  >star</span
+                >
               }
             </div>
             <span class="text-xs text-secondary">{{ prod.rating }} Based on 128 Reviews</span>
@@ -146,18 +251,35 @@
           <span class="text-sm text-primary tracking-widest uppercase">The Foundation</span>
           <h2 class="text-h4 font-display">{{ prod.name }} Details</h2>
           <p class="text-base text-secondary leading-relaxed">
-            Crafted from hand-selected solid American Walnut, the Studio Desk is the centerpiece of the Focused Workspace. Each surface is finished with a natural oil-rubbed patina that deepens in character over years of use.
+            Crafted from hand-selected solid American Walnut, the Studio Desk is the centerpiece of
+            the Focused Workspace. Each surface is finished with a natural oil-rubbed patina that
+            deepens in character over years of use.
           </p>
           <div class="flex flex-wrap gap-3">
-            <span class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-xs">Solid Walnut</span>
-            <span class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-xs">Hand-Finished</span>
-            <span class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-xs">Sustainably Sourced</span>
+            <span
+              class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-xs"
+              >Solid Walnut</span
+            >
+            <span
+              class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-xs"
+              >Hand-Finished</span
+            >
+            <span
+              class="px-4 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-xs"
+              >Sustainably Sourced</span
+            >
           </div>
         </div>
         <div class="md:col-span-7 order-1 md:order-2">
           <div class="aspect-[4/3] rounded-lg overflow-hidden bg-surface-container-low shadow-sm">
-            <img [alt]="prod.name" class="w-full h-full object-cover"
-              [src]="prod.image_url || 'https://lh3.googleusercontent.com/aida/ADBb0ujY943ot04Mn3EiLP5hvKb9cHiu8-sXdFpZM_F2aBKu46xykSJhOBk3JreKUfJu4laGZ-FXWWCBcytJgbxCAyD3AfISycyTSb0bWzNOAhIy-JTTzwPofQSgT4hkbUuP9DaIIgm0RJtIBREnQw4c7h2NBtJP5fI7YRKX7hhWSH06_poOKqvqu9TewIJM8XzT7rRLIDezqTBWhKoS8_G0wLKSd4QiXP2jhX3EX4CFUVAqPoZbyxlyhRUqW9LO'">
+            <img
+              [alt]="prod.name"
+              class="w-full h-full object-cover"
+              [src]="
+                prod.image_url ||
+                'https://lh3.googleusercontent.com/aida/ADBb0ujY943ot04Mn3EiLP5hvKb9cHiu8-sXdFpZM_F2aBKu46xykSJhOBk3JreKUfJu4laGZ-FXWWCBcytJgbxCAyD3AfISycyTSb0bWzNOAhIy-JTTzwPofQSgT4hkbUuP9DaIIgm0RJtIBREnQw4c7h2NBtJP5fI7YRKX7hhWSH06_poOKqvqu9TewIJM8XzT7rRLIDezqTBWhKoS8_G0wLKSd4QiXP2jhX3EX4CFUVAqPoZbyxlyhRUqW9LO'
+              "
+            />
           </div>
         </div>
       </div>
@@ -172,7 +294,9 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           @for (spec of specs; track spec.title) {
-            <div class="p-8 bg-surface rounded-lg border border-outline-variant/20 flex flex-col gap-4">
+            <div
+              class="p-8 bg-surface rounded-lg border border-outline-variant/20 flex flex-col gap-4"
+            >
               <span class="material-symbols-outlined text-primary text-3xl">{{ spec.icon }}</span>
               <h4 class="text-sm uppercase tracking-tight">{{ spec.title }}</h4>
               <p class="text-secondary">{{ spec.description }}</p>
@@ -190,10 +314,18 @@
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
         @for (review of reviews; track review.name; let i = $index) {
-          <div class="flex flex-col gap-6" [class.border-l]="i > 0" [class.pl-0]="i === 0" [class.md:pl-12]="i > 0" [class.border-outline-variant/30]="i > 0">
+          <div
+            class="flex flex-col gap-6"
+            [class.border-l]="i > 0"
+            [class.pl-0]="i === 0"
+            [class.md:pl-12]="i > 0"
+            [class.border-outline-variant/30]="i > 0"
+          >
             <div class="flex text-tertiary mb-2">
-              @for (star of [1,2,3,4,5]; track star) {
-                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+              @for (star of [1, 2, 3, 4, 5]; track star) {
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"
+                  >star</span
+                >
               }
             </div>
             <blockquote class="text-body-lg italic leading-relaxed text-on-surface">
@@ -209,12 +341,18 @@
     </section>
   } @else {
     <div class="py-32 flex flex-col items-center justify-center text-center px-4">
-      <span class="material-symbols-outlined text-6xl text-outline-variant/50 mb-6">inventory_2</span>
+      <span class="material-symbols-outlined text-6xl text-outline-variant/50 mb-6"
+        >inventory_2</span
+      >
       <h2 class="text-h3 font-display mb-4 text-on-surface">Product Not Found</h2>
       <p class="text-secondary max-w-md mb-8">
-        We couldn't find the product you're looking for. It might have been removed or the link might be broken.
+        We couldn't find the product you're looking for. It might have been removed or the link
+        might be broken.
       </p>
-      <a routerLink="/products" class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary rounded-full hover:bg-primary/90 transition-all">
+      <a
+        routerLink="/products"
+        class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary rounded-full hover:bg-primary/90 transition-all"
+      >
         <span class="material-symbols-outlined text-sm">arrow_back</span>
         Return to Gallery
       </a>

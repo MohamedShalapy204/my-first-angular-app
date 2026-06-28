@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { SettingsService } from '../../services/settings';
 import { TranslationService } from '../../services/translation';
 import { CartService } from '../../services/cart';
+import { ProductService } from '../../services/product.service';
 
 describe('Navbar', () => {
   let fixture: ComponentFixture<Navbar>;
@@ -48,6 +49,14 @@ describe('Navbar', () => {
           },
         },
         provideMockStore({ initialState: { sidebar: { isOpen: false } } }),
+        {
+          provide: ProductService,
+          useValue: {
+            validateStock: () => Promise.resolve({ available: true, maxQty: 10 }),
+            getProductStock: () => Promise.resolve(10),
+            getProductById: (id: number) => Promise.resolve({ id, price: 29.99 }),
+          },
+        },
       ],
     }).compileComponents();
 
@@ -146,10 +155,10 @@ describe('Navbar', () => {
       expect(badge).toBeFalsy();
     });
 
-    it('should show badge when cart count is greater than 0', () => {
+    it('should show badge when cart count is greater than 0', async () => {
       const cartService = TestBed.inject(CartService);
-      cartService.addItem();
-      cartService.addItem();
+      await cartService.addItem(1, 1);
+      await cartService.addItem(2, 1);
       fixture.detectChanges();
 
       const compiled = fixture.nativeElement as HTMLElement;
@@ -157,10 +166,10 @@ describe('Navbar', () => {
       expect(badge).toBeTruthy();
     });
 
-    it('should display correct count in badge', () => {
+    it('should display correct count in badge', async () => {
       const cartService = TestBed.inject(CartService);
       for (let i = 0; i < 5; i++) {
-        cartService.addItem();
+        await cartService.addItem(i + 1, 1);
       }
       fixture.detectChanges();
 
