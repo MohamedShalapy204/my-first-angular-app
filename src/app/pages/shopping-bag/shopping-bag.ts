@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, signal, type OnInit } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart';
 import { AuthService } from '../../services/auth.service';
 import { TranslationService } from '../../services/translation';
@@ -16,7 +16,6 @@ export class ShoppingBag implements OnInit {
   private readonly _cartService = inject(CartService);
   private readonly _authService = inject(AuthService);
   private readonly _t = inject(TranslationService);
-  private readonly _router = inject(Router);
 
   readonly cartItems = this._cartService.cartItems;
   readonly cartCount = this._cartService.cartCount;
@@ -32,11 +31,6 @@ export class ShoppingBag implements OnInit {
   async ngOnInit(): Promise<void> {
     const user = this._authService.user();
     if (user) {
-      const mergeNeeded = await this._cartService.checkMergeNeeded(user.id);
-      if (mergeNeeded) {
-        this._router.navigate(['/cart-merge']);
-        return;
-      }
       await this._cartService.loadCart(user.id);
     }
     this.isCheckingMerge.set(false);

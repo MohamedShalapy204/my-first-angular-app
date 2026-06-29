@@ -2,7 +2,6 @@ import { Component, inject, signal } from '@angular/core';
 import { form, FormField, FormRoot, required, email, minLength } from '@angular/forms/signals';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { CartService } from '../../services/cart';
 import { NotificationService } from '../../services/notification';
 import { LoadingSpinner } from '../../shared/components/loading-spinner';
 
@@ -17,7 +16,6 @@ export class LoginPage {
   private _router = inject(Router);
   private _activatedRoute = inject(ActivatedRoute);
   private _notification = inject(NotificationService);
-  private _cartService = inject(CartService);
 
   readonly loginModel = signal({
     email: '',
@@ -48,16 +46,6 @@ export class LoginPage {
           }
 
           this._notification.show('Successfully logged in', 'success');
-
-          // Check if cart merge is needed after login
-          const user = this._authService.user();
-          if (user) {
-            const mergeNeeded = await this._cartService.checkMergeNeeded(user.id);
-            if (mergeNeeded) {
-              this._router.navigate(['/cart-merge']);
-              return;
-            }
-          }
 
           const returnUrl = this._activatedRoute.snapshot.queryParams['return'] || '/';
           const safeUrl =
