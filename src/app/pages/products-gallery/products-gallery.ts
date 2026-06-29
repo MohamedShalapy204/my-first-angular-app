@@ -12,8 +12,8 @@ import { TranslationService } from '../../services/translation';
 import { ProductService } from '../../services/product.service';
 import { ProductCard } from './product-card';
 import { Skeleton } from '../../shared/skeleton/skeleton';
-import type { Icategory } from '../../models/icategory';
-import type { ProductWithCategory } from '../../models/iproduct';
+import type { Icategory } from '../../models/db/icategory';
+import type { ProductWithCategory } from '../../models/frontend/product';
 
 @Component({
   selector: 'app-products-gallery',

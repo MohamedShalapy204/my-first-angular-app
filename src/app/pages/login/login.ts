@@ -46,6 +46,7 @@ export class LoginPage {
           }
 
           this._notification.show('Successfully logged in', 'success');
+
           const returnUrl = this._activatedRoute.snapshot.queryParams['return'] || '/';
           const safeUrl =
             returnUrl.startsWith('/') && !returnUrl.startsWith('//') ? returnUrl : '/';

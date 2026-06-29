@@ -44,7 +44,7 @@
               <span
                 class="ms-auto bg-tertiary text-on-tertiary text-xs font-bold rounded-full min-w-[1.25rem] h-5 flex items-center justify-center px-1"
               >
-                {{ cartCount() }}
+                {{ cartCount() > 99 ? '99+' : cartCount() }}
               </span>
             }
           </a>

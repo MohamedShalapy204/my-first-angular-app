@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
-import { Iproduct } from '../../models/iproduct';
+import type { Iproduct } from '../../models/db/iproduct';
 
 @Component({
   selector: 'app-product-card',

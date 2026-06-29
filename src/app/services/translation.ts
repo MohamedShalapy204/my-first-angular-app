@@ -95,7 +95,24 @@ export type TranslationKey =
   | 'unauthorized.title'
   | 'unauthorized.description'
   | 'unauthorized.backHome'
-  | 'unauthorized.signIn';
+  | 'unauthorized.signIn'
+  | 'cart_merge.title'
+  | 'cart_merge.description'
+  | 'cart_merge.no_conflicts'
+  | 'cart_merge.continue'
+  | 'cart_merge.keep_all_local'
+  | 'cart_merge.keep_all_server'
+  | 'cart_merge.conflict'
+  | 'cart_merge.local_only'
+  | 'cart_merge.server_only'
+  | 'cart_merge.stock_warning'
+  | 'cart_merge.local'
+  | 'cart_merge.server'
+  | 'cart_merge.stock'
+  | 'cart_merge.discard_local'
+  | 'cart_merge.discard_server'
+  | 'cart_merge.confirm'
+  | 'cart_merge.applying';
 
 const translations: Record<Lang, Record<TranslationKey, string>> = {
   en: {
@@ -206,6 +223,24 @@ const translations: Record<Lang, Record<TranslationKey, string>> = {
       'You do not have permission to access this area. This sanctuary is reserved for verified members.',
     'unauthorized.backHome': 'Return Home',
     'unauthorized.signIn': 'Sign In',
+    'cart_merge.title': 'Merge Your Carts',
+    'cart_merge.description':
+      'You have items in both your local and server carts. Choose which to keep for each product.',
+    'cart_merge.no_conflicts': 'No conflicts found. Your carts are identical.',
+    'cart_merge.continue': 'Continue to Cart',
+    'cart_merge.keep_all_local': 'Keep All Local',
+    'cart_merge.keep_all_server': 'Keep All Server',
+    'cart_merge.conflict': 'Conflict',
+    'cart_merge.local_only': 'Local Only',
+    'cart_merge.server_only': 'Server Only',
+    'cart_merge.stock_warning': 'Exceeds available stock',
+    'cart_merge.local': 'Local',
+    'cart_merge.server': 'Server',
+    'cart_merge.stock': 'Stock',
+    'cart_merge.discard_local': 'Discard Local',
+    'cart_merge.discard_server': 'Discard Server',
+    'cart_merge.confirm': 'Confirm Merge',
+    'cart_merge.applying': 'Applying...',
   },
   ar: {
     'nav.shop': 'المتجر',
@@ -313,6 +348,24 @@ const translations: Record<Lang, Record<TranslationKey, string>> = {
       'ليس لديك صلاحية للوصول إلى هذه المنطقة. هذا الملاذ محجوز للأعضاء المعتمدين.',
     'unauthorized.backHome': 'العودة للرئيسية',
     'unauthorized.signIn': 'تسجيل الدخول',
+    'cart_merge.title': 'دمج سلالات التسوق',
+    'cart_merge.description':
+      'لديك منتجات في كل من السلة المحلية والخادم. اختر ما تريد الاحتفاظ به لكل منتج.',
+    'cart_merge.no_conflicts': 'لم يتم العثور على تعارضات. سلالاتك متطابقة.',
+    'cart_merge.continue': 'المتابعة إلى السلة',
+    'cart_merge.keep_all_local': 'الاحتفاظ بالمحلي',
+    'cart_merge.keep_all_server': 'الاحتفاظ بالخادم',
+    'cart_merge.conflict': 'تعارض',
+    'cart_merge.local_only': 'محلي فقط',
+    'cart_merge.server_only': 'خادم فقط',
+    'cart_merge.stock_warning': 'يتجاوز المخزون المتاح',
+    'cart_merge.local': 'محلي',
+    'cart_merge.server': 'خادم',
+    'cart_merge.stock': 'المخزون',
+    'cart_merge.discard_local': 'تجاهل المحلي',
+    'cart_merge.discard_server': 'تجاهل الخادم',
+    'cart_merge.confirm': 'تأكيد الدمج',
+    'cart_merge.applying': 'جاري التطبيق...',
   },
 };
 

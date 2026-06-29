@@ -5,8 +5,8 @@ import { of } from 'rxjs';
 import { ProductsGallery } from './products-gallery';
 import { ProductService } from '../../services/product.service';
 import { TranslationService } from '../../services/translation';
-import type { ProductWithCategory } from '../../models/iproduct';
-import type { Icategory } from '../../models/icategory';
+import type { ProductWithCategory } from '../../models/frontend/product';
+import type { Icategory } from '../../models/db/icategory';
 
 // Mock data
 const mockCategories: Icategory[] = [
