@@ -1,9 +1,11 @@
 export interface Iorder {
   id: number;
   user_id: string;
-  status: string;
+  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
   total: number;
   created_at: string;
+  stripe_session_id?: string;
+  stripe_event_id?: string;
 }
 
 export interface IorderItem {
