@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart';
-import { CheckoutService } from '../../services/checkout';
+import { OrderService } from '../../services/order';
 
 const POLL_INTERVAL_MS = 2000;
 const POLL_TIMEOUT_MS = 30000;
@@ -22,7 +22,7 @@ const POLL_TIMEOUT_MS = 30000;
 })
 export class CheckoutSuccess implements OnInit, OnDestroy {
   private readonly _cartService = inject(CartService);
-  private readonly _checkoutService = inject(CheckoutService);
+  private readonly _orderService = inject(OrderService);
   private readonly _route = inject(ActivatedRoute);
 
   readonly orderConfirmed = signal<boolean>(false);
@@ -74,7 +74,7 @@ export class CheckoutSuccess implements OnInit, OnDestroy {
     try {
       // Use session_id from URL to find the specific order
       const order = this._sessionId
-        ? await this._checkoutService.getOrderBySessionId(this._sessionId)
+        ? await this._orderService.getOrderBySessionId(this._sessionId)
         : null;
 
       if (order?.status === 'paid') {

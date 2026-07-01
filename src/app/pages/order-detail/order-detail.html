@@ -1,0 +1,108 @@
+<main class="max-w-[1440px] mx-auto px-padding-desktop py-12 md:py-24">
+  @if (loading()) {
+    <div class="flex justify-center items-center py-24">
+      <span class="material-symbols-outlined animate-spin text-outline text-4xl"
+        >progress_activity</span
+      >
+    </div>
+  } @else if (!order()) {
+    <div class="text-center py-24">
+      <span class="material-symbols-outlined text-outline text-4xl mb-4 block">error</span>
+      <p class="text-on-surface-variant mb-4">Order not found</p>
+      <a
+        routerLink="/profile"
+        class="text-sm uppercase tracking-widest text-primary hover:text-primary/80 transition-colors"
+      >
+        Back to Profile
+      </a>
+    </div>
+  } @else {
+    <div class="mb-8">
+      <a
+        routerLink="/profile"
+        class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors"
+      >
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span class="text-sm uppercase tracking-widest">Back to Profile</span>
+      </a>
+    </div>
+
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-12">
+      <div>
+        <h1 class="text-h2 md:text-display-sm font-display mb-2">Order #{{ order()!.id }}</h1>
+        <p class="text-on-surface-variant">
+          Placed on {{ order()!.created_at | date: 'longDate' }}
+        </p>
+      </div>
+      <div class="flex items-center gap-4 mt-4 md:mt-0">
+        <div class="text-right">
+          <p class="text-xs uppercase tracking-widest text-on-surface-variant/60">Status</p>
+          <p class="text-primary font-medium flex items-center gap-1 justify-end">
+            <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+            {{ getStatusDisplay(order()!.status) }}
+          </p>
+        </div>
+        <div class="text-right">
+          <p class="text-xs uppercase tracking-widest text-on-surface-variant/60">Total</p>
+          <p class="text-tertiary font-bold text-xl">{{ order()!.total | currency }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-12">
+      <h2 class="text-h3 font-display mb-6">Items</h2>
+      <div class="space-y-4">
+        @for (item of items(); track item.id) {
+          <a
+            [routerLink]="['/product', item.products?.id]"
+            class="flex flex-col md:flex-row md:items-center gap-6 p-6 border border-outline-variant/20 hover:border-primary transition-colors"
+          >
+            <div class="w-20 h-20 bg-surface-container flex-shrink-0">
+              @if (item.products?.image_url) {
+                <img
+                  [alt]="item.products?.name ?? 'Product'"
+                  class="w-full h-full object-cover"
+                  [src]="item.products?.image_url"
+                />
+              } @else {
+                <div class="w-full h-full flex items-center justify-center">
+                  <span class="material-symbols-outlined text-outline">image</span>
+                </div>
+              }
+            </div>
+            <div class="flex-grow">
+              <h4 class="text-lg">{{ item.products?.name ?? 'Unknown Product' }}</h4>
+              <p class="text-sm text-on-surface-variant">
+                Qty: {{ item.quantity }} × {{ item.price_at_purchase | currency }}
+              </p>
+            </div>
+            <div class="text-right">
+              <p class="text-tertiary font-bold">
+                {{ item.quantity * item.price_at_purchase | currency }}
+              </p>
+            </div>
+          </a>
+        }
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between pt-8 border-t border-outline-variant/20">
+      <button
+        (click)="previousOrder()"
+        [disabled]="!hasPrevious"
+        class="flex items-center gap-2 px-6 py-3 border border-outline-variant/20 hover:border-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <span class="material-symbols-outlined">chevron_left</span>
+        <span class="text-sm uppercase tracking-widest">Previous</span>
+      </button>
+      <button
+        (click)="nextOrder()"
+        [disabled]="!hasNext"
+        class="flex items-center gap-2 px-6 py-3 border border-outline-variant/20 hover:border-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <span class="text-sm uppercase tracking-widest">Next</span>
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+  }
+</main>

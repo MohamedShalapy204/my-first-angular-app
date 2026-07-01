@@ -3,7 +3,6 @@ import { SUPABASE_CLIENT } from './cart';
 import { NotificationService } from './notification';
 import type { CartItemWithProduct } from '../models/frontend/cart';
 import { toCheckoutItems } from '../models/frontend/checkout';
-import type { Iorder } from '../models/db/iorder';
 
 @Injectable({ providedIn: 'root' })
 export class CheckoutService {
@@ -36,24 +35,5 @@ export class CheckoutService {
       }
       throw e;
     }
-  }
-
-  /**
-   * Get order by Stripe session ID.
-   * Used by checkout-success page to find the specific order being paid for.
-   */
-  async getOrderBySessionId(sessionId: string): Promise<Iorder | null> {
-    const { data, error } = await this._supabase
-      .from('orders')
-      .select('*')
-      .eq('stripe_session_id', sessionId)
-      .maybeSingle();
-
-    if (error) {
-      console.error('Error fetching order by session:', error);
-      return null;
-    }
-
-    return data;
   }
 }

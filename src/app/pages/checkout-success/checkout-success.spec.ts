@@ -2,14 +2,14 @@ import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { CheckoutSuccess } from './checkout-success';
 import { CartService } from '../../services/cart';
-import { CheckoutService } from '../../services/checkout';
+import { OrderService } from '../../services/order';
 import { provideRouter, ActivatedRoute } from '@angular/router';
 
 describe('CheckoutSuccess', () => {
   let component: CheckoutSuccess;
   let fixture: ComponentFixture<CheckoutSuccess>;
   let mockCartService: { clearCart: ReturnType<typeof vi.fn> };
-  let mockCheckoutService: { getOrderBySessionId: ReturnType<typeof vi.fn> };
+  let mockOrderService: { getOrderBySessionId: ReturnType<typeof vi.fn> };
 
   const mockActivatedRoute = {
     snapshot: {
@@ -20,14 +20,14 @@ describe('CheckoutSuccess', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     mockCartService = { clearCart: vi.fn().mockResolvedValue(undefined) };
-    mockCheckoutService = { getOrderBySessionId: vi.fn().mockResolvedValue(null) };
+    mockOrderService = { getOrderBySessionId: vi.fn().mockResolvedValue(null) };
 
     TestBed.configureTestingModule({
       imports: [CheckoutSuccess],
       providers: [
         provideRouter([]),
         { provide: CartService, useValue: mockCartService },
-        { provide: CheckoutService, useValue: mockCheckoutService },
+        { provide: OrderService, useValue: mockOrderService },
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
       ],
     });
@@ -52,7 +52,7 @@ describe('CheckoutSuccess', () => {
   });
 
   it('should show success message when order is found with paid status', async () => {
-    mockCheckoutService.getOrderBySessionId.mockResolvedValue({
+    mockOrderService.getOrderBySessionId.mockResolvedValue({
       id: 1,
       status: 'paid',
       stripe_session_id: 'cs_test_123',
@@ -77,7 +77,7 @@ describe('CheckoutSuccess', () => {
   });
 
   it('should clear cart on successful confirmation', async () => {
-    mockCheckoutService.getOrderBySessionId.mockResolvedValue({
+    mockOrderService.getOrderBySessionId.mockResolvedValue({
       id: 1,
       status: 'paid',
     });
@@ -91,7 +91,7 @@ describe('CheckoutSuccess', () => {
   });
 
   it('should have links after confirmation', async () => {
-    mockCheckoutService.getOrderBySessionId.mockResolvedValue({
+    mockOrderService.getOrderBySessionId.mockResolvedValue({
       id: 1,
       status: 'paid',
     });
@@ -107,7 +107,7 @@ describe('CheckoutSuccess', () => {
   });
 
   it('should query order by session_id from URL', async () => {
-    mockCheckoutService.getOrderBySessionId.mockResolvedValue({
+    mockOrderService.getOrderBySessionId.mockResolvedValue({
       id: 1,
       status: 'paid',
     });
@@ -116,11 +116,11 @@ describe('CheckoutSuccess', () => {
     vi.advanceTimersByTime(2000);
     await fixture.whenStable();
 
-    expect(mockCheckoutService.getOrderBySessionId).toHaveBeenCalledWith('cs_test_123');
+    expect(mockOrderService.getOrderBySessionId).toHaveBeenCalledWith('cs_test_123');
   });
 
   it('should timeout after 30 seconds', async () => {
-    mockCheckoutService.getOrderBySessionId.mockResolvedValue(null);
+    mockOrderService.getOrderBySessionId.mockResolvedValue(null);
 
     fixture.detectChanges();
     vi.advanceTimersByTime(31000);
