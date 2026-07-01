@@ -1,6 +1,6 @@
 export interface Icollection {
   id: number;
-  user_id: string;
+  user_id: string | null;
   name: string;
   created_at: string;
 }

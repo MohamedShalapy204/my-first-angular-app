@@ -10,7 +10,7 @@ DECLARE
   v_item JSONB;
 BEGIN
   UPDATE orders
-  SET status = 'confirmed',
+  SET status = 'paid',
       stripe_event_id = p_stripe_event_id,
       updated_at = NOW()
   WHERE stripe_session_id = p_stripe_session_id

@@ -305,7 +305,7 @@ ALTER TABLE orders ADD COLUMN IF NOT EXISTS stripe_session_id TEXT;
 
 -- Allow 'pending' status
 ALTER TABLE orders DROP CONSTRAINT IF EXISTS orders_status_check;
-ALTER TABLE orders ADD CONSTRAINT orders_status_check CHECK (status IN ('pending', 'confirmed', 'shipped', 'delivered', 'cancelled'));
+ALTER TABLE orders ADD CONSTRAINT orders_status_check CHECK (status IN ('pending', 'paid', 'cancelled', 'refunded'));
 
 -- ============================================
 -- 6. 20260629224459_add-checkout-rpc-functions
@@ -334,9 +334,9 @@ DECLARE
   v_order_id BIGINT;
   v_item JSONB;
 BEGIN
-  -- 1. Update existing pending order to confirmed
+  -- 1. Update existing pending order to paid
   UPDATE orders
-  SET status = 'confirmed',
+  SET status = 'paid',
       stripe_event_id = p_stripe_event_id
   WHERE stripe_session_id = p_stripe_session_id
     AND status = 'pending'
@@ -388,7 +388,7 @@ DECLARE
   v_item JSONB;
 BEGIN
   UPDATE orders
-  SET status = 'confirmed',
+  SET status = 'paid',
       stripe_event_id = p_stripe_event_id,
       updated_at = NOW()
   WHERE stripe_session_id = p_stripe_session_id
@@ -439,3 +439,14 @@ $$;
 
 -- Update existing orders to have updated_at = created_at
 UPDATE orders SET updated_at = created_at WHERE updated_at IS NULL;
+
+-- ============================================
+-- 9. 20260701000000_add_pending_order_unique_index
+-- ============================================
+
+-- Unique partial index for pending orders
+-- Prevents race condition: only one pending order per user at a time
+-- Used by create-checkout-session Edge Function for idempotency
+CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_pending_unique
+  ON orders (user_id)
+  WHERE status = 'pending';

@@ -1,0 +1,52 @@
+<main
+  class="max-w-[600px] mx-auto px-padding-desktop py-24 min-h-[70vh] flex flex-col items-center justify-center text-center"
+>
+  @if (orderConfirmed()) {
+    <!-- Success State -->
+    <div class="flex flex-col items-center">
+      <span class="material-symbols-outlined text-[80px] text-green-500 mb-6">check_circle</span>
+      <h1 class="text-h2 font-display mb-4">Order Confirmed</h1>
+      <p class="text-on-surface-variant mb-8">
+        Thank you for your purchase! Your order has been confirmed.
+      </p>
+      <div class="flex gap-4">
+        <a
+          routerLink="/"
+          class="px-6 py-3 bg-primary text-on-primary rounded-full hover:opacity-90 transition-opacity"
+        >
+          Continue Shopping
+        </a>
+        <a
+          routerLink="/profile"
+          class="px-6 py-3 border border-outline text-on-surface rounded-full hover:bg-surface-container transition-colors"
+        >
+          View Orders
+        </a>
+      </div>
+    </div>
+  } @else if (timedOut()) {
+    <!-- Timeout State -->
+    <div class="flex flex-col items-center">
+      <span class="material-symbols-outlined text-[80px] text-amber-500 mb-6">schedule</span>
+      <h1 class="text-h2 font-display mb-4">Processing Payment</h1>
+      <p class="text-on-surface-variant mb-8">
+        We're still processing your payment. We'll email you once your order is confirmed.
+      </p>
+      <a
+        routerLink="/"
+        class="px-6 py-3 bg-primary text-on-primary rounded-full hover:opacity-90 transition-opacity"
+      >
+        Continue Shopping
+      </a>
+    </div>
+  } @else {
+    <!-- Loading State -->
+    <div class="flex flex-col items-center">
+      <div
+        class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mb-6"
+      ></div>
+      <h1 class="text-h2 font-display mb-4">Confirming your order...</h1>
+      <p class="text-on-surface-variant">Please wait while we confirm your payment.</p>
+    </div>
+  }
+</main>

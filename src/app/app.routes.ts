@@ -54,6 +54,24 @@ export const routes: Routes = [
     title: 'About Us',
   },
   {
+    path: 'checkout',
+    loadComponent: () => import('./pages/checkout/checkout').then((m) => m.Checkout),
+    canActivate: [authGuard],
+    title: 'Checkout',
+  },
+  {
+    path: 'checkout/success',
+    loadComponent: () => import('./pages/checkout-success/checkout-success').then((m) => m.CheckoutSuccess),
+    canActivate: [authGuard],
+    title: 'Order Confirmed',
+  },
+  {
+    path: 'checkout/cancel',
+    loadComponent: () => import('./pages/checkout-cancel/checkout-cancel').then((m) => m.CheckoutCancel),
+    canActivate: [authGuard],
+    title: 'Checkout Cancelled',
+  },
+  {
     path: 'unauthorized',
     loadComponent: () => import('./pages/unauthorized/unauthorized').then((m) => m.Unauthorized),
     title: 'Unauthorized',
