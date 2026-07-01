@@ -1,24 +1,39 @@
-<section #hero class="relative h-[90vh] w-full flex items-center justify-center overflow-hidden bg-surface-dim">
+<section
+  #hero
+  class="relative h-[90vh] w-full flex items-center justify-center overflow-hidden bg-surface-dim"
+>
   <!-- Parallax Background Layer -->
   <div class="parallax-layer absolute inset-0 z-0 scale-110 opacity-60" data-speed="0.02">
     <div class="absolute inset-0 bg-gradient-to-b from-transparent to-surface"></div>
-    <img alt="Atmospheric Background" class="w-full h-full object-cover"
-      src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfXcMvlShwjv0Fqkt0w0fo13ybM6hQ7N3xdDzeIq7ey3_-Xb8qw2bvl8HJpT-SQ004b-Lb67ixs2AS6Z-sX6WKchlxxL4uDKydiUhaM96qiy_hVgQREeRQOZZDZTYY2_lvL7gn54PInHtk1ndjyQHbPeon59FqUCpK7QxU01n2XCaPOYHjAoEebifcym3X1KQ363JK_KnH2g9YssvOhceHQETexE9OT1lrsV5hWFQkp6y9wyaxx-ZIC78RuBXGMugDoUOBWTjubkCn">
+    <img
+      alt="Atmospheric Background"
+      class="w-full h-full object-cover"
+      src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfXcMvlShwjv0Fqkt0w0fo13ybM6hQ7N3xdDzeIq7ey3_-Xb8qw2bvl8HJpT-SQ004b-Lb67ixs2AS6Z-sX6WKchlxxL4uDKydiUhaM96qiy_hVgQREeRQOZZDZTYY2_lvL7gn54PInHtk1ndjyQHbPeon59FqUCpK7QxU01n2XCaPOYHjAoEebifcym3X1KQ363JK_KnH2g9YssvOhceHQETexE9OT1lrsV5hWFQkp6y9wyaxx-ZIC78RuBXGMugDoUOBWTjubkCn"
+    />
   </div>
   <!-- Monitor Layer -->
-  <div class="parallax-layer relative z-20 w-full max-w-5xl px-5 flex flex-col items-center" data-speed="0.05">
+  <div
+    class="parallax-layer relative z-20 w-full max-w-5xl px-5 flex flex-col items-center"
+    data-speed="0.05"
+  >
     <div class="relative w-full aspect-video overflow-hidden rounded-lg shadow-2xl mb-12">
-      <img alt="The Focused Workspace" class="w-full h-full object-cover"
-        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfXcMvlShwjv0Fqkt0w0fo13ybM6hQ7N3xdDzeIq7ey3_-Xb8qw2bvl8HJpT-SQ004b-Lb67ixs2AS6Z-sX6WKchlxxL4uDKydiUhaM96qiy_hVgQREeRQOZZDZTYY2_lvL7gn54PInHtk1ndjyQHbPeon59FqUCpK7QxU01n2XCaPOYHjAoEebifcym3X1KQ363JK_KnH2g9YssvOhceHQETexE9OT1lrsV5hWFQkp6y9wyaxx-ZIC78RuBXGMugDoUOBWTjubkCn">
+      <img
+        alt="The Focused Workspace"
+        class="w-full h-full object-cover"
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfXcMvlShwjv0Fqkt0w0fo13ybM6hQ7N3xdDzeIq7ey3_-Xb8qw2bvl8HJpT-SQ004b-Lb67ixs2AS6Z-sX6WKchlxxL4uDKydiUhaM96qiy_hVgQREeRQOZZDZTYY2_lvL7gn54PInHtk1ndjyQHbPeon59FqUCpK7QxU01n2XCaPOYHjAoEebifcym3X1KQ363JK_KnH2g9YssvOhceHQETexE9OT1lrsV5hWFQkp6y9wyaxx-ZIC78RuBXGMugDoUOBWTjubkCn"
+      />
       <div class="absolute inset-0 bg-black/5 pointer-events-none"></div>
     </div>
     <h1 class="font-display text-display-lg text-on-surface mb-8 text-center drop-shadow-sm">
       {{ translate('home.hero.title') }}
     </h1>
     <div class="magnetic-wrap">
-      <button class="magnetic-btn bg-primary-container text-white px-12 py-5 rounded-full text-sm font-semibold hover:opacity-90 transition-all shadow-xl">
+      <a
+        routerLink="/products"
+        class="magnetic-btn cursor-pointer bg-primary-container text-white px-12 py-5 rounded-full text-sm font-semibold hover:opacity-90 transition-all shadow-xl inline-block"
+      >
         {{ translate('home.hero.cta') }}
-      </button>
+      </a>
     </div>
   </div>
 </section>

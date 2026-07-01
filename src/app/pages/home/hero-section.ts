@@ -1,11 +1,20 @@
-import { Component, AfterViewInit, ElementRef, ViewChild, Inject, PLATFORM_ID, inject } from '@angular/core';
+import {
+  Component,
+  type AfterViewInit,
+  type ElementRef,
+  ViewChild,
+  Inject,
+  PLATFORM_ID,
+  inject,
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { TranslationService } from '../../services/translation';
 
 @Component({
   selector: 'app-hero-section',
   templateUrl: './hero-section.html',
-  standalone: true,
+  imports: [RouterLink],
   host: { class: 'block w-full' },
 })
 export class HeroSection implements AfterViewInit {

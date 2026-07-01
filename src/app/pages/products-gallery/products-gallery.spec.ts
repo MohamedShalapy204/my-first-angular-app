@@ -92,7 +92,7 @@ describe('ProductsGallery', () => {
         totalPages: 1,
       });
 
-      component.onCategoryClick(1);
+      component.onCategoryChange('1');
 
       // Wait for effect to process
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -107,7 +107,7 @@ describe('ProductsGallery', () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Change filter
-      component.onCategoryClick(1);
+      component.onCategoryChange('1');
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       expect(component.filterModel().page).toBe(1);
@@ -123,7 +123,7 @@ describe('ProductsGallery', () => {
       });
 
       // Trigger effect to update totalPages
-      component.onCategoryClick(null);
+      component.onCategoryChange('');
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Now page 3 should be valid
@@ -148,7 +148,7 @@ describe('ProductsGallery', () => {
   describe('clearFilters', () => {
     it('should reset all filters to defaults', () => {
       // Set some filters
-      component.onCategoryClick(1);
+      component.onCategoryChange('1');
       component.onMinPriceChange('50');
       component.onMaxPriceChange('200');
 
@@ -203,7 +203,7 @@ describe('ProductsGallery', () => {
       });
 
       // Trigger re-fetch by changing filter
-      component.onCategoryClick(999);
+      component.onCategoryChange('999');
 
       // Wait for effect to process
       await new Promise((resolve) => setTimeout(resolve, 100));

@@ -25,6 +25,7 @@ export class ProductDetail {
   readonly loading = signal<boolean>(true);
   readonly quantity = signal<number>(1);
   readonly addingToCart = signal<boolean>(false);
+  readonly lightboxOpen = signal<boolean>(false);
 
   constructor() {
     effect(async () => {
@@ -111,5 +112,13 @@ export class ProductDetail {
     } finally {
       this.addingToCart.set(false);
     }
+  }
+
+  openLightbox(): void {
+    this.lightboxOpen.set(true);
+  }
+
+  closeLightbox(): void {
+    this.lightboxOpen.set(false);
   }
 }

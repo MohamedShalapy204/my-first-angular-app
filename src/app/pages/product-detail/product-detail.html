@@ -153,10 +153,13 @@
     <!-- Hero Section: The Focused Workspace -->
     <section class="pt-16 flex flex-col md:flex-row gap-16 items-center">
       <div class="w-full md:w-7/12">
-        <div class="relative overflow-hidden rounded-lg bg-surface-container-low">
+        <div
+          class="relative overflow-hidden rounded-lg bg-surface-container-low cursor-pointer"
+          (click)="openLightbox()"
+        >
           <img
             [alt]="prod.name"
-            class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700"
+            class="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-700 pointer-events-none"
             [src]="
               prod.image_url ||
               'https://lh3.googleusercontent.com/aida/ADBb0uibbiefEL8a61JpcVswkMdmbIQerdzy72QLOOxLTYj1iUaKFE0UBJ4v_DSAeAkgU9wHJ2m8fPjzikcmeoy8qoE1B4PPI8UJGEsnknT16JprhwboJpSDhPjMSWCwPOI-vKsj3fyzIcfdwYaD1QeseXSTunAli87Od40DVIUjU6b-R8pYUwbuAyS-1sR_a6yIBXB4cvyKlca9ERIpYEOVkbD4xp9FCxjx4pfD3WGAKcdZ5UuhKzsM4hEpOqY'
@@ -356,6 +359,24 @@
         <span class="material-symbols-outlined text-sm">arrow_back</span>
         Return to Gallery
       </a>
+    </div>
+  }
+
+  <!-- Lightbox Overlay -->
+  @if (lightboxOpen()) {
+    <div
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+      (click)="closeLightbox()"
+    >
+      <img
+        [alt]="product()?.name || 'Product image'"
+        class="max-w-[90vw] max-h-[90vh] object-contain rounded-lg"
+        [src]="
+          product()?.image_url ||
+          'https://lh3.googleusercontent.com/aida/ADBb0uibbiefEL8a61JpcVswkMdmbIQerdzy72QLOOxLTYj1iUaKFE0UBJ4v_DSAeAkgU9wHJ2m8fPjzikcmeoy8qoE1B4PPI8UJGEsnknT16JprhwboJpSDhPjMSWCwPOI-vKsj3fyzIcfdwYaD1QeseXSTunAli87Od40DVIUjU6b-R8pYUwbuAyS-1sR_a6yIBXB4cvyKlca9ERIpYEOVkbD4xp9FCxjx4pfD3WGAKcdZ5UuhKzsM4hEpOqY'
+        "
+        (click)="$event.stopPropagation()"
+      />
     </div>
   }
 </main>

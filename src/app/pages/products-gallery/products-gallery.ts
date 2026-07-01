@@ -7,9 +7,10 @@ import {
   effect,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { form, debounce, FormField } from '@angular/forms/signals';
+import { form } from '@angular/forms/signals';
 import { TranslationService } from '../../services/translation';
 import { ProductService } from '../../services/product.service';
+import { SettingsService } from '../../services/settings';
 import { ProductCard } from './product-card';
 import { Skeleton } from '../../shared/skeleton/skeleton';
 import type { Icategory } from '../../models/db/icategory';
@@ -19,7 +20,7 @@ import type { ProductWithCategory } from '../../models/frontend/product';
   selector: 'app-products-gallery',
   templateUrl: './products-gallery.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ProductCard, FormField, Skeleton],
+  imports: [ProductCard, Skeleton],
   host: { class: 'block w-full' },
 })
 export class ProductsGallery {
@@ -27,6 +28,9 @@ export class ProductsGallery {
   private readonly _productService = inject(ProductService);
   private readonly _activatedRoute = inject(ActivatedRoute);
   private readonly _Router = inject(Router);
+  private readonly _settings = inject(SettingsService);
+
+  readonly lang = this._settings.lang;
 
   // Filter model
   readonly filterModel = signal({
@@ -40,19 +44,75 @@ export class ProductsGallery {
     page: 1,
   });
 
-  // Form with debounce on search
-  readonly filterForm = form(this.filterModel, (schemaPath) => {
-    debounce(schemaPath.search, 300);
-  });
+  // Form without debounce on search
+  readonly filterForm = form(this.filterModel);
 
   // UI state
   readonly showFilters = signal(false);
+
+  readonly filterSidebarStyle = computed(() => {
+    const open = this.showFilters();
+    const rtl = this.lang() === 'ar';
+    // Opposite side from main sidebar: if main is left (LTR), filter is right
+    const translate = open ? 'translateX(0)' : rtl ? 'translateX(-100%)' : 'translateX(100%)';
+    const side = rtl ? 'left' : 'right';
+    return {
+      position: 'fixed' as const,
+      top: 0,
+      bottom: 0,
+      [side]: 0,
+      width: '20rem',
+      maxWidth: '85vw',
+      transform: translate,
+      transition: 'transform 300ms ease-out',
+    };
+  });
+
+  readonly filterTabStyle = computed(() => {
+    const rtl = this.lang() === 'ar';
+    const side = rtl ? 'left' : 'right';
+    // RTL: button on left, rounded on right side; LTR: button on right, rounded on left side
+    const borderRadius = rtl ? '0 0.5rem 0.5rem 0' : '0.5rem 0 0 0.5rem';
+    return {
+      position: 'fixed' as const,
+      top: '50%',
+      transform: 'translateY(-50%)',
+      [side]: 0,
+      borderRadius,
+    };
+  });
+
+  readonly filterIconStyle = computed(() => {
+    const rtl = this.lang() === 'ar';
+    // RTL: icon points right (into content); LTR: icon points left (into content)
+    const rotation = rtl ? 'rotate(90deg)' : 'rotate(270deg)';
+    return {
+      transform: rotation,
+      transition: 'transform 300ms ease-out',
+    };
+  });
+
   readonly loading = signal(false);
   readonly categories = signal<Icategory[]>([]);
   readonly categoriesError = signal<string | null>(null);
   readonly products = signal<ProductWithCategory[]>([]);
   readonly totalPages = signal(0);
-  readonly pageNumbers = signal<number[]>([]);
+
+  readonly paginationRange = computed(() => {
+    const total = this.totalPages();
+    const current = this.page();
+    if (total <= 7) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    const pages: (number | '...')[] = [1];
+    if (current > 3) pages.push('...');
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+    for (let i = start; i <= end; i++) pages.push(i);
+    if (current < total - 2) pages.push('...');
+    pages.push(total);
+    return pages;
+  });
 
   // Computed
   readonly isEmpty = computed(() => !this.loading() && this.products().length === 0);
@@ -109,7 +169,6 @@ export class ProductsGallery {
         });
         this.products.set(result.data);
         this.totalPages.set(result.totalPages);
-        this.pageNumbers.set(Array.from({ length: result.totalPages }, (_, i) => i + 1));
       } finally {
         this.loading.set(false);
       }
@@ -129,8 +188,12 @@ export class ProductsGallery {
     }
   }
 
-  onCategoryClick(categoryId: number | null) {
-    this.filterModel.update((f) => ({ ...f, categoryId, page: 1 }));
+  onCategoryChange(value: string) {
+    this.filterModel.update((f) => ({ ...f, categoryId: value ? Number(value) : null, page: 1 }));
+  }
+
+  onSearchChange(value: string) {
+    this.filterModel.update((f) => ({ ...f, search: value, page: 1 }));
   }
 
   onMinPriceChange(value: string) {

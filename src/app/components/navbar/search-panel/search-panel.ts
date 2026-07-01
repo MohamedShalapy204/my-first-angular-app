@@ -9,6 +9,7 @@ import {
   input,
   output,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslationService } from '../../../services/translation';
 
 @Component({
@@ -23,6 +24,7 @@ import { TranslationService } from '../../../services/translation';
 })
 export class SearchPanel {
   private readonly _t = inject(TranslationService);
+  private readonly _router = inject(Router);
 
   readonly isOpen = input(false);
   readonly closed = output<void>();
@@ -43,6 +45,22 @@ export class SearchPanel {
   onEscapeKey(): void {
     if (this.isOpen()) {
       this.close();
+    }
+  }
+
+  submitSearch(): void {
+    const input = this.searchInput();
+    const query = input?.nativeElement.value?.trim() || '';
+    this.close();
+    this._router.navigate(['/products'], {
+      queryParams: query ? { search: query } : {},
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  onSearchKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.submitSearch();
     }
   }
 
